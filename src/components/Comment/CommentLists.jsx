@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import "./commentList.scss";
 import Popup from "../Popup/Popup";
 
-const CommentList = ({ postId }) => {
+const CommentLists = ({ postId }) => {
   const [comments, setComments] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -102,4 +102,4 @@ const CommentList = ({ postId }) => {
   );
 };
 
-export default CommentList;
+export default CommentLists;

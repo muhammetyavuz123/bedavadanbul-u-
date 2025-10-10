@@ -7,7 +7,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import CommentList from "../../components/Comment/CommentList";
+import CommentLists from "../../components/Comment/CommentLists";
 import CommentForms from "../../components/Comment/CommentForms";
 
 function SinglePage() {
@@ -82,7 +82,7 @@ function SinglePage() {
                 />
               )}
 
-              <CommentList postId={post.id} key={refresh} />
+              <CommentLists postId={post.id} key={refresh} />
             </div>
           </div>
         </div>
@@ -173,7 +173,7 @@ function SinglePage() {
               />
             )}
 
-            <CommentList postId={post.id} key={refresh} />
+            <CommentLists postId={post.id} key={refresh} />
           </div>
         </div>
       </div>
