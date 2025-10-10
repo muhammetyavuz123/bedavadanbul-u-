@@ -1,5 +1,5 @@
 import React from "react";
-import "./AboutUs.scss";
+import "./aboutUs.scss";
 import abouth from "../../assets/abouth.png";
 
 const AboutUs = ({
