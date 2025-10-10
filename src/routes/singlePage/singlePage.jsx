@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import CommentList from "../../components/Comment/CommentList";
-// import CommentForm from "../../components/Comment/CommentForm";
+import CommentForms from "../../components/Comment/CommentForms";
 
 function SinglePage() {
   const post = useLoaderData();
@@ -74,13 +74,13 @@ function SinglePage() {
           </div>
           <div className="commentDesktop">
             <div>
-              {/* {currentUser && (
-                <CommentForm
+              {currentUser && (
+                <CommentForms
                   postId={post.id}
                   userId={currentUser.id}
                   onCommentAdded={handleCommentAdded}
                 />
-              )} */}
+              )}
 
               <CommentList postId={post.id} key={refresh} />
             </div>
@@ -165,13 +165,13 @@ function SinglePage() {
         </div>
         <div className="commentMobil">
           <div>
-            {/* {currentUser && (
-              <CommentForm
+            {currentUser && (
+              <CommentForms
                 postId={post.id}
                 userId={currentUser.id}
                 onCommentAdded={handleCommentAdded}
               />
-            )} */}
+            )}
 
             <CommentList postId={post.id} key={refresh} />
           </div>
