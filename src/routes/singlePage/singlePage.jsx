@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import CommentList from "../../components/Comment/commentList";
-import CommentForm from "../../components/Comment/CommentForm";
+import CommentForm from "../../components/Comment/commentForm";
 
 function SinglePage() {
   const post = useLoaderData();
