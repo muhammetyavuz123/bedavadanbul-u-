@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 
-export const CommentForm = ({ postId, userId, onCommentAdded }) => {
+const Form = ({ postId, userId, onCommentAdded }) => {
   const [content, setContent] = useState("");
   const { currentUser } = useContext(AuthContext);
 
@@ -48,3 +48,5 @@ export const CommentForm = ({ postId, userId, onCommentAdded }) => {
     </form>
   );
 };
+
+export default Form;

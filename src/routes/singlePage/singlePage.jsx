@@ -7,8 +7,8 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import CommentList from "../../components/Comment/commentList";
-import CommentForm from "../../components/Comment/commentForm";
+import CommentList from "../../components/Comment/CommentList";
+import CommentForm from "../../components/Comment/Form";
 
 function SinglePage() {
   const post = useLoaderData();
