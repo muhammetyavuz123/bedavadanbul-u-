@@ -1,0 +1,56 @@
+$card-border: 1px solid #ddd;
+$card-bg: #f9f9f9;
+$text-color: #444;
+$muted: #888;
+
+.messages-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  font-family: sans-serif;
+
+  h2 {
+    margin-bottom: 20px;
+    color: $text-color;
+  }
+
+  .message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .message-card {
+    border: $card-border;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: $card-bg;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    h4 {
+      margin: 0 0 8px;
+      color: $text-color;
+
+      span {
+        font-size: 0.9em;
+        color: #666;
+      }
+    }
+
+    p {
+      margin: 0;
+      color: $text-color;
+    }
+
+    small {
+      display: block;
+      margin-top: 12px;
+      color: $muted;
+      font-size: 0.85em;
+    }
+  }
+}

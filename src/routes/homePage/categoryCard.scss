@@ -1,0 +1,96 @@
+.cg-wrapper {
+  font-family: "Inter", sans-serif;
+  padding: 2rem;
+  background: #f1f0f0;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+}
+
+.cg-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.cg-scroll-area {
+  max-height: 70vh; // alan sınırlı, scroll mümkün
+  overflow-y: auto;
+  padding-right: 0.5rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+  }
+}
+
+.cg-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cg-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+    .cg-overlay {
+      opacity: 1;
+    }
+  }
+}
+
+.cg-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+.cg-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+  color: #fff;
+  opacity: 0.95;
+  transition: opacity 0.3s ease;
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  p {
+    margin: 0.2rem 0 0;
+    font-size: 0.9rem;
+  }
+}

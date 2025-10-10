@@ -1,0 +1,74 @@
+.auth-page {
+  display: flex;
+  height: 100vh;
+  // width: 100vw;
+  overflow: hidden;
+
+  .auth-left {
+    flex: 0 0 50%;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+      z-index: 2;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      // background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+  }
+
+  .auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; // YATAY ORTALAMA
+    padding: 0;
+    // background: #f8f9fa;
+
+    .form-box {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .auth-left {
+      display: none;
+    }
+
+    .auth-right {
+      width: 100%;
+      padding: 2rem;
+
+      .form-box {
+        max-width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 1.5rem;
+      }
+    }
+  }
+}

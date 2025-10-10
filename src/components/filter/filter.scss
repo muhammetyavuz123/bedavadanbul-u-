@@ -1,0 +1,133 @@
+@import "../../responsive.scss";
+
+.FilterBar {
+  .type {
+    button {
+      padding: 16px 36px;
+      border: 1px solid #999;
+      border-bottom: none;
+      cursor: pointer;
+      background-color: white;
+      text-transform: capitalize;
+
+      &.active {
+        background-color: black;
+        color: white;
+      }
+
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-right: none;
+      }
+      &:last-child {
+        border-top-right-radius: 5px;
+        border-left: none;
+      }
+    }
+  }
+
+  form {
+    display: grid;
+    justify-content: space-between;
+    height: 64px;
+    gap: 5px;
+
+    @include sm {
+      flex-direction: column;
+      border: none;
+    }
+    button {
+      border: none;
+      cursor: pointer;
+      background-color: #ff3c38;
+      padding: 5px;
+      margin-top: 15px;
+      @include sm {
+        padding: 10px;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    input,
+    select {
+      border: none;
+      padding: 0px 10px;
+      width: 200px;
+      height: 35px;
+      border-right: 1px solid #999;
+
+      @include lg {
+        padding: 0px 5px;
+
+        &:nth-child(2),
+        &:nth-child(3) {
+          width: 140px;
+        }
+      }
+      @include md {
+        width: 200px;
+        &:nth-child(2),
+        &:nth-child(3) {
+          width: 200px;
+        }
+      }
+
+      @include sm {
+        width: auto;
+        &:nth-child(2),
+        &:nth-child(3) {
+          width: auto;
+        }
+        padding: 20px;
+        border: 1px solid #999;
+      }
+    }
+
+    a {
+      flex: 1;
+      background-color: #ff3c38;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        border: none;
+        cursor: pointer;
+        background-color: #ff3c38;
+
+        @include sm {
+          padding: 10px;
+        }
+
+        img {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  select {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: #fff;
+    min-width: 160px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+
+    &:focus {
+      outline: none;
+      border-color: #00acc1;
+    }
+  }
+}

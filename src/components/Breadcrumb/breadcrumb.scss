@@ -1,0 +1,44 @@
+.hero-header {
+  background-size: cover;
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+  // position: relative;
+  border-radius: 10px;
+  margin: 20px 0;
+
+  @media (min-width: 768px) {
+    background-position: center;
+  }
+
+  .overlay {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 40px 20px;
+    border-radius: 8px;
+    display: inline-block;
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+
+  .breadcrumb {
+    font-size: 16px;
+    color: #ddd;
+  }
+
+  @media (max-width: 600px) {
+    padding: 60px 10px;
+
+    h1 {
+      font-size: 28px;
+    }
+
+    .breadcrumb {
+      font-size: 14px;
+    }
+  }
+}

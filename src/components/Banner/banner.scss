@@ -1,0 +1,64 @@
+.promo-banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .promo-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  .promo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); // karartma
+    z-index: -1;
+  }
+
+  .promo-content {
+    z-index: 1;
+    color: white;
+    text-align: center;
+  }
+
+  &.promo-align-left {
+    .promo-text {
+      text-align: left;
+    }
+  }
+
+  &.promo-align-center {
+    .promo-text {
+      text-align: center;
+    }
+  }
+
+  &.promo-align-right {
+    .promo-text {
+      text-align: right;
+    }
+  }
+
+  .promo-cta {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: #ffffff;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+}

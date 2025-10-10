@@ -1,0 +1,57 @@
+.about-us {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 3rem 2rem;
+  background-color: #f9f9f9;
+
+  &__content {
+    flex: 1;
+  }
+
+  &__title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+
+  &__text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #444;
+  }
+
+  &__image {
+    flex: 1;
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    &__image {
+      margin-top: 2rem;
+    }
+
+    &__title {
+      font-size: 1.5rem;
+    }
+
+    &__subtitle {
+      font-size: 1rem;
+    }
+  }
+}
