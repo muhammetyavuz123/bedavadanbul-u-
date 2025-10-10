@@ -1,5 +1,5 @@
 import React from "react";
-import "./Loader.scss"; // CSS dosyasını ayrıca oluştur
+import "./loader.scss"; // CSS dosyasını ayrıca oluştur
 import logo from "/logo.png"; // Logonuzun yolunu buraya ekleyin
 const Loader = ({ name = "Ahmet" }) => {
   return (
