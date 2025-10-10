@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./popup.scss";
+import "./popUp.scss";
 
 const Popup = ({
   isOpen,
