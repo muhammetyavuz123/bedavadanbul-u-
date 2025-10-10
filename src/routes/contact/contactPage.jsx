@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./contactpage.scss";
+import "./contactPage.scss";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import apiRequest from "../../lib/apiRequest";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
