@@ -3,7 +3,7 @@ import axios from "axios";
 import "./messagesPage.scss"; // opsiyonel: stiller için
 import apiRequest from "../../lib/apiRequest";
 
-const MessagesPage = () => {
+const Contact = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,4 +50,4 @@ const MessagesPage = () => {
   );
 };
 
-export default MessagesPage;
+export default Contact;
