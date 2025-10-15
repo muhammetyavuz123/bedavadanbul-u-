@@ -50,18 +50,20 @@ const Carusel = () => {
   };
 
   return (
-    <div className="category-carousel">
-      <Slider {...settings}>
-        {categories.map((cat) => (
-          <div className="category-item" key={cat.id}>
-            <div className="image-wrapper">
-              <img src={cat.img} alt={cat.name} />
+    <>
+      <div className="category-carousel">
+        <Slider {...settings}>
+          {categories.map((cat) => (
+            <div className="category-item" key={cat.id}>
+              <div className="image-wrapper">
+                <img src={cat.img} alt={cat.name} />
+              </div>
+              <span>{cat.name}</span>
             </div>
-            <span>{cat.name}</span>
-          </div>
-        ))}
-      </Slider>
-    </div>
+          ))}
+        </Slider>
+      </div>
+    </>
   );
 };
 

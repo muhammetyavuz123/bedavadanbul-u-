@@ -70,17 +70,11 @@ function HomePage() {
 
         <Carusel></Carusel>
       </section>
-      <AppBanner />
       {/* <div style={{ padding: 20 }}>
         <CategoryCard />
       </div> */}
-      <Banner
-        title="%50'ye Varan İndirim"
-        subtitle="Seçili ürünlerde stoklarla sınırlı fırsatlar. Kaçırmayın!"
-        ctaText="İndirimi Gör"
-        ctaLink="/kampanyalar"
-        align="left"
-      />
+      <AppBanner />
+
       <main className="content-list">
         <h1 style={{ margin: "25px 0px" }}>En yeni Kampanyalar</h1>
         <div className="product-grid-list">
@@ -97,8 +91,8 @@ function HomePage() {
             </Await>
           </Suspense>
         </div>
+        <Banner />
       </main>
-      <AppBanner />
     </>
   );
 }

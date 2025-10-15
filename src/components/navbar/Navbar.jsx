@@ -64,9 +64,6 @@ function Navbar() {
           </div>
         ) : (
           <>
-            <a style={{ color: "white" }} href="/register">
-              Giriş
-            </a>
             <a style={{ color: "white" }} href="/login" className="register">
               Giriş
             </a>
@@ -84,7 +81,34 @@ function Navbar() {
           <a href="/list">Kampanyalar</a>
           <a href="/aboutUs">Hakkımızda</a>
           <a href="/contact">İletişim</a>
-          <a href="/register">Giriş</a>
+          {currentUser ? (
+            <div className="user">
+              <img src={currentUser.avatar || defaultAvatar} alt="" />
+              <span>{currentUser.username}</span>
+              {currentUser.role !== "user" ? (
+                <Link to="/profile" className="profile">
+                  {number > 0 && <div className="notification">{number}</div>}
+                  <span style={{ color: "white" }}>Profil</span>
+                </Link>
+              ) : (
+                <button
+                  to="/login"
+                  className="profile"
+                  style={{ marginLeft: "10px" }}
+                  onClick={handleLogout}
+                >
+                  {number > 0 && <div className="notification">{number}</div>}
+                  <span style={{ color: "white" }}>Çıkış</span>
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              <a style={{ color: "white" }} href="/login" className="register">
+                Giriş
+              </a>
+            </>
+          )}{" "}
         </div>
       </div>
     </nav>

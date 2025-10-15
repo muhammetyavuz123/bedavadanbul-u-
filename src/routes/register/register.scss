@@ -72,3 +72,48 @@
     }
   }
 }
+.input-group {
+  position: relative;
+}
+
+.input-with-icon {
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+
+  .toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    user-select: none;
+  }
+}
+
+.match-text {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+
+  &.success {
+    color: green;
+  }
+
+  &.error {
+    color: crimson;
+  }
+}
+
+.error-text {
+  color: crimson;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: block;
+}

@@ -11,10 +11,15 @@ function ProfilList() {
   const data = useLoaderData();
   const { currentUser } = useContext(AuthContext);
   const [confirmData, setConfirmData] = useState([]);
+
   useEffect(() => {
     const confirmPostGet = async () => {
       try {
-        const res = await apiRequest.get(`/posts?approved=${false}`);
+        const res = await apiRequest.get(
+          currentUser?.role === "admin"
+            ? `/posts?approved=${false}`
+            : `/posts?approved=all`
+        );
         setConfirmData(res.data);
       } catch (err) {
         console.log(err);
@@ -31,7 +36,7 @@ function ProfilList() {
             <div className="title">
               <h1>Kampanyalarım</h1>
             </div>
-            {currentUser.role === "admin" ? (
+            {currentUser?.role === "admin" ? (
               <>
                 {" "}
                 <Suspense fallback={<p>Yükleniyor...</p>}>
@@ -46,12 +51,10 @@ function ProfilList() {
             ) : (
               <Suspense fallback={<p>Yükleniyor...</p>}>
                 <Await
-                  resolve={data.postResponse}
+                  resolve={confirmData}
                   errorElement={<p>Error loading posts!</p>}
                 >
-                  {(postResponse) => (
-                    <List posts={postResponse.data.userPosts} />
-                  )}
+                  {(confirmData) => <List posts={confirmData} />}
                 </Await>
               </Suspense>
             )}

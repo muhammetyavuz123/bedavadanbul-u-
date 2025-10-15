@@ -5,6 +5,7 @@ import Card from "../../components/card/Card";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import apiRequest from "../../lib/apiRequest";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
+import Loader from "../../components/loader/Loader";
 
 function ListPage() {
   const [posts, setPosts] = useState([]);
@@ -17,7 +18,9 @@ function ListPage() {
 
     setLoading(true);
     try {
-      const res = await apiRequest.get(`/posts?page=${page}&limit=10`);
+      const res = await apiRequest.get(
+        `/posts?page=${page}&limit=10&approved=true`
+      );
       const newPosts = res.data.data;
 
       if (newPosts.length === 0) {
@@ -62,13 +65,17 @@ function ListPage() {
           {/* Daha Fazla Yükle Butonu */}
           <div style={{ textAlign: "center", marginTop: "30px" }}>
             {hasMore ? (
-              <button
-                onClick={loadPosts}
-                disabled={loading}
-                className="load-more-button"
-              >
-                {loading ? "Yükleniyor..." : "Daha Fazla Yükle"}
-              </button>
+              loading ? (
+                <Loader />
+              ) : (
+                <button
+                  onClick={loadPosts}
+                  disabled={loading}
+                  className="load-more-button"
+                >
+                  {loading ? "Yükleniyor..." : "Daha Fazla Yükle"}
+                </button>
+              )
             ) : (
               <p style={{ marginTop: "10px" }}>
                 Gösterilecek başka içerik yok.

@@ -4,13 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👈 Göz ikonları
 
 function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // 👈 Şifre görünürlüğü
 
   const { updateUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,87 +30,77 @@ function Login() {
       });
 
       updateUser(res.data);
-
       navigate("/");
     } catch (err) {
-      setError(err.response.data.message);
+      setError(err.response?.data?.message || "Bir hata oluştu");
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
-    <>
-      {/* <div className="login">
-      <div className="formContainer">
-        <form onSubmit={handleSubmit}>
-          <h1>Welcome back</h1>
+    <AuthLayout>
+      <div className="auth-container">
+        <h2>Giriş Yap</h2>
+        <form className="auth-form" onSubmit={handleSubmit}>
           <input
-            name="identifier"
-            required
-            minLength={3}
-            maxLength={20}
             type="text"
-            placeholder="identifier"
-          />
-          <input
-            name="password"
-            type="password"
+            placeholder="Cep Telefonu veya E-posta"
             required
-            placeholder="Password"
+            name="identifier"
           />
-          <button disabled={isLoading}>Login</button>
-          {error && <span>{error}</span>}
-          <Link to="/register">{"Don't"} you have an account?</Link>
-        </form>
-      </div>
-      <div className="imgContainer">
-        <img src="/bg.png" alt="" />
-      </div>
-    </div> */}
-      <AuthLayout>
-        <div className="auth-container">
-          <h2>Giriş Yap</h2>
-          <form className="auth-form" onSubmit={handleSubmit}>
+
+          {/* Şifre alanı + ikon */}
+          <div className="input-with-icon">
             <input
-              type="identifier"
-              placeholder="Kullanıcı Adı veya E-posta"
-              required
-              name="identifier"
-              // minLength={3}
-              // maxLength={20}
-            />
-            <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Şifre"
               required
               name="password"
             />
-            <button type="submit" disabled={isLoading}>
-              Giriş Yap
-            </button>
-            {error && <span>{error}</span>}
-            <Link to="/forgot-password">
-              <span
-                style={{
-                  color: "#ff3c38",
-                }}
-              >
-                Şifremi Unuttum
-              </span>
-            </Link>
-            <Link to="/register">
-              <span
-                style={{
-                  color: "#ff3c38",
-                }}
-              >
-                Kayıt Oluştur{" "}
-              </span>
-            </Link>
-          </form>
-        </div>
-      </AuthLayout>
-    </>
+            <span
+              className="toggle-icon"
+              onClick={() => setShowPassword((prev) => !prev)}
+              title={showPassword ? "Şifreyi Gizle" : "Şifreyi Göster"}
+            >
+              {showPassword ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="feather feather-eye-off"
+                >
+                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-5.05 0-9.29-3.14-11-8 1.21-3.16 3.52-5.7 6.36-7.19" />
+                  <path d="M1 1l22 22" />
+                  <path d="M9.53 9.53A3.5 3.5 0 0 0 14.47 14.47" />
+                  <path d="M21.17 12.95a10.94 10.94 0 0 0-3.12-4.29" />
+                </svg>
+              ) : (
+                "👁️"
+              )}
+            </span>
+          </div>
+
+          <button type="submit" disabled={isLoading}>
+            Giriş Yap
+          </button>
+          {error && <span className="error">{error}</span>}
+
+          <Link to="/forgot-password">
+            <span className="link-danger">Şifremi Unuttum</span>
+          </Link>
+          <Link to="/register">
+            <span className="link-danger">Kayıt Oluştur</span>
+          </Link>
+        </form>
+      </div>
+    </AuthLayout>
   );
 }
 

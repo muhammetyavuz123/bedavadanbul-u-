@@ -22,7 +22,8 @@ export default function ForgotPassword() {
     <AuthLayout>
       <div className="auth-container">
         <form className="auth-form" onSubmit={handleSubmit}>
-          <h2>Şifremi Unuttum</h2>
+          <span className="link-danger">Şifremi Unuttum</span>
+
           <input
             type="email"
             placeholder="E-posta adresiniz"
