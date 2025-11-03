@@ -1,14 +1,14 @@
 import React from "react";
 import AboutUs from "../../components/AboutUs/AboutUs";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import BreadcrumbImage from "../../assets/breadcrumb.png";
+import BreadcrumbImage from "../../assets/breadcrumb1.png";
 
 const aboutUsPage = () => {
   return (
     <div>
       <Breadcrumb
-        title="Kampanyalar"
-        breadcrumbText="Anasayfa / Kampanyalar"
+        title="Hakkımızda"
+        breadcrumbText="Anasayfa / Hakkımızda"
         backgroundImage={BreadcrumbImage}
       />{" "}
       <AboutUs></AboutUs>

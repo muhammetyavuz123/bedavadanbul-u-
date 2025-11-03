@@ -23,10 +23,20 @@ $text-muted: #ddd;
     flex: 1;
     min-width: 300px;
     img {
-      width: 100%;
+      width: 70%;
+      height: 450px;
       max-width: 300px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+      @media (max-width: 992px) {
+        width: 100%;
+        height: 300px;
+      }
+
+      @media (max-width: 600px) {
+        width: 100%;
+        height: 300px;
+      }
     }
   }
 
@@ -113,7 +123,7 @@ $text-muted: #ddd;
 
     &__image {
       img {
-        max-width: 200px;
+        max-width: 150px;
       }
     }
   }

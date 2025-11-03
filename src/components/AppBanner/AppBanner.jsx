@@ -1,7 +1,7 @@
 import React from "react";
 import "./appBanner.scss";
 import { FaGooglePlay, FaApple } from "react-icons/fa";
-import mobil from "../../assets/mobil.jpg";
+import mobil from "../../assets/mobil.jpeg";
 
 const AppBanner = () => {
   return (

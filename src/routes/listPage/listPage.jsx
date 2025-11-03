@@ -4,7 +4,7 @@ import Filter from "../../components/filter/Filter";
 import Card from "../../components/card/Card";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import apiRequest from "../../lib/apiRequest";
-import BreadcrumbImage from "../../assets/breadcrumb.png";
+import BreadcrumbImage from "../../assets/breadcrumb1.png";
 import Loader from "../../components/loader/Loader";
 
 function ListPage() {
