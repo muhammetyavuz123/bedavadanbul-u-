@@ -10,8 +10,8 @@
 .sidebarContent {
   width: 250px;
   min-height: 500px;
-  background: #1e293b;
-  padding: 20px;
+  // background: #1e293b;
+  // padding: 20px;
   border-radius: 8px;
 
   .filter-group {
@@ -38,9 +38,10 @@
   flex: 1;
   padding: 20px;
   border-radius: 8px;
-
+  margin-top: 25px;
   @media (max-width: 768px) {
     width: 100%;
+    margin-top: 5px;
   }
 }
 

@@ -59,6 +59,7 @@ function NewPostPage() {
           businessName: inputs.businessName, //işletme adı
           latitude: inputs.latitude,
           longitude: inputs.longitude,
+          phoneNumber: inputs.phoneNumber,
           images: images,
           approved: false,
         },

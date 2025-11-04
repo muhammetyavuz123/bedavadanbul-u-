@@ -1,133 +1,187 @@
-@import "../../responsive.scss";
+.filter-container {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.2rem 1.5rem;
+  box-sizing: border-box;
+}
 
-.FilterBar {
-  .type {
-    button {
-      padding: 16px 36px;
-      border: 1px solid #999;
-      border-bottom: none;
-      cursor: pointer;
-      background-color: white;
-      text-transform: capitalize;
+.filter-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  align-items: end;
+}
 
-      &.active {
-        background-color: black;
-        color: white;
-      }
+/* 🔍 Search Input */
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f8f8f8;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  transition: all 0.25s ease;
+  overflow: hidden; // ✨ dışa taşmayı engeller
 
-      &:first-child {
-        border-top-left-radius: 5px;
-        border-right: none;
-      }
-      &:last-child {
-        border-top-right-radius: 5px;
-        border-left: none;
-      }
+  &:focus-within {
+    border-color: #ff3c38;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    color: #666;
+    flex-shrink: 0;
+    margin-right: 0.4rem;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #333;
+    padding-right: 24px; // ✨ sağda “X” butonuna yer aç
+    min-width: 0; // flex taşmasını engeller
+
+    &::placeholder {
+      color: #999;
     }
   }
 
-  form {
-    display: grid;
-    justify-content: space-between;
-    height: 64px;
-    gap: 5px;
+  .clear-btn {
+    position: absolute;
+    right: 8px; // input’un içinde hizalar
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    border-radius: 50%;
+    transition: background 0.2s ease;
 
-    @include sm {
-      flex-direction: column;
-      border: none;
+    &:hover {
+      background: rgba(0, 0, 0, 0.08);
     }
-    button {
+
+    .icon {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+/* 🏙️ Filter Groups */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    select {
+      width: 100%;
+      border: 1px solid #d0d0d0;
+      border-radius: 8px;
+      padding: 0.5rem 2rem 0.5rem 0.8rem;
+      font-size: 0.95rem;
+      background-color: #f8f8f8;
+      color: #333;
+      appearance: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #ff3c38;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 6px;
+      background: transparent;
       border: none;
       cursor: pointer;
-      background-color: #ff3c38;
-      padding: 5px;
-      margin-top: 15px;
-      @include sm {
-        padding: 10px;
-      }
-
-      img {
-        width: 24px;
-        height: 24px;
-      }
-    }
-    input,
-    select {
-      border: none;
-      padding: 0px 10px;
-      width: 200px;
-      height: 35px;
-      border-right: 1px solid #999;
-
-      @include lg {
-        padding: 0px 5px;
-
-        &:nth-child(2),
-        &:nth-child(3) {
-          width: 140px;
-        }
-      }
-      @include md {
-        width: 200px;
-        &:nth-child(2),
-        &:nth-child(3) {
-          width: 200px;
-        }
-      }
-
-      @include sm {
-        width: auto;
-        &:nth-child(2),
-        &:nth-child(3) {
-          width: auto;
-        }
-        padding: 20px;
-        border: 1px solid #999;
-      }
-    }
-
-    a {
-      flex: 1;
-      background-color: #ff3c38;
+      color: #555;
+      font-size: 1.1rem;
+      line-height: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 3px;
+      border-radius: 50%;
+      transition: background 0.2s ease;
 
-      button {
-        border: none;
-        cursor: pointer;
-        background-color: #ff3c38;
-
-        @include sm {
-          padding: 10px;
-        }
-
-        img {
-          width: 24px;
-          height: 24px;
-        }
+      &:hover {
+        background: rgba(0, 0, 0, 0.08);
       }
     }
   }
 }
-.filters {
+
+/* 🔘 Submit Button */
+.search-btn {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #ff3c38;
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: background 0.25s ease;
 
-  select {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    background: #fff;
-    min-width: 160px;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+  img {
+    width: 18px;
+    height: 18px;
+  }
 
-    &:focus {
-      outline: none;
-      border-color: #00acc1;
-    }
+  &:hover {
+    background: #fa6563;
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 1rem;
+  }
+
+  .filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .search-btn {
+    width: 100%;
   }
 }

@@ -49,7 +49,15 @@ function ListPage() {
       />
       <div className="page-container">
         <aside className="sidebarContent">
-          <h2 style={{ color: "white" }}>Arama</h2>
+          <h2
+            style={{
+              color: "#ff3c38",
+              marginLeft: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            Arama
+          </h2>
           <div className="filter-group">
             <Filter />
           </div>

@@ -10,6 +10,7 @@ function Filter() {
     city: searchParams.get("city") || "",
     district: searchParams.get("district") || "",
   });
+
   const [cities, setCities] = useState([]);
   const [district, setDistrict] = useState([]);
 
@@ -20,8 +21,13 @@ function Filter() {
     });
   };
 
-  const handleFilter = () => {
+  const handleFilter = (e) => {
+    e.preventDefault();
     setSearchParams(query);
+  };
+
+  const clearField = (field) => {
+    setQuery({ ...query, [field]: "" });
   };
 
   useEffect(() => {
@@ -30,7 +36,7 @@ function Filter() {
         const cities = await apiRequest.get("/locations");
         setCities(cities.data);
       } catch (error) {
-        console.log("🚀 ~ SearchBar ~ error:", error);
+        console.log("🚀 ~ Filter ~ error:", error);
       }
     }
     citiesCall();
@@ -40,70 +46,138 @@ function Filter() {
     async function districhCall() {
       if (query.city) {
         try {
-          const cities = await apiRequest.get(`/locations/${query.city}`);
-          setDistrict(cities.data);
+          const res = await apiRequest.get(`/locations/${query.city}`);
+          setDistrict(res.data);
         } catch (error) {
-          console.log("🚀 ~ SearchBar ~ error:", error);
+          console.log("🚀 ~ Filter ~ error:", error);
         }
+      } else {
+        setDistrict([]);
       }
     }
-
     districhCall();
   }, [query.city]);
 
   return (
-    <>
-      {/* <h1>
-        Arama Sonuç: <b>{searchParams.get("city")}</b>
-      </h1> */}
-      <div className="filters">
-        <div className="FilterBar">
-          <form>
+    <div className="filter-container">
+      <form className="filter-form" onSubmit={handleFilter}>
+        <div className="search-input">
+          <svg
+            className="icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M21 21l-4.35-4.35m2.1-5.4a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+
+          <input
+            type="text"
+            className=""
+            placeholder="Anahtar kelime ara..."
+            value={query.search || ""}
+            name="search"
+            onChange={handleChange}
+          />
+
+          {query.search && (
+            <button
+              type="button"
+              className="clear-btn"
+              onClick={() => setQuery({ ...query, search: "" })}
+            >
+              <svg
+                className="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M6 6l12 12M6 18L18 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </button>
+          )}
+        </div>
+        <div className="filter-group">
+          <label htmlFor="city">Şehir</label>
+          <div className="select-wrapper">
             <select
-              type="text"
               id="city"
               name="city"
-              placeholder="City"
               onChange={handleChange}
-              defaultValue={query.city}
+              value={query.city}
             >
-              <option value={query.city ? query.city : ""}>
-                {query.city ? query.city : "Tümü"}
-              </option>
-              {cities.length > 0 &&
-                cities?.map((city, index) => (
-                  <option key={index} value={city?.il_adi}>
-                    {city?.il_adi}
-                  </option>
-                ))}
+              <option value="">Tümü</option>
+              {cities.map((city, i) => (
+                <option key={i} value={city?.il_adi}>
+                  {city?.il_adi}
+                </option>
+              ))}
             </select>
+            {query.city && (
+              <button
+                type="button"
+                className="clear-btn"
+                onClick={() => clearField("city")}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
 
+        {/* İlçe */}
+        <div className="filter-group">
+          <label htmlFor="district">İlçe</label>
+          <div className="select-wrapper">
             <select
-              type="text"
               id="district"
               name="district"
               onChange={handleChange}
-              defaultValue={query.district}
+              value={query.district}
+              disabled={!query.city}
             >
-              <option value={query.district ? query.district : ""}>
-                {query.district ? query.district : "Tümü"}
-              </option>
-              {district.length > 0 &&
-                district?.map((districh, index) => (
-                  <option key={index} value={districh?.ilce_adi}>
-                    {districh?.ilce_adi}
-                  </option>
-                ))}
+              <option value="">Tümü</option>
+              {district.map((d, i) => (
+                <option key={i} value={d?.ilce_adi}>
+                  {d?.ilce_adi}
+                </option>
+              ))}
             </select>
+            {query.district && (
+              <button
+                type="button"
+                className="clear-btn"
+                onClick={() => clearField("district")}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Kategori */}
+        <div className="filter-group">
+          <label htmlFor="type">Kategori</label>
+          <div className="select-wrapper">
             <select
-              name="type"
               id="type"
+              name="type"
               onChange={handleChange}
-              defaultValue={query.type}
+              value={query.type}
             >
-              <option value={query.type ? query.type : ""}>
-                {query.type ? query.type : "Tümü"}
-              </option>
+              <option value="">Tümü</option>
               <option value="egitim">Eğitim / Okul</option>
               <option value="market">Market / Gıda</option>
               <option value="saglik">Sağlık & Kişisel Bakım</option>
@@ -117,13 +191,24 @@ function Filter() {
               <option value="evcil">Evcil Hayvan</option>
               <option value="ofis">Ofis & Kırtasiye</option>
             </select>
-            <button onClick={handleFilter}>
-              <img src="/search.png" alt="" />
-            </button>
-          </form>
+            {query.type && (
+              <button
+                type="button"
+                className="clear-btn"
+                onClick={() => clearField("type")}
+              >
+                ✕
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-    </>
+
+        <button type="submit" className="search-btn">
+          <img src="/search.png" alt="Ara" />
+          Filtrele
+        </button>
+      </form>
+    </div>
   );
 }
 
