@@ -46,11 +46,13 @@ function SearchBar() {
 
     districhCall();
   }, [query.city]);
+
   const handleClick = () => {
     navigate(
       `/list?type=${query.type}&city=${query.city}&district=${query.district}`
     );
   };
+
   return (
     <form className="form-wrapper">
       <select

@@ -4,30 +4,56 @@ import Filter from "../../components/filter/Filter";
 import Card from "../../components/card/Card";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import apiRequest from "../../lib/apiRequest";
-import BreadcrumbImage from "../../assets/breadcrumb1.png";
+import BreadcrumbImage from "../../assets/breadcrumb.png";
 import Loader from "../../components/loader/Loader";
+import { useSearchParams } from "react-router-dom";
 
 function ListPage() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
 
-  const loadPosts = async () => {
-    if (loading || !hasMore) return;
+  const type = searchParams.get("type");
+  const city = searchParams.get("city");
+  const district = searchParams.get("district");
+  const search = searchParams.get("search");
+  console.log("🚀 ~ ListPage ~ search:", search);
+
+  // 🔥 Filtreli veri yükleme fonksiyonu
+  const loadPosts = async (reset = false) => {
+    if (loading || (!hasMore && !reset)) return;
 
     setLoading(true);
     try {
-      const res = await apiRequest.get(
-        `/posts?page=${page}&limit=10&approved=true`
-      );
+      const currentPage = reset ? 1 : page;
+
+      // Arama parametrelerini API isteğine ekle
+      const query = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: "10",
+        approved: "true",
+      });
+
+      if (type) query.append("type", type);
+      if (city) query.append("city", city);
+      if (district) query.append("district", district);
+
+      const res = await apiRequest.get(`/posts?${query.toString()}`);
       const newPosts = res.data.data;
 
-      if (newPosts.length === 0) {
-        setHasMore(false);
+      if (reset) {
+        setPosts(newPosts);
+        setPage(2);
+        setHasMore(newPosts.length > 0);
       } else {
-        setPosts((prev) => [...prev, ...newPosts]);
-        setPage((prev) => prev + 1);
+        if (newPosts.length === 0) {
+          setHasMore(false);
+        } else {
+          setPosts((prev) => [...prev, ...newPosts]);
+          setPage((prev) => prev + 1);
+        }
       }
     } catch (err) {
       console.error("Veriler alınamadı:", err);
@@ -36,9 +62,12 @@ function ListPage() {
     }
   };
 
+  // 🔄 search param değiştiğinde filtreli veri çek
   useEffect(() => {
-    loadPosts(); // Sayfa ilk yüklendiğinde çalışır
-  }, []);
+    setPage(1);
+    setHasMore(true);
+    loadPosts(true); // reset ile baştan yükle
+  }, [type, city, district]);
 
   return (
     <>
@@ -70,24 +99,26 @@ function ListPage() {
             ))}
           </div>
 
-          {/* Daha Fazla Yükle Butonu */}
+          {/* 📦 Pagination veya durum mesajları */}
           <div style={{ textAlign: "center", marginTop: "30px" }}>
-            {hasMore ? (
-              loading ? (
-                <Loader />
-              ) : (
-                <button
-                  onClick={loadPosts}
-                  disabled={loading}
-                  className="load-more-button"
-                >
-                  {loading ? "Yükleniyor..." : "Daha Fazla Yükle"}
-                </button>
-              )
-            ) : (
-              <p style={{ marginTop: "10px" }}>
-                Gösterilecek başka içerik yok.
-              </p>
+            {loading && <Loader />}
+
+            {!loading && posts.length > 0 && hasMore && (
+              <button
+                onClick={() => loadPosts(false)}
+                disabled={loading}
+                className="load-more-button"
+              >
+                Daha Fazla Yükle
+              </button>
+            )}
+
+            {!loading && !hasMore && posts.length > 0 && (
+              <p style={{ marginTop: "10px" }}>Tüm Kampanyalar Gösteriliyor.</p>
+            )}
+
+            {!loading && posts.length === 0 && (
+              <p>İl ve ilçeye ait kampanya bulunamadı.</p>
             )}
           </div>
         </main>

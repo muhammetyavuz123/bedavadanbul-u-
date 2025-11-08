@@ -1,6 +1,6 @@
 import React from "react";
 import "./authLayout.scss";
-import bgImage from "../../assets/authimg.jpg"; // görselini buraya koy
+import bgImage from "../../assets/authimg.png"; // görselini buraya koy
 
 const AuthLayout = ({ children }) => {
   return (

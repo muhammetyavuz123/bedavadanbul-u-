@@ -2,10 +2,12 @@ import { useState, useContext } from "react";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { useError } from "../../context/ErrorContext";
 
 const CommentForms = ({ postId, userId, onCommentAdded }) => {
   const [content, setContent] = useState("");
   const { currentUser } = useContext(AuthContext);
+  const { showError } = useError();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +19,6 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
         userId,
         content,
       });
-      console.log(res);
 
       if (res.status === 201) {
         setContent("");
@@ -27,7 +28,9 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
         alert(err.message || "Yorum eklenemedi.");
       }
     } catch (error) {
-      console.error("Yorum gönderilemedi:", error);
+      showError(
+        "Yorum eklenien bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+      );
     }
   };
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; // ya da kendi default icon'un
@@ -45,11 +48,11 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      {currentUser ? (
+      {/* {currentUser ? (
         <Link to="/login"></Link>
-      ) : (
-        <button type="submit">Gönder</button>
-      )}
+      ) : ( */}
+      <button type="submit">Gönder</button>
+      {/* )} */}
     </form>
   );
 };

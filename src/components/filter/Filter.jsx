@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./filter.scss";
 import { useSearchParams } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { useError } from "../../context/ErrorContext";
 
 function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,58 +10,87 @@ function Filter() {
     type: searchParams.get("type") || "",
     city: searchParams.get("city") || "",
     district: searchParams.get("district") || "",
+    search: searchParams.get("search") || "",
   });
 
+  const { showError } = useError();
   const [cities, setCities] = useState([]);
-  const [district, setDistrict] = useState([]);
+  const [districts, setDistricts] = useState([]);
 
   const handleChange = (e) => {
-    setQuery({
-      ...query,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    // Şehir değişirse ilçe sıfırla
+    if (name === "city") {
+      setQuery((prev) => ({
+        ...prev,
+        city: value,
+        district: "", // ilçe temizlenir
+      }));
+    } else {
+      setQuery((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleFilter = (e) => {
     e.preventDefault();
-    setSearchParams(query);
+
+    // Boş değerleri URL'e yazmamak için filtrele
+    const cleanQuery = Object.fromEntries(
+      Object.entries(query).filter(([_, v]) => v !== "")
+    );
+
+    setSearchParams(cleanQuery);
   };
 
   const clearField = (field) => {
-    setQuery({ ...query, [field]: "" });
+    if (field === "city") {
+      // şehir silinirse ilçe de silinsin
+      setQuery((prev) => ({ ...prev, city: "", district: "" }));
+    } else {
+      setQuery((prev) => ({ ...prev, [field]: "" }));
+    }
   };
 
   useEffect(() => {
-    async function citiesCall() {
+    async function fetchCities() {
       try {
-        const cities = await apiRequest.get("/locations");
-        setCities(cities.data);
+        const res = await apiRequest.get("/locations");
+        setCities(res.data);
       } catch (error) {
-        console.log("🚀 ~ Filter ~ error:", error);
+        showError(
+          "Şehir verisi alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        );
       }
     }
-    citiesCall();
+    fetchCities();
   }, []);
 
   useEffect(() => {
-    async function districhCall() {
+    async function fetchDistricts() {
       if (query.city) {
         try {
           const res = await apiRequest.get(`/locations/${query.city}`);
-          setDistrict(res.data);
+          setDistricts(res.data);
         } catch (error) {
-          console.log("🚀 ~ Filter ~ error:", error);
+          showError(
+            "İlçe verisi alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+          );
         }
       } else {
-        setDistrict([]);
+        setDistricts([]); // şehir silinirse ilçe temizle
       }
     }
-    districhCall();
+    fetchDistricts();
   }, [query.city]);
 
   return (
     <div className="filter-container">
       <form className="filter-form" onSubmit={handleFilter}>
+        {/* 🔎 Arama */}
         <div className="search-input">
           <svg
             className="icon"
@@ -79,9 +109,8 @@ function Filter() {
 
           <input
             type="text"
-            className=""
             placeholder="Anahtar kelime ara..."
-            value={query.search || ""}
+            value={query.search}
             name="search"
             onChange={handleChange}
           />
@@ -90,25 +119,14 @@ function Filter() {
             <button
               type="button"
               className="clear-btn"
-              onClick={() => setQuery({ ...query, search: "" })}
+              onClick={() => clearField("search")}
             >
-              <svg
-                className="icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M6 6l12 12M6 18L18 6"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </svg>
+              ✕
             </button>
           )}
         </div>
+
+        {/* 🏙️ Şehir */}
         <div className="filter-group">
           <label htmlFor="city">Şehir</label>
           <div className="select-wrapper">
@@ -137,7 +155,7 @@ function Filter() {
           </div>
         </div>
 
-        {/* İlçe */}
+        {/* 🏘️ İlçe */}
         <div className="filter-group">
           <label htmlFor="district">İlçe</label>
           <div className="select-wrapper">
@@ -149,7 +167,7 @@ function Filter() {
               disabled={!query.city}
             >
               <option value="">Tümü</option>
-              {district.map((d, i) => (
+              {districts.map((d, i) => (
                 <option key={i} value={d?.ilce_adi}>
                   {d?.ilce_adi}
                 </option>
@@ -167,7 +185,7 @@ function Filter() {
           </div>
         </div>
 
-        {/* Kategori */}
+        {/* 🏷️ Kategori */}
         <div className="filter-group">
           <label htmlFor="type">Kategori</label>
           <div className="select-wrapper">
@@ -203,6 +221,7 @@ function Filter() {
           </div>
         </div>
 
+        {/* 🔘 Filtrele Butonu */}
         <button type="submit" className="search-btn">
           <img src="/search.png" alt="Ara" />
           Filtrele

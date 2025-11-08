@@ -3,6 +3,7 @@ import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import "./commentList.scss";
 import Popup from "../Popup/Popup";
+import { useError } from "../../context/ErrorContext";
 
 const CommentLists = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -10,6 +11,7 @@ const CommentLists = ({ postId }) => {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState(false);
+  const { showError } = useError();
 
   const loadComments = async () => {
     if (loading || !hasMore) return;
@@ -21,7 +23,9 @@ const CommentLists = ({ postId }) => {
       setComments(res.data);
       // setPage((prev) => prev + 1);
     } catch (err) {
-      console.error("Veriler alınamadı:", err);
+      showError(
+        "Veri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+      );
     } finally {
       setLoading(false);
     }
@@ -46,7 +50,9 @@ const CommentLists = ({ postId }) => {
         alert(data.message || "Silme işlemi başarısız.");
       }
     } catch (err) {
-      console.error("Silme hatası:", err);
+      showError(
+        "Silme İşlemi yaparken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+      );
     }
   };
 
