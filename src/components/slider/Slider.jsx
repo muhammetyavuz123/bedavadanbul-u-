@@ -2,55 +2,48 @@ import { useState } from "react";
 import "./slider.scss";
 
 function Slider({ images }) {
-  const [imageIndex, setImageIndex] = useState(null);
+  const [active, setActive] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
 
-  const changeSlide = (direction) => {
-    if (direction === "left") {
-      if (imageIndex === 0) {
-        setImageIndex(images.length - 1);
-      } else {
-        setImageIndex(imageIndex - 1);
-      }
-    } else {
-      if (imageIndex === images.length - 1) {
-        setImageIndex(0);
-      } else {
-        setImageIndex(imageIndex + 1);
-      }
-    }
-  };
+  const prevSlide = () =>
+    setActive(active === 0 ? images.length - 1 : active - 1);
+  const nextSlide = () =>
+    setActive(active === images.length - 1 ? 0 : active + 1);
 
   return (
     <div className="slider">
-      {imageIndex !== null && (
-        <div className="fullSlider">
-          <div className="arrow" onClick={() => changeSlide("left")}>
-            <img src="/arrow.png" alt="" />
-          </div>
-          <div className="imgContainer">
-            <img src={images[imageIndex]} alt="" />
-          </div>
-          <div className="arrow" onClick={() => changeSlide("right")}>
-            <img src="/arrow.png" className="right" alt="" />
-          </div>
-          <div className="close" onClick={() => setImageIndex(null)}>
-            X
-          </div>
-        </div>
-      )}
-      <div className="bigImage">
-        <img src={images[0]} alt="" onClick={() => setImageIndex(0)} />
+      <div className="mainSlide" onClick={() => setFullscreen(true)}>
+        <img src={images[active]} alt={`slide-${active}`} />
       </div>
-      <div className="smallImages">
-        {images.slice(1).map((image, index) => (
+
+      <div className="thumbs">
+        {images.map((img, idx) => (
           <img
-            src={image}
-            alt=""
-            key={index}
-            onClick={() => setImageIndex(index + 1)}
+            key={idx}
+            src={img}
+            className={active === idx ? "active" : ""}
+            onClick={() => setActive(idx)}
+            alt={`thumb-${idx}`}
           />
         ))}
       </div>
+
+      {fullscreen && (
+        <div className="overlay">
+          <div className="arrow left" onClick={prevSlide}>
+            <img src="/arrow.png" alt="prev" />
+          </div>
+          <div className="fullImage">
+            <img src={images[active]} alt={`full-${active}`} />
+          </div>
+          <div className="arrow right" onClick={nextSlide}>
+            <img src="/arrow.png" alt="next" className="right" />
+          </div>
+          <div className="close" onClick={() => setFullscreen(false)}>
+            ×
+          </div>
+        </div>
+      )}
     </div>
   );
 }

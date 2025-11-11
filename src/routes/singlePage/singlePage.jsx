@@ -1,183 +1,154 @@
 import "./singlePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
-import { useNavigate, useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
 import DOMPurify from "dompurify";
-import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
-import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import CommentLists from "../../components/Comment/CommentLists";
 import CommentForms from "../../components/Comment/CommentForms";
+import CommentLists from "../../components/Comment/CommentLists";
 
 function SinglePage() {
   const post = useLoaderData();
-  const [saved, setSaved] = useState(post.isSaved);
-  const { currentUser } = useContext(AuthContext);
+  console.log("🚀 ~ SinglePage ~ post:", post);
   const navigate = useNavigate();
+  const { currentUser } = useContext(AuthContext);
+
+  const [saved, setSaved] = useState(post.isSaved);
   const [refresh, setRefresh] = useState(false);
 
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
   const handleSave = async () => {
-    if (!currentUser) {
-      navigate("/login");
-    }
-    setSaved((prev) => !prev);
+    if (!currentUser) return navigate("/login");
+    setSaved((p) => !p);
     try {
       await apiRequest.post("/users/save", { postId: post.id });
-    } catch (err) {
-      console.log(err);
-      setSaved((prev) => !prev);
+    } catch {
+      setSaved((p) => !p);
     }
   };
-  const handleCommentAdded = () => {
-    setRefresh((prev) => !prev);
-  };
-  const backgroundImage =
-    "https://images.unsplash.com/photo-1517336714731-489689fd1ca8";
-
-  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; // ya da kendi default icon'un
 
   return (
-    <>
-      <Breadcrumb
-        title="Kampanya"
-        breadcrumbText="Anasayfa / Kampanya"
-        backgroundImage={backgroundImage}
-      />
-      <div className="singlePage">
-        <div className="details">
-          <div className="wrapper">
+    <div className="singlePage">
+      <div className="container">
+        {/* 🔹 SLIDER + BİLGİLER */}
+        <div className="topSection">
+          <div className="sliderArea">
             <Slider images={post.images} />
-            <div className="info">
-              <div className="top">
-                <div className="post">
-                  <h1>{post.title}</h1>
-                  <div className="address">
-                    <img src="/pin.png" alt="" />
-                    <span>{post.address}</span>
-                  </div>
-                  <div className="price"> {post.price} ₺</div>
-                </div>
-                <div className="user">
-                  <img src={post.user.avatar || defaultAvatar} alt="" />
-                  <span>{post.user.username}</span>
-                </div>
-              </div>
-              <h3 style={{ marginTop: "25px" }}>Açıklama</h3>
-              <div
-                className="bottom"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(post.postDetail.desc),
-                }}
-              ></div>
-            </div>
           </div>
-          <div className="commentDesktop">
-            <div>
-              {currentUser && (
-                <CommentForms
-                  postId={post.id}
-                  userId={currentUser.id}
-                  onCommentAdded={handleCommentAdded}
-                />
-              )}
 
-              <CommentLists postId={post.id} key={refresh} />
-            </div>
-          </div>
-        </div>
-        <div className="features">
-          <div className="wrapper">
-            <p className="title">Genel Bilgiler</p>
-            <div className="listVertical">
-              <div className="feature">
-                <img src="/history.png" alt="" />
-                <div className="featureText">
-                  <span>Kampanya Tarih : </span>
-                  {post?.createdAt.split("T")[0]}
-                </div>
-              </div>
-              <div className="feature">
-                <img src="/history.png" alt="" />
-                <div className="featureText">
-                  <span>Kampanya Bitiş Tarih : </span>
-                  {post?.postDetail?.campaignDuration?.split("T")[0]}
-                </div>
-              </div>
-              <div className="feature">
-                <img src="/pin.png" alt="" />
-                <div className="featureText">
-                  <span>Şehir: </span>
-                  {post?.city}
-                </div>
-              </div>
-              <div className="feature">
-                <img src="/pin.png" alt="" />
-                <div className="featureText">
-                  <span>İlçe: </span>
-                  {post?.district}
-                </div>
-              </div>
-              <div className="feature">
-                <img src="/discount.png" alt="" />
-                <div className="featureText">
-                  <span>İndirim: </span>
-                  {post?.postDetail?.discountAmount}
-                </div>
-              </div>
-            </div>
-            <p className="title">Kategori</p>
-            <div className="sizes">
-              <div className="size">
-                <img src="/select.png" alt="" />
-                <span>{post?.type} </span>
-              </div>
-              {/* <div className="size">
-              <img src="/bed.png" alt="" />
-              <span>{post.bedroom} beds</span>
-            </div>
-            <div className="size">
-              <img src="/bath.png" alt="" />
-              <span>{post.bathroom} bathroom</span>
-            </div> */}
-            </div>
+          <div className="infoArea">
+            <h3>Genel Bilgiler</h3>
+            <ul>
+              <li>
+                <span>Kampanya Başlangıç:</span> {post.createdAt.split("T")[0]}
+              </li>
+              <li>
+                <span>Bitiş Tarihi:</span>{" "}
+                {post.postDetail?.campaignDuration?.split("T")[0]}
+              </li>
+              <li>
+                <span>Şehir:</span> {post.city}
+              </li>
+              <li>
+                <span>İlçe:</span> {post.district}
+              </li>
+              <li>
+                <span>İndirim:</span> {post.postDetail?.discountAmount}
+              </li>
+            </ul>
 
-            <p className="title">Konum</p>
-            <div className="mapContainer">
+            <div className="mapBox">
               <Map items={[post]} />
             </div>
-            {/* <div className="buttons">
-            <button>
-              <img src="/chat.png" alt="" />
-              Send a Message
-            </button>
-            <button
-              onClick={handleSave}
-              style={{
-                backgroundColor: saved ? "#ff3c38" : "white",
-              }}
-            >
-              <img src="/save.png" alt="" />
-              {saved ? "Place Saved" : "Save the Place"}
-            </button>
-          </div> */}
           </div>
         </div>
-        <div className="commentMobil">
-          <div>
-            {currentUser && (
-              <CommentForms
-                postId={post.id}
-                userId={currentUser.id}
-                onCommentAdded={handleCommentAdded}
-              />
-            )}
 
-            <CommentLists postId={post.id} key={refresh} />
+        {/* 🔹 BAŞLIK + KULLANICI */}
+        <div className="titleSection">
+          <div className="left">
+            <h1>{post.title}</h1>
+            <div className="address">{post.address}</div>
           </div>
+
+          <div className="right">
+            <div className="userBox">
+              <img src={post.user.avatar || defaultAvatar} alt="user" />
+              <span>{post.user.username}</span>
+            </div>
+            <div className="buttons">
+              <button
+                onClick={() => {
+                  const phoneNumber = post.phoneNumber; // "905XXXXXXXXX"
+                  if (!phoneNumber) {
+                    alert("Telefon numarası bulunamadı.");
+                    return;
+                  }
+
+                  const campaignTitle = post.title;
+                  const city = post.city;
+                  const discount =
+                    post.postDetail?.discountAmount || "bilinmiyor";
+                  const appLink = "https://bedavadabul.com";
+
+                  const message = encodeURIComponent(
+                    `Merhaba! 🎉\n\nSizin "${campaignTitle}" kampanyanızı ${city} şehrinde gördüm.\nİndirim: ${discount}\n\nBedavadabul.com uygulamasında paylaşmak istiyorum.\nUygulama linki: ${appLink}\n\nİlgilenirseniz birlikte tanıtım yapabiliriz.`
+                  );
+
+                  window.open(
+                    `https://wa.me/${phoneNumber}?text=${message}`,
+                    "_blank"
+                  );
+                }}
+                className="messageBtn"
+              >
+                <img src="/chat.png" alt="" />
+                WhatsApp ile Gönder
+              </button>
+
+              {/* <button
+                onClick={handleSave}
+                className={`saveBtn ${saved ? "active" : ""}`}
+              >
+                <img src="/save.png" alt="" />
+                {saved ? "Kaydedildi" : "Kaydet"}
+              </button> */}
+            </div>
+          </div>
+        </div>
+
+        {/* 🔹 KATEGORİLER */}
+        <div className="categories">
+          <h4>Kategori</h4>
+          <div className="catItem">{post.type}</div>
+        </div>
+
+        {/* 🔹 AÇIKLAMA */}
+        <div className="description">
+          <h4>Açıklama</h4>
+          <div
+            className="descText"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(post.postDetail.desc),
+            }}
+          />
+        </div>
+
+        {/* 🔹 YORUMLAR */}
+        <div className="comments">
+          {currentUser && (
+            <CommentForms
+              postId={post.id}
+              userId={currentUser.id}
+              onCommentAdded={() => setRefresh((p) => !p)}
+            />
+          )}
+          <CommentLists postId={post.id} key={refresh} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
