@@ -78,23 +78,21 @@ function HomePage() {
       <main className="content-list">
         <h1 style={{ margin: "25px 0px" }}>En yeni Kampanyalar</h1>
         <div className="product-grid-list">
-          <div className="card">
-            <Suspense fallback={<Loader name="KampanyadanBul" />}>
-              <Await
-                resolve={data?.postResponse}
-                errorElement={<p>Error loading posts!</p>}
-              >
-                {(postResponse) =>
-                  postResponse?.data.data
-                    .slice(-8)
-                    .map((post) => <Card key={post.id} item={post} />)
-                }
-              </Await>
-            </Suspense>
-          </div>
+          <Suspense fallback={<Loader name="KampanyadanBul" />}>
+            <Await
+              resolve={data?.postResponse}
+              errorElement={<p>Error loading posts!</p>}
+            >
+              {(postResponse) =>
+                postResponse?.data.data
+                  .slice(-8)
+                  .map((post) => <Card key={post.id} item={post} />)
+              }
+            </Await>
+          </Suspense>
         </div>
-        <Banner />
       </main>
+      <Banner />
     </>
   );
 }

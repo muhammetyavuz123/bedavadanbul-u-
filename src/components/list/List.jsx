@@ -36,7 +36,9 @@ function List({ posts }) {
         {posts?.data?.map((item) => (
           <>
             <Card key={item.id} item={item} />
-            <button onClick={() => setShowPopup(true)}>Sil</button>
+            <button className="buttonDelete" onClick={() => setShowPopup(true)}>
+              Sil
+            </button>
             {currentUser.role === "admin" && (
               <button onClick={() => handleConfirm(item)}>Onayla</button>
             )}

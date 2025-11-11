@@ -10,6 +10,7 @@ import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Popup from "../Popup/Popup";
 import MessagesPage from "../Contact/Contact";
+import Dashboard from "../../routes/profilePage/dashboard";
 
 export default function Sidebar() {
   const [activeTab, setActiveTab] = useState("home");
@@ -28,6 +29,8 @@ export default function Sidebar() {
   const renderContent = () => {
     switch (activeTab) {
       case "home":
+        return <Dashboard />;
+      case "profilList":
         return <ProfilList />;
       case "newPost":
         return <NewPostPage />;
@@ -49,7 +52,8 @@ export default function Sidebar() {
           <div className="filter-group">
             <div className="sidebar">
               <h2>Menü</h2>
-              <button onClick={() => setActiveTab("home")}>
+              <button onClick={() => setActiveTab("home")}>Ana Sayfa</button>
+              <button onClick={() => setActiveTab("profilList")}>
                 {currentUser.role === "admin" ? "kampanyalar" : "Kampanyalarım"}
               </button>
               <button onClick={() => setActiveTab("newPost")}>

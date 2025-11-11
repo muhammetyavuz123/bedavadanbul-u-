@@ -1,5 +1,18 @@
-.list{
+.list {
   display: flex;
   flex-direction: column;
   gap: 50px;
+}
+.buttonDelete {
+  background-color: #ff3c38;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #ff3c38;
+  }
 }

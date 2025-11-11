@@ -1,0 +1,80 @@
+// .profilePage {
+//   padding: 20px;
+//   min-height: 100vh;
+//   background-color: #f4f5f7;
+//   display: flex;
+//   justify-content: center;
+
+//   .details {
+//     width: 100%;
+//     max-width: 1200px;
+
+//     .wrapper {
+//       display: flex;
+//       flex-direction: column;
+//       gap: 25px;
+
+//       .title h1 {
+//         font-size: 1.8rem;
+//         color: #333;
+//       }
+
+//       .listGrid {
+//         display: grid;
+//         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+//         gap: 20px;
+
+//         .card {
+//           background-color: #fff;
+//           border-radius: 8px;
+//           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+//           padding: 15px;
+//           display: flex;
+//           flex-direction: column;
+//           align-items: center;
+//           text-align: center;
+
+//           img {
+//             width: 100%;
+//             height: 150px;
+//             object-fit: cover;
+//             border-radius: 6px;
+//             margin-bottom: 10px;
+//           }
+
+//           h3 {
+//             font-size: 1.2rem;
+//             margin-bottom: 5px;
+//           }
+
+//           p {
+//             font-size: 0.95rem;
+//             margin-bottom: 5px;
+//           }
+
+//           .status {
+//             font-size: 0.85rem;
+//             padding: 5px 10px;
+//             border-radius: 4px;
+//             &.approved {
+//               background-color: #d4edda;
+//               color: #155724;
+//             }
+//             &.pending {
+//               background-color: #fff3cd;
+//               color: #856404;
+//             }
+//           }
+//         }
+
+//         @media (max-width: 768px) {
+//           grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+//         }
+
+//         @media (max-width: 480px) {
+//           grid-template-columns: 1fr;
+//         }
+//       }
+//     }
+//   }
+// }

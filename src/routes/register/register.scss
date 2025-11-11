@@ -57,6 +57,11 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+  select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 
   button[type="submit"] {
     padding: 0.8rem;
@@ -80,6 +85,13 @@
   position: relative;
 
   input {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  select {
     width: 100%;
     padding: 0.8rem 2.5rem 0.8rem 1rem;
     border-radius: 8px;
@@ -112,7 +124,7 @@
 }
 
 .error-text {
-  color: crimson;
+  color: red;
   font-size: 0.9rem;
   margin-top: 0.5rem;
   display: block;
