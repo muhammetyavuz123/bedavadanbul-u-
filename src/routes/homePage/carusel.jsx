@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "./carusel.scss";
 import "slick-carousel/slick/slick.css";
@@ -25,12 +25,30 @@ const categories = [
 ];
 
 const CategoryCarousel = () => {
+  const [sliderKey, setSliderKey] = useState(0);
+  const sliderRef = useRef();
+
+  useEffect(() => {
+    // Yeniden render zorlamak için resize sonrası Slick’i yeniden oluştur
+    const handleResize = () => {
+      setSliderKey((prev) => prev + 1);
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Sayfa yüklenince de Slick doğru boyutu hesaplasın
+    setTimeout(() => {
+      setSliderKey((prev) => prev + 1);
+    }, 100);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const settings = {
     dots: false,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 3000,
-    speed: 600,
+    speed: 500,
     slidesToShow: 6,
     slidesToScroll: 2,
     arrows: true,
@@ -38,15 +56,15 @@ const CategoryCarousel = () => {
       { breakpoint: 1200, settings: { slidesToShow: 5 } },
       { breakpoint: 992, settings: { slidesToShow: 4 } },
       { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 480, settings: { slidesToShow: 2 } },
-      { breakpoint: 320, settings: { slidesToShow: 2 } },
+      { breakpoint: 576, settings: { slidesToShow: 2, arrows: false } },
+      { breakpoint: 400, settings: { slidesToShow: 1, arrows: false } },
     ],
   };
 
   return (
     <div className="category-carousel">
       <h2 className="carousel-title">Kategoriler</h2>
-      <Slider {...settings}>
+      <Slider ref={sliderRef} key={sliderKey} {...settings}>
         {categories.map((cat) => (
           <div className="category-item" key={cat.id}>
             <div className="category-card">

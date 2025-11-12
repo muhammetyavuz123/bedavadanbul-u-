@@ -37,7 +37,7 @@ function HomePage() {
           </div>
         </div>
 
-        <Carusel></Carusel>
+        <Carusel />
       </section>
       {/* <div style={{ padding: 20 }}>
         <CategoryCard />
