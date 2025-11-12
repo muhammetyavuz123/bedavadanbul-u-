@@ -1,9 +1,7 @@
-import { useState } from "react";
-import "./searchBar.scss";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import "./searchBar.scss";
 import apiRequest from "../../lib/apiRequest";
-// import useLocationInfo from "../../lib/useLocationInfo";
 
 function SearchBar() {
   const [query, setQuery] = useState({
@@ -11,15 +9,16 @@ function SearchBar() {
     city: "",
     district: "",
   });
+
   const [cities, setCities] = useState([]);
-  const [districhs, setDistrichs] = useState([]);
-  // const { city, district, loading, error } = useLocationInfo();
+  const [districts, setDistricts] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Şehirleri getir
   useEffect(() => {
     async function citiesCall() {
       try {
@@ -32,19 +31,21 @@ function SearchBar() {
     citiesCall();
   }, []);
 
+  // İlçe verilerini getir
   useEffect(() => {
-    async function districhCall() {
+    async function districtCall() {
       if (query.city) {
         try {
-          const cities = await apiRequest.get(`/locations/${query.city}`);
-          setDistrichs(cities.data);
+          const response = await apiRequest.get(`/locations/${query.city}`);
+          setDistricts(response.data);
         } catch (error) {
           console.log("🚀 ~ SearchBar ~ error:", error);
         }
+      } else {
+        setDistricts([]);
       }
     }
-
-    districhCall();
+    districtCall();
   }, [query.city]);
 
   const handleClick = () => {
@@ -55,48 +56,33 @@ function SearchBar() {
 
   return (
     <form className="form-wrapper">
-      <select
-        type="text"
-        name="city"
-        placeholder="City"
-        value={setQuery.city}
-        onChange={handleChange}
-        defaultValue={query.city}
-      >
+      {/* Şehir */}
+      <select name="city" value={query.city} onChange={handleChange}>
         <option value="">Lütfen Şehir Seçiniz</option>
-        {cities.length > 0 &&
-          cities?.map((city, index) => (
-            <option key={index} value={city?.il_adi}>
-              {city?.il_adi}
-            </option>
-          ))}
+        {cities.map((city, index) => (
+          <option key={index} value={city?.il_adi}>
+            {city?.il_adi}
+          </option>
+        ))}
       </select>
+
+      {/* İlçe */}
       <select
-        type="text"
         name="district"
-        placeholder="district"
-        value={setQuery.district}
+        value={query.district}
         onChange={handleChange}
-        defaultValue={query.district}
+        disabled={!query.city}
       >
         <option value="">Lütfen İlçe Seçiniz</option>
-        {districhs.length > 0 &&
-          districhs?.map((districh, index) => (
-            <option key={index} value={districh?.ilce_adi}>
-              {districh?.ilce_adi}
-            </option>
-          ))}
+        {districts.map((district, index) => (
+          <option key={index} value={district?.ilce_adi}>
+            {district?.ilce_adi}
+          </option>
+        ))}
       </select>
-      <select
-        type="text"
-        name="type"
-        placeholder="Kampanya"
-        value={setQuery.type}
-        onChange={handleChange}
-        defaultValue={query.type}
-      >
-        <option value="">Kategori Seçin</option>
 
+      {/* Kategori */}
+      <select name="type" value={query.type} onChange={handleChange}>
         <optgroup label="Gıda ve Market Esnafı">
           <option value="bakkal">Bakkal</option>
           <option value="market">Market işletmecisi</option>
@@ -119,6 +105,8 @@ function SearchBar() {
           <option value="su-bayii">Su bayii</option>
           <option value="dondurmaci">Dondurmacı</option>
           <option value="yufkaci">Yufkacı</option>
+          <option value="cafe">Cafe / Kahvehane</option>
+          <option value="pastahane">Pastahane</option>
         </optgroup>
 
         <optgroup label="Ulaşım ve Taşımacılık">
@@ -209,10 +197,11 @@ function SearchBar() {
           </option>
           <option value="eczacilik">Eczacılık</option>
           <option value="dis-hekimligi">Diş hekimliği</option>
-          <option value="optik hizmetleri">Optik hizmetleri</option>
+          <option value="optik-hizmetleri">Optik hizmetleri</option>
           <option value="medikal-cihaz-servisi">Medikal cihaz servisi</option>
           <option value="kuafor-guzellik">Kuaför & Güzellik</option>
         </optgroup>
+
         <optgroup label="İnşaat ve Yapı Sektörü">
           <option value="insaat-ustasi">İnşaat ustası</option>
           <option value="kalip-ustasi">Kalıp ustası</option>
@@ -330,8 +319,9 @@ function SearchBar() {
         </optgroup>
       </select>
 
+      {/* Arama Butonu */}
       <button type="button" className="form-button" onClick={handleClick}>
-        <img src="/search.png" alt="" />
+        <img src="/search.png" alt="Ara" />
       </button>
     </form>
   );

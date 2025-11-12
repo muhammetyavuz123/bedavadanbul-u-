@@ -273,6 +273,7 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="type">Kampanya Türü</label>
+
               <select
                 id="type"
                 name="type"
@@ -307,6 +308,8 @@ function NewPostPage() {
                   <option value="su-bayii">Su bayii</option>
                   <option value="dondurmaci">Dondurmacı</option>
                   <option value="yufkaci">Yufkacı</option>
+                  <option value="cafe">Cafe / Kahvehane</option>
+                  <option value="pastahane">Pastahane</option>
                 </optgroup>
 
                 <optgroup label="Ulaşım ve Taşımacılık">
@@ -419,12 +422,13 @@ function NewPostPage() {
                   </option>
                   <option value="eczacilik">Eczacılık</option>
                   <option value="dis-hekimligi">Diş hekimliği</option>
-                  <option value="optik hizmetleri">Optik hizmetleri</option>
+                  <option value="optik-hizmetleri">Optik hizmetleri</option>
                   <option value="medikal-cihaz-servisi">
                     Medikal cihaz servisi
                   </option>
                   <option value="kuafor-guzellik">Kuaför & Güzellik</option>
                 </optgroup>
+
                 <optgroup label="İnşaat ve Yapı Sektörü">
                   <option value="insaat-ustasi">İnşaat ustası</option>
                   <option value="kalip-ustasi">Kalıp ustası</option>
@@ -571,6 +575,7 @@ function NewPostPage() {
                   </option>
                 </optgroup>
               </select>
+
               {error.type && <span className="error">{error.type}</span>}
             </div>
 

@@ -18,37 +18,6 @@ function HomePage() {
 
   return (
     <>
-      {/* <div className="homePage">
-        <div className="textContainer">
-          <div className="wrapper">
-            <h1 className="title">Aradığın Kampanya & Beklediğin İndirim</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-              explicabo suscipit cum eius, iure est nulla animi consequatur
-              facilis id pariatur fugit quos laudantium temporibus dolor ea
-              repellat provident impedit!
-            </p>
-            <SearchBar />
-            <div className="boxes">
-              <div className="box">
-                <h1>7600</h1>
-                <h2>Kampanya</h2>
-              </div>
-              <div className="box">
-                <h1>8000</h1>
-                <h2>İşletme</h2>
-              </div>
-              <div className="box">
-                <h1>40</h1>
-                <h2>Şehir</h2>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="imgContainer">
-          <img src="/bg.png" alt="" />
-        </div>
-      </div> */}
       <section className="hero">
         <div className="hero-top">
           <div className="hero-left">
@@ -76,7 +45,7 @@ function HomePage() {
       <AppBanner />
 
       <main className="content-list">
-        <h1 style={{ margin: "25px 0px" }}>En yeni Kampanyalar</h1>
+        <h1 className="subTitle">En yeni Kampanyalar</h1>
         <div className="product-grid-list">
           <Suspense fallback={<Loader name="KampanyadanBul" />}>
             <Await

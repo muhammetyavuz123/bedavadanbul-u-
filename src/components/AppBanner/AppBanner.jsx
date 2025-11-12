@@ -8,7 +8,7 @@ const AppBanner = () => {
     <div className="app-banner">
       <div className="app-banner__content">
         <div className="app-banner__image">
-          <img src={mobil} alt="Mobil Uygulama" width="75px" height="300px" />
+          <img src={mobil} alt="Mobil Uygulama" />
         </div>
         <div className="app-banner__text">
           <h1>Kampanyadan Uygulaması Cebinde!</h1>
@@ -20,6 +20,7 @@ const AppBanner = () => {
               href="https://play.google.com"
               className="btn google"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <FaGooglePlay /> Google Play
             </a>
@@ -27,6 +28,7 @@ const AppBanner = () => {
               href="https://apps.apple.com"
               className="btn apple"
               target="_blank"
+              rel="noopener noreferrer"
             >
               <FaApple /> App Store
             </a>

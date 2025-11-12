@@ -1,141 +1,101 @@
-// @import "../../responsive.scss";
-
-// .searchBar {
-//   .type {
-//     button {
-//       padding: 16px 36px;
-//       border: 1px solid #999;
-//       border-bottom: none;
-//       cursor: pointer;
-//       background-color: white;
-//       text-transform: capitalize;
-
-//       &.active {
-//         background-color: black;
-//         color: white;
-//       }
-
-//       &:first-child {
-//         border-top-left-radius: 5px;
-//         border-right: none;
-//       }
-//       &:last-child {
-//         border-top-right-radius: 5px;
-//         border-left: none;
-//       }
-//     }
-//   }
-
-//   form {
-//     display: flex;
-//     justify-content: space-between;
-//     height: 64px;
-//     gap: 5px;
-//     align-items: center;
-//     justify-content: center;
-
-//     @include sm {
-//       flex-direction: column;
-//       border: none;
-//     }
-
-//     input,
-//     select {
-//       border: none;
-//       padding: 0px 10px;
-//       width: 200px;
-//       border-right: 1px solid #999;
-
-//       @include lg {
-//         padding: 0px 5px;
-
-//         &:nth-child(2),
-//         &:nth-child(3) {
-//           width: 140px;
-//         }
-//       }
-//       @include md {
-//         width: 200px;
-//         &:nth-child(2),
-//         &:nth-child(3) {
-//           width: 200px;
-//         }
-//       }
-
-//       @include sm {
-//         width: auto;
-//         &:nth-child(2),
-//         &:nth-child(3) {
-//           width: auto;
-//         }
-//         padding: 20px;
-//         border: 1px solid #999;
-//       }
-//     }
-
-//     a {
-//       flex: 1;
-//       background-color: #ff3c38;
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
-
-//       button {
-//         border: none;
-//         cursor: pointer;
-//         background-color: #ff3c38;
-
-//         @include sm {
-//           padding: 10px;
-//         }
-
-//         img {
-//           width: 24px;
-//           height: 24px;
-//         }
-//       }
-//     }
-//   }
-// }
-
 .form-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.8rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  overflow: hidden; // taşmayı önler
 
   select {
-    flex: 1 1 0; // esnek, kalan alanı paylaşır
+    flex: 1 1 250px;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    max-width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: #ff3c38;
+    }
+
+    &:disabled {
+      background-color: #f0f0f0;
+      color: #999;
+      cursor: not-allowed;
+    }
   }
 
   .form-button {
-    flex: 0 0 40px; // sabit 80px genişlik
-    min-width: 40px;
+    flex: 0 0 auto;
+    width: 48px;
     height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
     background-color: #ff3c38;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background 0.2s ease;
+    box-sizing: border-box;
 
     img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
+    }
+
+    &:hover {
+      background-color: #e63430;
     }
   }
 
+  /* Tablet uyumu */
+  @media (max-width: 992px) {
+    select {
+      flex: 1 1 45%;
+      max-width: 100%;
+    }
+  }
+
+  /* Mobil uyumu */
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
 
     select,
     .form-button {
       width: 100%;
-      flex: unset;
-      min-width: unset;
-      margin-top: 10px;
+      flex: none;
+      margin: 0;
+    }
+
+    .form-button {
+      height: 48px;
+      img {
+        width: 24px;
+      }
+    }
+  }
+
+  /* Küçük telefonlar */
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+
+    select {
+      font-size: 0.9rem;
+      padding: 0.5rem;
     }
   }
 }

@@ -11,7 +11,6 @@ import CommentLists from "../../components/Comment/CommentLists";
 
 function SinglePage() {
   const post = useLoaderData();
-  console.log("🚀 ~ SinglePage ~ post:", post);
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 

@@ -47,7 +47,8 @@
     scroll-behavior: smooth; // smooth scroll
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-
+    padding: 10px;
+    border-top: 1px solid #d1cbcb;
     &::-webkit-scrollbar {
       display: none; /* Chrome, Safari, Opera */
     }

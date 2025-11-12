@@ -13,8 +13,8 @@
   }
 
   .category-item {
-    display: flex !important;
-    justify-content: center;
+    display: block;
+    padding: 0 5px;
   }
 
   .category-card {
@@ -32,7 +32,8 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
-
+    width: 100%;
+    max-width: 150px;
     &:hover {
       border-color: #ff3c38;
       box-shadow: 0 8px 24px rgba(255, 123, 0, 0.15);
