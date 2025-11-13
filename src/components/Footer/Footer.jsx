@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaInstagram,
@@ -11,7 +12,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer__brand">
-        <img className="footer__logo" src="/logo.png" alt="" />
+        <img className="footer__logo" src="/logo.png" alt="Bedavadanbul Logo" />
 
         <p className="footer__tagline">
           Markanızın reklamı burada yer alabilir, Ulaşılabilir olabilirsiniz.
@@ -36,34 +37,21 @@ const Footer = () => {
             <li>
               <a href="/contact">Kariyer</a>
             </li>
-            {/* <li>
-              <a href="#">Basın</a>
-            </li> */}
           </ul>
         </div>
+
         <div className="footer__col">
           <h4>Müşteri Hizmetleri</h4>
           <ul>
             <li>
               <a href="/contact">İletişim</a>
             </li>
-            {/* <li>
-              <a href="#">Sipariş Takibi</a>
-            </li>
-            <li>
-              <a href="#">İade / Değişim</a>
-            </li>
-            <li>
-              <a href="#">SSS</a>
-            </li> */}
           </ul>
         </div>
+
         <div className="footer__col">
           <h4>Bilgi</h4>
           <ul>
-            {/* <li>
-              <a href="#">Blog</a>
-            </li> */}
             <li>
               <a href="/list">Kampanyalar</a>
             </li>
@@ -85,7 +73,8 @@ const Footer = () => {
           <a
             href="https://www.instagram.com/bedavadanbul/"
             className="social-icon"
-            target="blank"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <FaInstagram />
           </a>
@@ -96,16 +85,15 @@ const Footer = () => {
             <FaLinkedinIn />
           </a>
         </div>
-        {/* <div className="footer__payments">
-          <img src="/images/visa.svg" alt="Visa" />
-          <img src="/images/mastercard.svg" alt="Mastercard" />
-          <img src="/images/paypal.svg" alt="PayPal" />
-        </div> */}
+
         <div className="footer__bottom-text">
           <p>
-            © 2025 Markanız. Tüm hakları saklıdır. &nbsp; | &nbsp;{" "}
-            <a href="#">Gizlilik Politikası</a> &nbsp; | &nbsp;{" "}
-            <a href="#">Kullanım Şartları</a>
+            © 2025 Bedavadanbul.com. Tüm hakları saklıdır. &nbsp; | &nbsp;
+            <Link to="/legal/privacy-policy">Gizlilik Politikası</Link> &nbsp; |
+            &nbsp;
+            <Link to="/legal/terms-of-use">Kullanım Şartları</Link> &nbsp; |
+            &nbsp;
+            <Link to="/legal/kvkk">KVKK Aydınlatma Metni</Link>
           </p>
         </div>
       </div>

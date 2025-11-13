@@ -17,6 +17,9 @@ import {
 import ContactPage from "./routes/contact/contactPage";
 import ResetPassword from "./routes/resetPassword/resetPassword";
 import ForgotPassword from "./routes/forgotPassword/forgotPassword";
+import PrivacyPolicy from "./routes/legal/PrivacyPolicy";
+import TermsOfUse from "./routes/legal/TermsOfUse";
+import KVKKClarification from "./routes/legal/KVKKClarification";
 
 function App() {
   const router = createBrowserRouter([
@@ -63,6 +66,18 @@ function App() {
         {
           path: "/forgot-password",
           element: <ForgotPassword />,
+        },
+        {
+          path: "/legal/privacy-policy",
+          element: <PrivacyPolicy />,
+        },
+        {
+          path: "/legal/terms-of-use",
+          element: <TermsOfUse />,
+        },
+        {
+          path: "/legal/kvkk",
+          element: <KVKKClarification />,
         },
       ],
     },

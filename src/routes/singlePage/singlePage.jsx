@@ -8,6 +8,8 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import CommentForms from "../../components/Comment/CommentForms";
 import CommentLists from "../../components/Comment/CommentLists";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
+import BreadcrumbImage from "../../assets/breadcrumb.png";
 
 function SinglePage() {
   const post = useLoaderData();
@@ -30,124 +32,135 @@ function SinglePage() {
   };
 
   return (
-    <div className="singlePage">
-      <div className="container">
-        {/* 🔹 SLIDER + BİLGİLER */}
-        <div className="topSection">
-          <div className="sliderArea">
-            <Slider images={post.images} />
-          </div>
+    <>
+      <Breadcrumb
+        title="Kampanya Detay"
+        breadcrumbText={`Anasayfa / ${post.title}`}
+        backgroundImage={BreadcrumbImage}
+      />
+      <div className="singlePage">
+        <div className="container">
+          {/* 🔹 SLIDER + BİLGİLER */}
+          <div className="topSection">
+            <div className="sliderArea">
+              <Slider images={post.images} />
+            </div>
 
-          <div className="infoArea">
-            <h3>Genel Bilgiler</h3>
-            <ul>
-              <li>
-                <span>Kampanya Başlangıç:</span> {post.createdAt.split("T")[0]}
-              </li>
-              <li>
-                <span>Bitiş Tarihi:</span>{" "}
-                {post.postDetail?.campaignDuration?.split("T")[0]}
-              </li>
-              <li>
-                <span>Şehir:</span> {post.city}
-              </li>
-              <li>
-                <span>İlçe:</span> {post.district}
-              </li>
-              <li>
-                <span>İndirim:</span> {post.postDetail?.discountAmount}
-              </li>
-            </ul>
+            <div className="infoArea">
+              <h3>Genel Bilgiler</h3>
+              <ul>
+                <li>
+                  <span>Kampanya Başlangıç:</span>{" "}
+                  {post.createdAt.split("T")[0]}
+                </li>
+                <li>
+                  <span>Bitiş Tarihi:</span>{" "}
+                  {post.postDetail?.campaignDuration?.split("T")[0]}
+                </li>
+                <li>
+                  <span>Telefon:</span> {post.phoneNumber}
+                </li>
+                <li>
+                  <span>Şehir:</span> {post.city}
+                </li>
+                <li>
+                  <span>İlçe:</span> {post.district}
+                </li>
+                <li>
+                  <span>İndirim:</span> {post.postDetail?.discountAmount}
+                </li>
+              </ul>
 
-            <div className="mapBox">
-              <Map items={[post]} />
+              <div className="mapBox">
+                <Map items={[post]} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 🔹 BAŞLIK + KULLANICI */}
-        <div className="titleSection">
-          <div className="left">
-            <h1>{post.title}</h1>
-            <div className="address">{post.address}</div>
-          </div>
-
-          <div className="right">
-            <div className="userBox">
-              <img src={post.user.avatar || defaultAvatar} alt="user" />
-              <span>{post.user.username}</span>
+          {/* 🔹 BAŞLIK + KULLANICI */}
+          <div className="titleSection">
+            <div className="left">
+              <h1>{post.title}</h1>
+              <div className="address">{post.address}</div>
             </div>
-            <div className="buttons">
-              <button
-                onClick={() => {
-                  const phoneNumber = post.phoneNumber; // "905XXXXXXXXX"
-                  if (!phoneNumber) {
-                    alert("Telefon numarası bulunamadı.");
-                    return;
-                  }
 
-                  const campaignTitle = post.title;
-                  const city = post.city;
-                  const discount =
-                    post.postDetail?.discountAmount || "bilinmiyor";
-                  const appLink = "https://bedavadabul.com";
+            <div className="right">
+              <div className="userBox">
+                <img src={post.user.avatar || defaultAvatar} alt="user" />
+                <span>{post.user.username}</span>
+              </div>
+              <div className="buttons">
+                <button
+                  onClick={() => {
+                    const phoneNumber = post.phoneNumber; // "905XXXXXXXXX"
+                    if (!phoneNumber) {
+                      alert("Telefon numarası bulunamadı.");
+                      return;
+                    }
 
-                  const message = encodeURIComponent(
-                    `Merhaba! 🎉\n\nSizin "${campaignTitle}" kampanyanızı ${city} şehrinde gördüm.\nİndirim: ${discount}\n\nBedavadabul.com uygulamasında paylaşmak istiyorum.\nUygulama linki: ${appLink}\n\nİlgilenirseniz birlikte tanıtım yapabiliriz.`
-                  );
+                    const campaignTitle = post.title;
+                    const city = post.city;
+                    const discount =
+                      post.postDetail?.discountAmount || "bilinmiyor";
+                    const appLink = "https://bedavadabul.com";
 
-                  window.open(
-                    `https://wa.me/${phoneNumber}?text=${message}`,
-                    "_blank"
-                  );
-                }}
-                className="messageBtn"
-              >
-                <img src="/chat.png" alt="" />
-                WhatsApp ile Gönder
-              </button>
+                    const message = encodeURIComponent(
+                      `Merhaba! 🎉\n\nSizin "${campaignTitle}" kampanyanızı ${city} şehrinde gördüm.\nİndirim: ${discount}\n\nBedavadabul.com uygulamasında paylaşmak istiyorum.\nUygulama linki: ${appLink}\n\nİlgilenirseniz birlikte tanıtım yapabiliriz.`
+                    );
 
-              {/* <button
+                    window.open(
+                      `https://wa.me/${phoneNumber}?text=${message}`,
+                      "_blank"
+                    );
+                  }}
+                  className="messageBtn"
+                >
+                  <img src="/chat.png" alt="" />
+                  WhatsApp ile Gönder
+                </button>
+
+                {/* <button
                 onClick={handleSave}
                 className={`saveBtn ${saved ? "active" : ""}`}
               >
                 <img src="/save.png" alt="" />
                 {saved ? "Kaydedildi" : "Kaydet"}
               </button> */}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 🔹 KATEGORİLER */}
-        <div className="categories">
-          <h4>Kategori</h4>
-          <div className="catItem">{post.type}</div>
-        </div>
+          {/* 🔹 KATEGORİLER */}
+          <div className="categories">
+            <h4>Kategori</h4>
+            <div className="catItem">{post.type}</div>
+          </div>
 
-        {/* 🔹 AÇIKLAMA */}
-        <div className="description">
-          <h4>Açıklama</h4>
-          <div
-            className="descText"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(post.postDetail.desc),
-            }}
-          />
-        </div>
-
-        {/* 🔹 YORUMLAR */}
-        <div className="comments">
-          {currentUser && (
-            <CommentForms
-              postId={post.id}
-              userId={currentUser.id}
-              onCommentAdded={() => setRefresh((p) => !p)}
+          {/* 🔹 AÇIKLAMA */}
+          <div className="description">
+            <h4>Açıklama</h4>
+            <div
+              className="descText"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.postDetail.desc),
+              }}
             />
-          )}
-          <CommentLists postId={post.id} key={refresh} />
+          </div>
+
+          {/* 🔹 YORUMLAR */}
+          <div className="comments">
+            {currentUser && (
+              <CommentForms
+                postId={post.id}
+                userId={currentUser.id}
+                onCommentAdded={() => setRefresh((p) => !p)}
+              />
+            )}
+            <CommentLists postId={post.id} key={refresh} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
