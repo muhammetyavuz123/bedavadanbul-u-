@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./searchBar.scss";
 import apiRequest from "../../lib/apiRequest";
+import { useError } from "../../context/ErrorContext";
 
 function SearchBar() {
   const [query, setQuery] = useState({
@@ -9,6 +10,7 @@ function SearchBar() {
     city: "",
     district: "",
   });
+  const { showError } = useError();
 
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -25,7 +27,7 @@ function SearchBar() {
         const cities = await apiRequest.get("/locations");
         setCities(cities.data);
       } catch (error) {
-        console.log("🚀 ~ SearchBar ~ error:", error);
+        showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
       }
     }
     citiesCall();
@@ -39,7 +41,7 @@ function SearchBar() {
           const response = await apiRequest.get(`/locations/${query.city}`);
           setDistricts(response.data);
         } catch (error) {
-          console.log("🚀 ~ SearchBar ~ error:", error);
+          showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
         }
       } else {
         setDistricts([]);

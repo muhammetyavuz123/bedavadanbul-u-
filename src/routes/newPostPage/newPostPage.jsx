@@ -6,6 +6,7 @@ import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { useError } from "../../context/ErrorContext";
 
 function NewPostPage() {
   const [value, setValue] = useState("");
@@ -21,6 +22,7 @@ function NewPostPage() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [loadingLocation, setLoadingLocation] = useState(false);
+  const { showError } = useError();
 
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
@@ -36,7 +38,8 @@ function NewPostPage() {
           setLoadingLocation(false);
         },
         (error) => {
-          console.error("Konum alınamadı:", error);
+          showError("Konum alınamadı:", error);
+
           alert(
             "Konum alınamadı. Lütfen tarayıcı konum izinlerini kontrol edin."
           );
@@ -66,7 +69,7 @@ function NewPostPage() {
         const cities = await apiRequest.get("/locations");
         setCities(cities.data);
       } catch (error) {
-        console.log("Şehir verisi alınamadı:", error);
+        showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
       }
     }
     citiesCall();
@@ -80,7 +83,7 @@ function NewPostPage() {
           const res = await apiRequest.get(`/locations/${citie}`);
           setDistrichs(res.data);
         } catch (error) {
-          console.log("İlçe verisi alınamadı:", error);
+          showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
         }
       }
     }

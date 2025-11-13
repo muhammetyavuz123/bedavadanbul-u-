@@ -7,6 +7,7 @@ import apiRequest from "../../lib/apiRequest";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 import Loader from "../../components/loader/Loader";
 import { useSearchParams } from "react-router-dom";
+import { useError } from "../../context/ErrorContext";
 
 function ListPage() {
   const [posts, setPosts] = useState([]);
@@ -19,7 +20,7 @@ function ListPage() {
   const city = searchParams.get("city");
   const district = searchParams.get("district");
   const search = searchParams.get("search");
-  console.log("🚀 ~ ListPage ~ search:", search);
+  const { showError } = useError();
 
   // 🔥 Filtreli veri yükleme fonksiyonu
   const loadPosts = async (reset = false) => {
@@ -56,7 +57,7 @@ function ListPage() {
         }
       }
     } catch (err) {
-      console.error("Veriler alınamadı:", err);
+      showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
     } finally {
       setLoading(false);
     }
