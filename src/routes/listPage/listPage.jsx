@@ -40,6 +40,7 @@ function ListPage() {
       if (type) query.append("type", type);
       if (city) query.append("city", city);
       if (district) query.append("district", district);
+      if (search) query.append("search", search); // search parametresi ekleniyor
 
       const res = await apiRequest.get(`/posts?${query.toString()}`);
       const newPosts = res.data.data;
@@ -57,18 +58,20 @@ function ListPage() {
         }
       }
     } catch (err) {
-      showError(" Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+      showError("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
     } finally {
       setLoading(false);
     }
   };
 
-  // 🔄 search param değiştiğinde filtreli veri çek
+  // 🔄 search param değiştiğinde veya temizlendiğinde filtreli veri çek
   useEffect(() => {
     setPage(1);
     setHasMore(true);
-    loadPosts(true); // reset ile baştan yükle
-  }, [type, city, district]);
+
+    // Eğer search parametre boşsa, tüm verileri yükle
+    loadPosts(true); // search temizlendiğinde de otomatik olarak yükle
+  }, [searchParams]); // searchParams değiştiğinde veri yenilenmeli
 
   return (
     <>

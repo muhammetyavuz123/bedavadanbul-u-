@@ -7,7 +7,7 @@ const Loader = ({ name = "Ahmet" }) => {
       <div className="logo-spinner">
         <img src={logo} alt="logo" className="logo-image" />
       </div>
-      <div className="logo-text">{name}</div>
+      {/* <div className="logo-text">{name}</div> */}
     </div>
   );
 };
