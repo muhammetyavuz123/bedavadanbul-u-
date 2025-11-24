@@ -46,25 +46,35 @@ const CategoryCarousel = () => {
   const settings = {
     dots: false,
     infinite: true,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 2,
+    speed: 400,
+    slidesToShow: 4,
+    slidesToScroll: 1,
     arrows: true,
     responsive: [
-      { breakpoint: 1200, settings: { slidesToShow: 5 } },
-      { breakpoint: 992, settings: { slidesToShow: 4 } },
-      { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 576, settings: { slidesToShow: 2, arrows: false } },
-      { breakpoint: 400, settings: { slidesToShow: 1, arrows: false } },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
     ],
   };
-
   return (
     <div className="category-carousel">
       <h2 className="carousel-title">Kategoriler</h2>
-      <Slider ref={sliderRef} key={sliderKey} {...settings}>
+      <Slider ref={sliderRef} {...settings}>
         {categories.map((cat) => (
           <div className="category-item" key={cat.id}>
             <div className="category-card">

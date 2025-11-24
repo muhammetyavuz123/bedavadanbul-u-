@@ -11,10 +11,52 @@
     margin-bottom: 1.5rem;
     text-align: left;
   }
+  .cg-wrapper {
+    width: 100% !important;
+  }
+
+  .cg-grid {
+    width: 100%;
+  }
+  .swiper-slide {
+    width: 100% !important;
+  }
+  .cg-card {
+    width: 100%;
+    min-width: 100%;
+  }
+  /* Slick container overrides that help sizing */
+  .slick-list {
+    /* allow visible overflow for centerMode padding */
+    overflow: hidden;
+  }
+
+  .slick-track {
+    display: flex !important; /* make track use flex so slides behave predictably */
+    align-items: stretch;
+    margin-top: 20px;
+  }
+
+  .slick-slide {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    height: auto;
+    box-sizing: border-box;
+    padding: 0 8px; /* slide gap */
+    /* Prevent Slick from forcing tiny inline widths */
+    min-width: 0;
+  }
 
   .category-item {
-    padding: 0 8px;
+    /* let slide content size itself, but avoid flex-grow */
+    width: auto;
+    flex: 0 0 auto;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* padding handled by .slick-slide */
   }
 
   .category-card {
@@ -25,14 +67,16 @@
     text-align: center;
     transition: all 0.25s ease;
     cursor: pointer;
+
+    /* set a comfortable max so card doesn't grow too wide on large screens,
+       but allow full width inside its slide */
+    max-width: 260px;
+    width: 100%;
+    height: 140px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 150px;
-    height: 140px;
 
     &:hover {
       border-color: #ff3c38;
@@ -80,6 +124,7 @@
     &:hover {
       background-color: #ff3c38;
       border-color: #ff3c38;
+
       &::before {
         color: #fff;
       }
@@ -91,29 +136,35 @@
     }
   }
 
+  /* --- Tablet --- */
   @media (max-width: 768px) {
     .carousel-title {
       text-align: center;
       font-size: 1.2rem;
     }
+
     .category-card {
-      max-width: 120px;
+      max-width: 220px;
       height: 120px;
+
       .icon-wrapper img {
         width: 45px;
         height: 45px;
       }
+
       .category-name {
         font-size: 0.85rem;
       }
     }
   }
 
+  /* --- Küçük Mobil --- */
   @media (max-width: 480px) {
     .category-card {
-      max-width: 100px;
+      max-width: 200px;
       height: 100px;
       padding: 0.75rem;
+
       .category-name {
         font-size: 0.8rem;
       }
