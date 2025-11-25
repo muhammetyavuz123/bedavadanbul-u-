@@ -56,7 +56,7 @@ function UploadWidget({ uwConfig, setState }) {
         onClick={handleUpload}
         disabled={!scriptLoaded}
       >
-        Upload
+        Resim Yükle
       </button>
     </CloudinaryScriptContext.Provider>
   );

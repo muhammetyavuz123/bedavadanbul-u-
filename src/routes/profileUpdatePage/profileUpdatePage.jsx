@@ -72,8 +72,8 @@ function ProfileUpdatePage() {
         />
         <UploadWidget
           uwConfig={{
-            cloudName: "lamadev",
-            uploadPreset: "estate",
+            cloudName: "difmqapnr",
+            uploadPreset: "bedavadanbul",
             multiple: false,
             maxImageFileSize: 2000000,
             folder: "avatars",

@@ -627,8 +627,8 @@ function NewPostPage() {
               <UploadWidget
                 uwConfig={{
                   multiple: true,
-                  cloudName: "lamadev",
-                  uploadPreset: "estate",
+                  cloudName: "difmqapnr",
+                  uploadPreset: "bedavadanbul",
                   folder: "posts",
                 }}
                 setState={setImages}
