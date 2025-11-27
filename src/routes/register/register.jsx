@@ -5,6 +5,7 @@ import apiRequest from "../../lib/apiRequest";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
 import InputMask from "react-input-mask";
 import { normalizePhone } from "../../lib/normalizePhone";
+import { useError } from "../../context/ErrorContext";
 
 function Register() {
   const [error, setError] = useState("");
@@ -19,6 +20,7 @@ function Register() {
   const [districts, setDistricts] = useState([]);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const { showError } = useError();
 
   const navigate = useNavigate();
 
@@ -28,7 +30,9 @@ function Register() {
         const res = await apiRequest.get("/locations");
         setCities(res.data);
       } catch (err) {
-        console.error("Şehir verisi alınamadı:", err);
+        showError(
+          "Veri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin. Şehir Bilgisi alınamadı"
+        );
       }
     }
     fetchCities();
@@ -41,7 +45,9 @@ function Register() {
           const res = await apiRequest.get(`/locations/${selectedCity}`);
           setDistricts(res.data);
         } catch (err) {
-          console.error("İlçe verisi alınamadı:", err);
+          showError(
+            "Veri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin. İlçe Bilgisi alınamadı"
+          );
         }
       } else {
         setDistricts([]);
@@ -140,6 +146,7 @@ function Register() {
             : "❌ Şifreler uyuşmuyor"}
         </p>
       )}
+      {error && <span className="error-text">{error}</span>}
     </>
   );
 
@@ -579,7 +586,6 @@ function Register() {
             <button type="submit" disabled={isLoading || password !== confirm}>
               {isLoading ? "Gönderiliyor..." : "Kayıt Ol"}
             </button>
-            {error && <span className="error-text">{error}</span>}
             <Link to="/login">
               <span style={{ color: "#ff3c38" }}>Zaten bir hesabım var</span>
             </Link>

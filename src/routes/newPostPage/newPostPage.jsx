@@ -27,31 +27,66 @@ function NewPostPage() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
-  // 🧭 Konumu otomatik al (kullanıcı izin verirse)
   const handleGetLocation = () => {
-    if (navigator.geolocation) {
-      setLoadingLocation(true);
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude.toFixed(6));
-          setLongitude(position.coords.longitude.toFixed(6));
-          setLoadingLocation(false);
-        },
-        (error) => {
-          showError("Konum alınamadı:", error);
-
-          alert(
-            "Konum alınamadı. Lütfen tarayıcı konum izinlerini kontrol edin."
-          );
-          setLoadingLocation(false);
-        }
-      );
-    } else {
-      alert("Tarayıcınız konum özelliğini desteklemiyor.");
+    if (!navigator.geolocation) {
+      showError("Tarayıcınız konum özelliğini desteklemiyor.");
+      return;
     }
-  };
 
-  // currentUser geldiğinde formu doldur
+    setLoadingLocation(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude.toFixed(6));
+        setLongitude(position.coords.longitude.toFixed(6));
+
+        // Konum alındığında hata temizle
+        setError((prev) => ({
+          ...prev,
+          latitude: "",
+          longitude: "",
+        }));
+
+        setLoadingLocation(false);
+      },
+      (err) => {
+        // 🔥 En önemli satır — konum alınmışsa error’u iptal et
+        if (latitude && longitude) {
+          setLoadingLocation(false);
+          return;
+        }
+
+        let message = "Konum alınamadı.";
+
+        switch (err.code) {
+          case err.PERMISSION_DENIED:
+            message =
+              "Konum izni reddedildi. Lütfen tarayıcı ayarlarından izin verin.";
+            break;
+          case err.POSITION_UNAVAILABLE:
+            message = "Konum bilgisine erişilemedi.";
+            break;
+          case err.TIMEOUT:
+            message = "Konum isteği zaman aşımına uğradı.";
+            break;
+        }
+
+        // showError(message);
+
+        setError((prev) => ({
+          ...prev,
+          latitude: message,
+          longitude: message,
+        }));
+
+        setLoadingLocation(false);
+      }
+    );
+  };
+  useEffect(() => {
+    console.log("📍 LAT:", latitude);
+    console.log("📍 LNG:", longitude);
+  }, [latitude, longitude]);
   useEffect(() => {
     if (currentUser) {
       if (currentUser.city) setCitie(currentUser.city);
@@ -259,14 +294,18 @@ function NewPostPage() {
                   {error.latitude}
                 </span>
               )}
-              <button
-                type="button"
-                className="getLocationBtn"
-                onClick={handleGetLocation}
-                disabled={loadingLocation}
-              >
-                {loadingLocation ? "Konum alınıyor..." : "📍 Konumumu Al"}
-              </button>
+              {latitude && longitude ? (
+                ""
+              ) : (
+                <button
+                  type="button"
+                  className="getLocationBtn"
+                  onClick={handleGetLocation}
+                  disabled={loadingLocation}
+                >
+                  {loadingLocation ? "Konum alınıyor..." : "📍 Konumumu Al"}
+                </button>
+              )}
             </div>
 
             <div className="item">
@@ -652,12 +691,13 @@ function NewPostPage() {
         <UploadWidget
           uwConfig={{
             multiple: true,
-            cloudName: "lamadev",
-            uploadPreset: "estate",
+            cloudName: "difmqapnr",
+            uploadPreset: "bedavadanbul",
             folder: "posts",
           }}
           setState={setImages}
         />
+
         <div className="imageGrid">
           {images.map((image, index) => (
             <div className="imageItem" key={index}>

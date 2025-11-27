@@ -19,7 +19,7 @@ export default function ResetPassword() {
       });
       setMessage(res.data.message);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Bir hata oluştu.");
+      setMessage(err.response?.data || "Bir hata oluştu.");
     }
   };
 

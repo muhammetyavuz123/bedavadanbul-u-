@@ -86,11 +86,11 @@ function Login() {
               )}
             </span>
           </div>
+          {error && <span className="error">{error}</span>}
 
           <button type="submit" disabled={isLoading}>
             Giriş Yap
           </button>
-          {error && <span className="error">{error}</span>}
 
           <Link to="/forgot-password">
             <span className="link-danger">Şifremi Unuttum</span>
