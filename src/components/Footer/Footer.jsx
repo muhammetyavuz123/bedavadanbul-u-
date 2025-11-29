@@ -32,7 +32,7 @@ const Footer = () => {
           <h4>Kurumsal</h4>
           <ul>
             <li>
-              <a href="/about">Hakkımızda</a>
+              <a href="/aboutUs">Hakkımızda</a>
             </li>
             <li>
               <a href="/contact">Kariyer</a>
