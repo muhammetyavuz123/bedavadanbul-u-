@@ -26,6 +26,7 @@ function NewPostPage() {
 
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+  console.log("🚀 ~ NewPostPage ~ currentUser:", currentUser);
 
   const handleGetLocation = () => {
     if (!navigator.geolocation) {

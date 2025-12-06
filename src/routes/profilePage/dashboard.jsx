@@ -62,8 +62,7 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
-
-        <button className="edit-btn">Profili Düzenle</button>
+        {/* <button className="edit-btn">Profili Düzenle</button> */}
       </div>
 
       <div className="stats">
