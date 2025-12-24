@@ -47,7 +47,7 @@ function HomePage() {
       <main className="content-list">
         <h1 className="subTitle">En yeni Kampanyalar</h1>
         <div className="product-grid-list">
-          <Suspense fallback={<Loader name="KampanyadanBul" />}>
+          <Suspense fallback={<Loader name="KampanyadanBul.com" />}>
             <Await
               resolve={data?.postResponse}
               errorElement={<p>Error loading posts!</p>}

@@ -89,11 +89,10 @@ const Footer = () => {
         <div className="footer__bottom-text">
           <p>
             © 2025 Bedavadanbul.com. Tüm hakları saklıdır. &nbsp; | &nbsp;
-            <Link to="/legal/privacy-policy">Gizlilik Politikası</Link> &nbsp; |
+            <a href="/legal/privacy-policy">Gizlilik Politikası</a> &nbsp; |
             &nbsp;
-            <Link to="/legal/terms-of-use">Kullanım Şartları</Link> &nbsp; |
-            &nbsp;
-            <Link to="/legal/kvkk">KVKK Aydınlatma Metni</Link>
+            <a href="/legal/terms-of-use">Kullanım Şartları</a> &nbsp; | &nbsp;
+            <a href="/legal/kvkk">KVKK Aydınlatma Metni</a>
           </p>
         </div>
       </div>

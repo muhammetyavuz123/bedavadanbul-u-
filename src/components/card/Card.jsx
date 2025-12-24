@@ -15,7 +15,7 @@ function Card({ item }) {
         </Link>
         <div className="shop-card__info">
           <h3 className="title">
-            <Link to={`/${item?.id}`}>{item?.title}</Link>
+            <a href={`/${item?.id}`}>{item?.title}</a>
           </h3>
           <p className="location">
             {item?.city}/{item?.district}
@@ -24,10 +24,10 @@ function Card({ item }) {
             <span>{item?.address}</span>
           </p> */}
           <p className="price">{item.price}₺</p>
-          <Link to={`/${item?.id}`}>
+          <a href={`/${item?.id}`}>
             {" "}
             <button>İncele</button>
-          </Link>
+          </a>
           {item.approved === false ? (
             item.approved ? (
               <span style={{ color: "green", paddingLeft: "5px" }}>

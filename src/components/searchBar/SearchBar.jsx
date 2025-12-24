@@ -58,30 +58,31 @@ function SearchBar() {
 
   return (
     <form className="form-wrapper">
-      {/* Şehir */}
-      <select name="city" value={query.city} onChange={handleChange}>
-        <option value="">Lütfen Şehir Seçiniz</option>
-        {cities.map((city, index) => (
-          <option key={index} value={city?.il_adi}>
-            {city?.il_adi}
-          </option>
-        ))}
-      </select>
+      {/* İl ve İlçe */}
+      <div className="city-district">
+        <select name="city" value={query.city} onChange={handleChange}>
+          <option value="">Şehir Seçiniz</option>
+          {cities.map((city, index) => (
+            <option key={index} value={city.il_adi}>
+              {city.il_adi}
+            </option>
+          ))}
+        </select>
 
-      {/* İlçe */}
-      <select
-        name="district"
-        value={query.district}
-        onChange={handleChange}
-        disabled={!query.city}
-      >
-        <option value="">Lütfen İlçe Seçiniz</option>
-        {districts.map((district, index) => (
-          <option key={index} value={district?.ilce_adi}>
-            {district?.ilce_adi}
-          </option>
-        ))}
-      </select>
+        <select
+          name="district"
+          value={query.district}
+          onChange={handleChange}
+          disabled={!query.city}
+        >
+          <option value="">İlçe Seçiniz</option>
+          {districts.map((district, index) => (
+            <option key={index} value={district.ilce_adi}>
+              {district.ilce_adi}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Kategori */}
       <select name="type" value={query.type} onChange={handleChange}>
@@ -324,6 +325,7 @@ function SearchBar() {
       {/* Arama Butonu */}
       <button type="button" className="form-button" onClick={handleClick}>
         <img src="/search.png" alt="Ara" />
+        <span>Ara</span>
       </button>
     </form>
   );
