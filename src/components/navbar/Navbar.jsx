@@ -88,17 +88,17 @@ function Navbar() {
               {currentUser.role !== "user" ? (
                 <Link to="/profile" className="profile">
                   {number > 0 && <div className="notification">{number}</div>}
-                  <span style={{ color: "white" }}>Profil</span>
+                  <p style={{ color: "white", fontSize: "10px" }}>Profil</p>
                 </Link>
               ) : (
                 <button
                   to="/login"
                   className="profile"
-                  style={{ marginLeft: "10px" }}
+                  style={{ marginLeft: "10px", fontSize: "10px" }}
                   onClick={handleLogout}
                 >
                   {number > 0 && <div className="notification">{number}</div>}
-                  <span style={{ color: "white" }}>Çıkış</span>
+                  <p style={{ color: "white" }}>Çıkış</p>
                 </button>
               )}
             </div>

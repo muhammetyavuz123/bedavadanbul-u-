@@ -255,7 +255,7 @@ function Register() {
               required
             />
             <input name="email" type="email" placeholder="E-Posta" required />
-            <InputMask mask="+90 (599) 999 99 99">
+            <InputMask mask="+90 (599) 999 99 99" defaultValue="9">
               {(inputProps) => (
                 <input
                   {...inputProps}
@@ -292,7 +292,7 @@ function Register() {
               required
             />
             <input name="email" type="email" placeholder="E-Posta" required />
-            <InputMask mask="+90 (599) 999 99 99">
+            <InputMask mask="+90 (599) 999 99 99" defaultValue="9">
               {(inputProps) => (
                 <input
                   {...inputProps}

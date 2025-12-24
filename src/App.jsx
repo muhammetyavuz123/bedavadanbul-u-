@@ -20,7 +20,8 @@ import ForgotPassword from "./routes/forgotPassword/forgotPassword";
 import PrivacyPolicy from "./routes/legal/PrivacyPolicy";
 import TermsOfUse from "./routes/legal/TermsOfUse";
 import KVKKClarification from "./routes/legal/KVKKClarification";
-
+import ScrollToTop from "./components/ScrollToTop";
+import Loader from "./components/loader/Loader";
 function App() {
   const router = createBrowserRouter([
     {
@@ -102,7 +103,13 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} fallbackElement={<Loader />}>
+        <ScrollToTop /> {/* artık Router context içinde */}
+      </RouterProvider>
+    </>
+  );
 }
 
 export default App;

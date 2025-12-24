@@ -13,7 +13,7 @@ export default function Dashboard() {
         const res = await apiRequest.get(
           currentUser?.role === "admin"
             ? `/posts?approved=false` // admin onay bekleyenleri görebilir
-            : `/posts?user=${currentUser?.id}` // normal kullanıcı kendi kampanyalarını görür
+            : `/posts?userId=${currentUser?.id}` // normal kullanıcı kendi kampanyalarını görür
         );
         const campaignsArray = Array.isArray(res.data)
           ? res.data

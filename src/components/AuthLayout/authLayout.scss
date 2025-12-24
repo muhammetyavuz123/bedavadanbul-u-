@@ -1,13 +1,16 @@
+@import "../../responsive.scss";
+
 .auth-page {
   display: flex;
-  // width: 100vw;
+  flex-direction: row;
+  min-height: calc(100vh - 100px - 60px); // navbar + footer yüksekliği
   overflow: hidden;
-  @media (min-width: 768px) {
-    height: 100vh;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    min-height: calc(100vh - 100px - 60px); // mobilde de scroll için
   }
-  .link-danger {
-    color: #ff3c38;
-  }
+
   .auth-left {
     flex: 0 0 50%;
     position: relative;
@@ -32,46 +35,35 @@
       content: "";
       position: absolute;
       inset: 0;
-      // background: rgba(0, 0, 0, 0.4);
       z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 
   .auth-right {
     flex: 1;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center; // YATAY ORTALAMA
-    padding: 0;
-    // background: #f8f9fa;
+    padding: 1rem;
+    overflow-y: auto; // mobilde scroll ekliyoruz
+    max-height: 100%; // taşmayı önler
 
     .form-box {
       width: 100%;
       max-width: 400px;
       background: white;
-      // padding: 2rem;
+      padding: 2rem;
       border-radius: 8px;
-      // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
-    }
-  }
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-
-    .auth-left {
-      display: none;
-    }
-
-    .auth-right {
-      width: 100%;
-
-      .form-box {
-        max-width: 100%;
-        box-shadow: none;
+      @media (max-width: 768px) {
         border-radius: 0;
+        box-shadow: none;
         padding: 1.5rem;
-        height: fit-content;
       }
     }
   }
