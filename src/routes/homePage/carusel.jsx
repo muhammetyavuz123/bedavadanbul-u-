@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "./carusel.scss";
 import "slick-carousel/slick/slick.css";
@@ -25,63 +25,45 @@ const categories = [
 ];
 
 const CategoryCarousel = () => {
-  const [sliderKey, setSliderKey] = useState(0);
-  const sliderRef = useRef();
-
+  const [slides, setSlides] = useState(null);
+  const getSlidesToShow = () => {
+    if (window.innerWidth < 768) return 2; // mobil
+    if (window.innerWidth < 1024) return 3; // tablet
+    return 4; // desktop
+  };
   useEffect(() => {
-    // Yeniden render zorlamak için resize sonrası Slick’i yeniden oluştur
+    // 🔴 slider render edilmeden önce width hesaplanır
+    setSlides(getSlidesToShow());
+
     const handleResize = () => {
-      setSliderKey((prev) => prev + 1);
+      setSlides(getSlidesToShow());
     };
+
     window.addEventListener("resize", handleResize);
-
-    // Sayfa yüklenince de Slick doğru boyutu hesaplasın
-    setTimeout(() => {
-      setSliderKey((prev) => prev + 1);
-    }, 100);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // 🔴 width gelmeden slider render olmaz
+  if (!slides) return null;
 
   const settings = {
     dots: false,
     infinite: true,
     speed: 400,
-    slidesToShow: 4,
-    slidesToScroll: 1,
     arrows: true,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-    ],
+    slidesToScroll: 1,
+    slidesToShow: slides, // 🔥 tek kaynak
   };
+
   return (
     <div className="category-carousel">
       <h2 className="carousel-title">Kategoriler</h2>
-      <Slider ref={sliderRef} {...settings}>
+      <Slider {...settings}>
         {categories.map((cat) => (
-          <div className="category-item" key={cat.id}>
+          <div key={cat.id} className="category-item">
             <div className="category-card">
-              <div className="icon-wrapper">
-                <img src={cat.img} alt={cat.name} />
-              </div>
-              <span className="category-name">{cat.name}</span>
+              <img src={cat.img} alt={cat.name} />
+              <span>{cat.name}</span>
             </div>
           </div>
         ))}
@@ -89,5 +71,4 @@ const CategoryCarousel = () => {
     </div>
   );
 };
-
 export default CategoryCarousel;

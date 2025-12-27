@@ -2,7 +2,7 @@ import { useContext, Suspense } from "react";
 import SearchBar from "../../components/searchBar/SearchBar";
 import "./homePage.scss";
 import { AuthContext } from "../../context/AuthContext";
-import w from "../../assets/ww.png";
+import w from "../../assets/ee.png";
 import CategoryCard from "./categoryCard";
 import Carusel from "./carusel";
 import Banner from "../../components/Banner/banner";
@@ -19,33 +19,40 @@ function HomePage() {
   return (
     <>
       <section className="hero">
-        <div className="hero-top">
-          <div className="hero-left">
-            <h1>Beklediğin Kampanya & Beklediğin İndirim Burada</h1>
-            <p>
-              Aradığın Herşeyi İndirimli Bulma Fırsatını Kaçırma
-              bedavadanBul.com
-            </p>
+        <div className="hero-left">
+          <h1>Beklediğin Kampanya & Beklediğin İndirim Burada</h1>
+          <p>
+            Aradığın her şeyi indirimli bulma fırsatını kaçırma -
+            bedavadanBul.com
+          </p>
 
-            <div className="filters">
-              <SearchBar />
-            </div>
-          </div>
-
-          <div className="hero-right">
-            <img src={w} alt="hero" />
+          <div className="filters">
+            <SearchBar />
           </div>
         </div>
 
-        <Carusel />
+        <div className="hero-right">
+          <div className="hero-visual">
+            <img src={w} alt="Kadın" className="hero-woman" />
+
+            <div className="deal-card discount">%70</div>
+            <div className="deal-card price">%50</div>
+            <div className="deal-card badge">%100</div>
+            <div className="deal-card store">BedavadanBul</div>
+            <div className="deal-card category">Herşey İndirimden</div>
+            <div className="deal-card timer">⏳ Son 3 Saat</div>
+          </div>
+        </div>
       </section>
+
+      <Carusel />
       {/* <div style={{ padding: 20 }}>
         <CategoryCard />
       </div> */}
       <AppBanner />
 
       <main className="content-list">
-        <h1 className="subTitle">En yeni Kampanyalar</h1>
+        <h2 style={{ marginBottom: "20px" }}>En yeni Kampanyalar</h2>
         <div className="product-grid-list">
           <Suspense fallback={<Loader name="KampanyadanBul.com" />}>
             <Await

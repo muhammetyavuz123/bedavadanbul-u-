@@ -1,40 +1,17 @@
 .hero {
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  gap: 2rem;
   padding: 2rem;
-  box-sizing: border-box;
-  // background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
-  @media (min-width: 768px) {
-    height: 90vh;
-  }
-  .product-grid-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 16px;
-  }
-  .card {
-    width: 100%;
-    background: #f0f0f0;
-    padding: 16px;
-    border-radius: 8px;
-    box-sizing: border-box;
-  }
-  .hero-top {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
+  flex-wrap: wrap;
 
   .hero-left {
     flex: 1;
-    // min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* dikey ortala */
 
     h1 {
-      font-size: clamp(1.6rem, 4vw + 1rem, 3rem);
+      font-size: clamp(1.8rem, 4vw + 1rem, 2.8rem);
       margin-bottom: 1rem;
       color: #003c6c;
     }
@@ -49,110 +26,107 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
-
-      select {
-        padding: 0.75rem 1rem;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-        background: #fff;
-        min-width: 160px;
-        transition: all 0.3s ease;
-
-        &:focus {
-          outline: none;
-          border-color: #00acc1;
-        }
-      }
+      justify-content: center; /* filtreleri ortala */
     }
   }
 
   .hero-right {
-    flex: 1;
-    // min-width: 300px;
+    flex: 1 1 400px;
+    max-width: 600px;
+    position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
 
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-  }
-
-  .carousel {
-    margin-top: 1rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid #ccc;
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-
-    .card {
-      min-width: 250px;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      scroll-snap-align: start;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      flex-shrink: 0;
-      transition: transform 0.3s;
-
-      &:hover {
-        transform: translateY(-5px);
-      }
-
-      img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-      }
-
-      h3 {
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        color: #333;
-      }
-    }
-  }
-
-  // Scrollbar
-  .carousel::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  .carousel::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 4px;
-  }
-
-  .carousel::-webkit-scrollbar-track {
-    background: #eee;
-  }
-}
-
-// Responsive
-@media (max-width: 768px) {
-  .hero-top {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .hero-left,
-  .hero-right {
-    width: 100%;
-    text-align: center;
-  }
-
-  .filters {
-    justify-content: center;
-    select {
+    .hero-visual {
       width: 100%;
+      height: 560px;
+      background: radial-gradient(circle at center, #ffe6f2 0%, #f8f9ff 70%);
+      border-radius: 32px;
+      position: relative;
+      overflow: visible;
+
+      .hero-woman {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        // width: 400px;
+        max-width: 100%;
+        z-index: 2;
+        filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.25));
+      }
+
+      /* Kartlar kadının etrafında yüzer gibi */
+      .deal-card {
+        position: absolute;
+        padding: 10px 16px;
+        border-radius: 18px;
+        font-weight: 700;
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        text-align: center;
+      }
+
+      .deal-card.discount {
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ff3b7d;
+        font-size: 24px;
+      }
+      .deal-card.price {
+        bottom: 120px;
+        left: 20%;
+        color: #6c5ce7;
+        font-size: 20px;
+      }
+      .deal-card.badge {
+        top: 80px;
+        right: 20%;
+        color: #fff;
+        background: linear-gradient(135deg, #6c5ce7, #ff3b7d);
+        font-size: 16px;
+      }
+
+      .deal-card.store {
+        top: 180px;
+        left: 10%;
+        color: #4b4b8f;
+        background: #f1f2ff;
+        font-size: 14px;
+      }
+      .deal-card.category {
+        bottom: 80px;
+        right: 15%;
+        color: #ff3b7d;
+        background: #fff5f8;
+        font-size: 14px;
+      }
+      .deal-card.timer {
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #9a7b00;
+        background: #fffbe6;
+        font-size: 14px;
+      }
     }
   }
 }
-.subTitle {
-  font-size: clamp(1rem, 3vw + 1rem, 2rem);
-  margin-bottom: 25px;
-  color: #003c6c;
+
+/* Mobilde hero-right gizlenecek */
+@media (max-width: 767px) {
+  .hero {
+    flex-direction: column;
+
+    .hero-left {
+      width: 100%;
+      text-align: center;
+    }
+
+    .hero-right {
+      // display: none;
+    }
+  }
 }
