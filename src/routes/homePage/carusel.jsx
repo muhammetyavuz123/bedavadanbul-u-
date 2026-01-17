@@ -63,8 +63,8 @@ const CategoryCarousel = () => {
           <div key={cat.id} className="category-item">
             <div className="category-card">
               <img src={cat.img} alt={cat.name} />
-              <span>{cat.name}</span>
             </div>
+            <span>{cat.name}</span>
           </div>
         ))}
       </Slider>

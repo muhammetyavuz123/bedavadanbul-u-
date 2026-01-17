@@ -144,7 +144,7 @@
     }
 
     .category-card {
-      max-width: 220px;
+      max-width: 150px;
       height: 120px;
 
       .icon-wrapper img {
@@ -153,7 +153,7 @@
       }
 
       .category-name {
-        font-size: 0.85rem;
+        font-size: 12px;
       }
     }
   }
@@ -161,12 +161,12 @@
   /* --- Küçük Mobil --- */
   @media (max-width: 480px) {
     .category-card {
-      max-width: 200px;
-      height: 100px;
+      max-width: 150px;
+      height: 120px;
       padding: 0.75rem;
 
       .category-name {
-        font-size: 0.8rem;
+        font-size: 12px;
       }
     }
   }

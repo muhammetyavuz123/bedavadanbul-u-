@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
 import "quill/dist/quill.snow.css";
@@ -7,7 +7,17 @@ import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useError } from "../../context/ErrorContext";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 function NewPostPage() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
@@ -23,11 +33,51 @@ function NewPostPage() {
   const [longitude, setLongitude] = useState("");
   const [loadingLocation, setLoadingLocation] = useState(false);
   const { showError } = useError();
-
+  const [showMap, setShowMap] = useState(false);
   const navigate = useNavigate();
+  const [initialMapCenter, setInitialMapCenter] = useState([39.9255, 32.8663]); // fallback Ankara
+  const [mapKey, setMapKey] = useState(0);
   const { currentUser } = useContext(AuthContext);
-  console.log("🚀 ~ NewPostPage ~ currentUser:", currentUser);
 
+  const [mapCenter, setMapCenter] = useState([41.0082, 28.9784]); // fallback
+  const [mapPosition, setMapPosition] = useState(null);
+  const mapRef = useRef(null);
+
+  function LocationPicker({ setLatitude, setLongitude, setMapPosition }) {
+    useMapEvents({
+      click(e) {
+        setLatitude(e.latlng.lat.toFixed(6));
+        setLongitude(e.latlng.lng.toFixed(6));
+        setMapPosition({
+          lat: e.latlng.lat,
+          lng: e.latlng.lng,
+        });
+      },
+    });
+
+    return null;
+  }
+  const getCoordsFromCityDistrict = async (city, district) => {
+    try {
+      const q = `${district}, ${city}, Turkey`;
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          q
+        )}`
+      );
+      const data = await res.json();
+
+      if (data && data.length > 0) {
+        return {
+          lat: parseFloat(data[0].lat),
+          lng: parseFloat(data[0].lon),
+        };
+      }
+    } catch (e) {
+      console.warn("Geocoding failed", e);
+    }
+    return null;
+  };
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       showError("Tarayıcınız konum özelliğini desteklemiyor.");
@@ -84,10 +134,60 @@ function NewPostPage() {
       }
     );
   };
+
   useEffect(() => {
-    console.log("📍 LAT:", latitude);
-    console.log("📍 LNG:", longitude);
-  }, [latitude, longitude]);
+    const initLocation = async () => {
+      // 1️⃣ İl + ilçe varsa
+      if (citie && district) {
+        const coords = await getCoordsFromCityDistrict(citie, district);
+
+        if (coords) {
+          setLatitude(coords.lat.toFixed(6));
+          setLongitude(coords.lng.toFixed(6));
+          setMapCenter([coords.lat, coords.lng]);
+          setMapPosition(coords);
+
+          setTimeout(() => {
+            if (mapRef.current) {
+              mapRef.current.invalidateSize();
+              mapRef.current.setView([coords.lat, coords.lng], 14);
+            }
+          }, 300);
+
+          return; // 🔴 burası önemli
+        }
+      }
+
+      // 2️⃣ İl/ilçe yoksa tarayıcı konumu
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+
+            setLatitude(lat.toFixed(6));
+            setLongitude(lng.toFixed(6));
+            setMapCenter([lat, lng]);
+            setMapPosition({ lat, lng });
+
+            setTimeout(() => {
+              if (mapRef.current) {
+                mapRef.current.invalidateSize();
+                mapRef.current.setView([lat, lng], 15);
+              }
+            }, 300);
+          },
+          () => {
+            // 3️⃣ fallback
+            setMapCenter([41.0082, 28.9784]);
+          }
+        );
+      }
+    };
+
+    initLocation();
+  }, [citie, district]);
+
   useEffect(() => {
     if (currentUser) {
       if (currentUser.city) setCitie(currentUser.city);
@@ -260,53 +360,47 @@ function NewPostPage() {
             </div>
             {/* 🔹 Latitude & Longitude */}
             <div className="item locationFields">
-              {/* <div className="locInputs"> */}
-              {/* <div>
-                <label htmlFor="latitude">Latitude</label>
-                <input
-                  id="latitude"
-                  name="latitude"
-                  type="text"
-                  value={latitude}
-                  onChange={(e) => setLatitude(e.target.value)}
-                />
-                {error.latitude && (
-                  <span className="error">{error.latitude}</span>
-                )}
-              </div> */}
-              {/* <div>
-                  <label htmlFor="longitude">Longitude</label>
-                  <input
-                    id="longitude"
-                    name="longitude"
-                    type="text"
-                    value={longitude}
-                    onChange={(e) => setLongitude(e.target.value)}
-                  />
-                  {error.longitude && (
-                    <span className="error">{error.longitude}</span>
-                  )}
-                </div>
-              </div> */}
-              {latitude && longitude ? "konum alındı" : "konum alınamadı"}
               {error.longitude && (
                 <span className="error">
                   {error.longitude}
                   {error.latitude}
                 </span>
               )}
-              {latitude && longitude ? (
-                ""
-              ) : (
-                <button
-                  type="button"
-                  className="getLocationBtn"
-                  onClick={handleGetLocation}
-                  disabled={loadingLocation}
+
+              <div className="item mapItem">
+                <label>Konum (Haritadan Seç)</label>
+
+                <div
+                  style={{ height: "320px", width: "100%", marginTop: "10px" }}
                 >
-                  {loadingLocation ? "Konum alınıyor..." : "📍 Konumumu Al"}
-                </button>
-              )}
+                  <MapContainer
+                    center={mapCenter}
+                    zoom={15}
+                    style={{ height: "100%", width: "100%" }}
+                    whenCreated={(mapInstance) => {
+                      mapRef.current = mapInstance;
+                    }}
+                  >
+                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                    <LocationPicker
+                      setLatitude={setLatitude}
+                      setLongitude={setLongitude}
+                      setMapPosition={setMapPosition}
+                    />
+
+                    {mapPosition && <Marker position={mapPosition} />}
+                  </MapContainer>
+                </div>
+
+                {latitude && longitude ? (
+                  <span style={{ color: "green", fontSize: "13px" }}>
+                    📍 Konum seçildi
+                  </span>
+                ) : (
+                  <span className="error">Konum seçiniz</span>
+                )}
+              </div>
             </div>
 
             <div className="item">
