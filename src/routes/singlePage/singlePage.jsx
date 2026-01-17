@@ -38,7 +38,12 @@ function SinglePage() {
         breadcrumbText={`Anasayfa / ${post.title}`}
         backgroundImage={BreadcrumbImage}
       />
+
       <div className="singlePage">
+        <h2 style={{ borderBottom: "1px solid #ddd", paddingBottom: "15px" }}>
+          {post.title}
+        </h2>
+
         <div className="container">
           {/* 🔹 SLIDER + BİLGİLER */}
           <div className="topSection">
