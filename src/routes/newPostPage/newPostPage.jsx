@@ -62,8 +62,8 @@ function NewPostPage() {
       const q = `${district}, ${city}, Turkey`;
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          q
-        )}`
+          q,
+        )}`,
       );
       const data = await res.json();
 
@@ -131,7 +131,7 @@ function NewPostPage() {
         }));
 
         setLoadingLocation(false);
-      }
+      },
     );
   };
 
@@ -180,7 +180,7 @@ function NewPostPage() {
           () => {
             // 3️⃣ fallback
             setMapCenter([41.0082, 28.9784]);
-          }
+          },
         );
       }
     };
@@ -190,11 +190,11 @@ function NewPostPage() {
 
   useEffect(() => {
     if (currentUser) {
-      if (currentUser.city) setCitie(currentUser.city);
-      if (currentUser.district) setDistrict(currentUser.district);
-      if (currentUser.phone) setPhoneNumber(currentUser.phone);
-      setBusinessName(currentUser.username || "");
-      setType(currentUser.type || "");
+      if (currentUser?.user?.city) setCitie(currentUser?.user?.city);
+      if (currentUser?.user?.district) setDistrict(currentUser?.user?.district);
+      if (currentUser?.user?.phone) setPhoneNumber(currentUser?.user?.phone);
+      setBusinessName(currentUser?.user?.username || "");
+      setType(currentUser?.user?.type || "");
     }
   }, [currentUser]);
 
@@ -265,9 +265,9 @@ function NewPostPage() {
           address: inputs.address,
           city: citie,
           district,
-          type: currentUser?.type || inputs.type,
-          businessName: currentUser?.username || inputs.businessName,
-          // username: currentUser?.username,
+          type: currentUser?.user?.type || inputs.type,
+          businessName: currentUser?.user?.username || inputs.businessName,
+          // username: currentUser?.user?.username,
           latitude,
           longitude,
           phoneNumber,

@@ -39,7 +39,7 @@ function List({ posts }) {
             <button className="buttonDelete" onClick={() => setShowPopup(true)}>
               Sil
             </button>
-            {currentUser.role === "admin" && (
+            {currentUser.user?.role === "admin" && (
               <button onClick={() => handleConfirm(item)}>Onayla</button>
             )}
             <div>

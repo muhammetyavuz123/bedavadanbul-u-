@@ -24,7 +24,7 @@ const CommentLists = ({ postId }) => {
       // setPage((prev) => prev + 1);
     } catch (err) {
       showError(
-        "Veri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        "Veri alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
       );
     } finally {
       setLoading(false);
@@ -51,7 +51,7 @@ const CommentLists = ({ postId }) => {
       }
     } catch (err) {
       showError(
-        "Silme İşlemi yaparken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        "Silme İşlemi yaparken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
       );
     }
   };
@@ -79,7 +79,7 @@ const CommentLists = ({ postId }) => {
               <span className="username">{comment.user?.username}</span>
             </div>
 
-            {currentUser?.id === comment.userId && (
+            {currentUser?.user?.id === comment.userId && (
               <>
                 {" "}
                 <button

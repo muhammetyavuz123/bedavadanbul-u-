@@ -43,9 +43,9 @@ function Navbar() {
       <div className="right">
         {currentUser ? (
           <div className="user">
-            <img src={currentUser.avatar || defaultAvatar} alt="" />
-            <span>{currentUser.username}</span>
-            {currentUser.role !== "user" ? (
+            <img src={currentUser.user?.avatar || defaultAvatar} alt="" />
+            <span>{currentUser.user?.username}</span>
+            {currentUser.user?.role !== "user" ? (
               <Link to="/profile" className="profile">
                 {number > 0 && <div className="notification">{number}</div>}
                 <span style={{ color: "white" }}>Profil</span>
@@ -83,9 +83,9 @@ function Navbar() {
           <a href="/contact">İletişim</a>
           {currentUser ? (
             <div className="user">
-              <img src={currentUser.avatar || defaultAvatar} alt="" />
-              <span>{currentUser.username}</span>
-              {currentUser.role !== "user" ? (
+              <img src={currentUser?.user?.avatar || defaultAvatar} alt="" />
+              <span>{currentUser?.user?.username}</span>
+              {currentUser?.user?.role !== "user" ? (
                 <Link to="/profile" className="profile">
                   {number > 0 && <div className="notification">{number}</div>}
                   <p style={{ color: "white", fontSize: "10px" }}>Profil</p>

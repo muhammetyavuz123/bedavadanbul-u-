@@ -110,12 +110,12 @@ function SinglePage() {
                     const appLink = "https://bedavadabul.com";
 
                     const message = encodeURIComponent(
-                      `Merhaba! 🎉\n\nSizin "${campaignTitle}" kampanyanızı ${city} şehrinde gördüm.\nİndirim: ${discount}\n\nBedavadabul.com uygulamasında paylaşmak istiyorum.\nUygulama linki: ${appLink}\n\nİlgilenirseniz birlikte tanıtım yapabiliriz.`
+                      `Merhaba! 🎉\n\nSizin "${campaignTitle}" kampanyanızı ${city} şehrinde gördüm.\nİndirim: ${discount}\n\nBedavadabul.com uygulamasında paylaşmak istiyorum.\nUygulama linki: ${appLink}\n\nİlgilenirseniz birlikte tanıtım yapabiliriz.`,
                     );
 
                     window.open(
                       `https://wa.me/${phoneNumber}?text=${message}`,
-                      "_blank"
+                      "_blank",
                     );
                   }}
                   className="messageBtn"
@@ -157,7 +157,7 @@ function SinglePage() {
             {currentUser && (
               <CommentForms
                 postId={post.id}
-                userId={currentUser.id}
+                userId={currentUser?.user?.id}
                 onCommentAdded={() => setRefresh((p) => !p)}
               />
             )}

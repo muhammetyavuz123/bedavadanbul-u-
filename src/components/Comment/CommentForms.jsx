@@ -29,7 +29,7 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
       }
     } catch (error) {
       showError(
-        "Yorum eklenien bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+        "Yorum eklenien bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
       );
     }
   };
@@ -38,7 +38,7 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
   return (
     <form className="comment-form" onSubmit={handleSubmit}>
       <img
-        src={currentUser?.avatar || defaultAvatar}
+        src={currentUser?.user?.avatar || defaultAvatar}
         alt="avatar"
         className="avatar"
       />

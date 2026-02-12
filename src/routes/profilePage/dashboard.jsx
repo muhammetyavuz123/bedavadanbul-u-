@@ -11,9 +11,9 @@ export default function Dashboard() {
     const fetchCampaigns = async () => {
       try {
         const res = await apiRequest.get(
-          currentUser?.role === "admin"
+          currentUser?.user?.role === "admin"
             ? `/posts?approved=false` // admin onay bekleyenleri görebilir
-            : `/posts?userId=${currentUser?.id}` // normal kullanıcı kendi kampanyalarını görür
+            : `/posts?userId=${currentUser?.user?.id}`, // normal kullanıcı kendi kampanyalarını görür
         );
         const campaignsArray = Array.isArray(res.data)
           ? res.data
@@ -31,7 +31,7 @@ export default function Dashboard() {
   const activeCount = campaigns.filter((c) => c.approved === true).length;
   const pendingCount = campaigns.filter((c) => c.approved === false).length;
   const rejectedCount = campaigns.filter(
-    (c) => c.approved === "rejected"
+    (c) => c.approved === "rejected",
   ).length;
 
   // Son 5 kampanya
@@ -47,18 +47,18 @@ export default function Dashboard() {
         <div className="user-info">
           <img
             src={
-              currentUser?.avatar ||
+              currentUser?.user?.avatar ||
               "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="Profil"
           />
           <div className="details">
-            <span className="username">{currentUser?.username}</span>
+            <span className="username">{currentUser?.user?.username}</span>
             <span className="role">
-              {currentUser?.role === "admin" ? "Yönetici" : "Esnaf"}
+              {currentUser?.user?.role === "admin" ? "Yönetici" : "Esnaf"}
             </span>
             <span className="location">
-              {currentUser?.city}, {currentUser?.district}
+              {currentUser?.user?.city}, {currentUser?.user?.district}
             </span>
           </div>
         </div>
@@ -92,15 +92,15 @@ export default function Dashboard() {
                   post.approved === true
                     ? "approved"
                     : post.approved === false
-                    ? "pending"
-                    : "rejected"
+                      ? "pending"
+                      : "rejected"
                 }`}
               >
                 {post.approved === true
                   ? "Onaylandı"
                   : post.approved === false
-                  ? "Bekliyor"
-                  : "Reddedildi"}
+                    ? "Bekliyor"
+                    : "Reddedildi"}
               </span>
             </div>
           ))}
