@@ -38,11 +38,11 @@ function NewPostPage() {
   const [initialMapCenter, setInitialMapCenter] = useState([39.9255, 32.8663]); // fallback Ankara
   const [mapKey, setMapKey] = useState(0);
   const { currentUser } = useContext(AuthContext);
-
+  const [listingType, setListingType] = useState("standard");
   const [mapCenter, setMapCenter] = useState([41.0082, 28.9784]); // fallback
   const [mapPosition, setMapPosition] = useState(null);
   const mapRef = useRef(null);
-
+  const [locationMode, setLocationMode] = useState("map");
   function LocationPicker({ setLatitude, setLongitude, setMapPosition }) {
     useMapEvents({
       click(e) {
@@ -250,7 +250,7 @@ function NewPostPage() {
     if (!phoneNumber?.trim())
       newErrors.phoneNumber = "Telefon numarası boş olamaz";
     if (!value?.trim()) newErrors.desc = "Açıklama boş olamaz";
-
+    if (!listingType) newErrors.listingType = "İlan tipi seçiniz";
     if (Object.keys(newErrors).length > 0) {
       setError(newErrors);
       return;
@@ -273,6 +273,7 @@ function NewPostPage() {
           phoneNumber,
           images,
           approved: false,
+          listingType,
         },
         postDetail: {
           desc: value,
@@ -287,7 +288,11 @@ function NewPostPage() {
       setError({ submit: "Sunucu hatası, lütfen tekrar deneyiniz." });
     }
   };
-
+  useEffect(() => {
+    if (latitude && longitude && mapRef.current) {
+      mapRef.current.setView([latitude, longitude], 15);
+    }
+  }, [latitude, longitude]);
   return (
     <div className="newPostPage">
       <div className="formContainer">
@@ -368,31 +373,105 @@ function NewPostPage() {
               )}
 
               <div className="item mapItem">
-                <label>Konum (Haritadan Seç)</label>
+                <label>Konum Seçimi</label>
 
-                <div
-                  style={{ height: "320px", width: "100%", marginTop: "10px" }}
-                >
-                  <MapContainer
-                    center={mapCenter}
-                    zoom={15}
-                    style={{ height: "100%", width: "100%" }}
-                    whenCreated={(mapInstance) => {
-                      mapRef.current = mapInstance;
+                {/* TOGGLE */}
+                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setLocationMode("map")}
+                    style={{
+                      marginRight: "10px",
+                      padding: "6px 12px",
+                      background: locationMode === "map" ? "#007bff" : "#ddd",
+                      color: locationMode === "map" ? "#fff" : "#000",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
                     }}
                   >
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                    Haritadan Seç
+                  </button>
 
-                    <LocationPicker
-                      setLatitude={setLatitude}
-                      setLongitude={setLongitude}
-                      setMapPosition={setMapPosition}
-                    />
-
-                    {mapPosition && <Marker position={mapPosition} />}
-                  </MapContainer>
+                  <button
+                    type="button"
+                    onClick={() => setLocationMode("manual")}
+                    style={{
+                      padding: "6px 12px",
+                      background:
+                        locationMode === "manual" ? "#007bff" : "#ddd",
+                      color: locationMode === "manual" ? "#fff" : "#000",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Manuel Gir
+                  </button>
                 </div>
 
+                {/* MAP MODE */}
+                {locationMode === "map" && (
+                  <div
+                    style={{
+                      height: "320px",
+                      width: "100%",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <MapContainer
+                      center={mapCenter}
+                      zoom={15}
+                      style={{ height: "100%", width: "100%" }}
+                      whenCreated={(mapInstance) => {
+                        mapRef.current = mapInstance;
+                      }}
+                    >
+                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+                      <LocationPicker
+                        setLatitude={setLatitude}
+                        setLongitude={setLongitude}
+                        setMapPosition={setMapPosition}
+                      />
+
+                      {mapPosition && <Marker position={mapPosition} />}
+                    </MapContainer>
+                  </div>
+                )}
+
+                {/* MANUAL MODE */}
+                {locationMode === "manual" && (
+                  <div
+                    style={{ marginTop: "10px", display: "flex", gap: "10px" }}
+                  >
+                    <input
+                      type="number"
+                      placeholder="Latitude"
+                      value={latitude || ""}
+                      onChange={(e) => {
+                        const lat = String(e.target.value);
+                        setLatitude(lat);
+                        if (longitude) setMapPosition([lat, longitude]);
+                      }}
+                      style={{ flex: 1, padding: "8px" }}
+                    />
+
+                    <input
+                      type="number"
+                      placeholder="Longitude"
+                      value={longitude || ""}
+                      onChange={(e) => {
+                        const lng = String(e.target.value);
+                        setLongitude(lng);
+                        if (latitude) setMapPosition([latitude, lng]);
+                      }}
+                      style={{ flex: 1, padding: "8px" }}
+                    />
+                  </div>
+                )}
+
+                {/* STATUS */}
                 {latitude && longitude ? (
                   <span style={{ color: "green", fontSize: "13px" }}>
                     📍 Konum seçildi
@@ -407,6 +486,23 @@ function NewPostPage() {
               <label htmlFor="price">Fiyat</label>
               <input id="price" name="price" type="number" />
               {error.price && <span className="error">{error.price}</span>}
+            </div>
+            <div className="item">
+              <label htmlFor="listingType">İlan Tipi</label>
+
+              <select
+                id="listingType"
+                name="listingType"
+                value={listingType}
+                onChange={(e) => setListingType(e.target.value)}
+              >
+                <option value="standard">Standart İlan</option>
+                <option value="featured">Vitrin İlan (Öne Çıkar)</option>
+                <option value="doping">Doping</option>
+              </select>
+              {error.listingType && (
+                <span className="error">{error.listingType}</span>
+              )}
             </div>
             <div className="item">
               <label htmlFor="type">Kampanya Türü</label>

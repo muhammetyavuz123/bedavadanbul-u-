@@ -61,7 +61,9 @@ function HomePage() {
             >
               {(postResponse) =>
                 postResponse?.data.data
-                  .slice(-8)
+                  .filter((post) => post.listingType === "featured")
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .slice(0, 8)
                   .map((post) => <Card key={post.id} item={post} />)
               }
             </Await>

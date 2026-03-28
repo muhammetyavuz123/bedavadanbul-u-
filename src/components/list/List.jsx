@@ -4,10 +4,12 @@ import Card from "../card/Card";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import Popup from "../Popup/Popup";
+import { useNavigate } from "react-router-dom";
 
 function List({ posts }) {
   const { currentUser } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
   const handleDelete = async (item) => {
     try {
@@ -39,9 +41,24 @@ function List({ posts }) {
             <button className="buttonDelete" onClick={() => setShowPopup(true)}>
               Sil
             </button>
-            {currentUser.user?.role === "admin" && (
-              <button onClick={() => handleConfirm(item)}>Onayla</button>
-            )}
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              {currentUser.user?.role === "admin" && (
+                <button
+                  className="buttonDelete"
+                  onClick={() => handleConfirm(item)}
+                >
+                  Onayla
+                </button>
+              )}
+              <button
+                className="buttonDelete"
+                onClick={() => navigate(`/edit/${item.id}`)}
+              >
+                Düzenle
+              </button>
+            </div>
+
             <div>
               <Popup
                 isOpen={showPopup}

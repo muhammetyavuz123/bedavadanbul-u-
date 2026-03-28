@@ -22,6 +22,7 @@ import TermsOfUse from "./routes/legal/TermsOfUse";
 import KVKKClarification from "./routes/legal/KVKKClarification";
 import ScrollToTop from "./components/ScrollToTop";
 import Loader from "./components/loader/Loader";
+import EditPostPage from "./routes/newPostPage/editPostPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -98,6 +99,10 @@ function App() {
         {
           path: "/add",
           element: <NewPostPage />,
+        },
+        {
+          path: "/edit/:id",
+          element: <EditPostPage />,
         },
       ],
     },
