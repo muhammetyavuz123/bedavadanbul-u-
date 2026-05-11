@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./searchBar.scss";
 import apiRequest from "../../lib/apiRequest";
 import { useError } from "../../context/ErrorContext";
+import { useCategories } from "../../lib/useCategories";
 
 function SearchBar() {
   const [query, setQuery] = useState({
@@ -11,11 +12,11 @@ function SearchBar() {
     district: "",
   });
   const { showError } = useError();
-
+  const [categoryId, setCategoryId] = useState("");
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
   const navigate = useNavigate();
-
+  const categories = useCategories();
   const handleChange = (e) => {
     setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -52,7 +53,7 @@ function SearchBar() {
 
   const handleClick = () => {
     navigate(
-      `/list?type=${query.type}&city=${query.city}&district=${query.district}`
+      `/list?categoryId=${query.type}&city=${query.city}&district=${query.district}`,
     );
   };
 
@@ -83,12 +84,29 @@ function SearchBar() {
           ))}
         </select>
       </div>
-
-      {/* Kategori */}
       <select id="type" name="type" onChange={handleChange} value={query.type}>
+        <option value="">Kategori seç</option>
+
+        {categories
+          .filter((c) => !c.parentId)
+          .map((parent) => (
+            <optgroup key={parent.id} label={parent.name}>
+              <option value={parent.id}>Tümü ({parent.name})</option>
+
+              {categories
+                .filter((c) => c.parentId === parent.id)
+                .map((child) => (
+                  <option key={child.id} value={child.id}>
+                    {child.name}
+                  </option>
+                ))}
+            </optgroup>
+          ))}
+      </select>
+      {/* Kategori */}
+      {/* <select id="type" name="type" onChange={handleChange} value={query.type}>
         <option value="">Kategori Seçin</option>
 
-        {/* ================= GIDA & YEME İÇME ================= */}
         <optgroup label="Gıda & Yeme İçme">
           <option value="bakkal">Bakkal</option>
           <option value="market">Market</option>
@@ -113,7 +131,6 @@ function SearchBar() {
           <option value="su-bayii">Su Bayii</option>
         </optgroup>
 
-        {/* ================= ULAŞIM & TAŞIMACILIK ================= */}
         <optgroup label="Ulaşım & Taşımacılık">
           <option value="taksici">Taksici</option>
           <option value="dolmuscu">Dolmuşçu</option>
@@ -128,7 +145,6 @@ function SearchBar() {
           <option value="oto-kiralama">Oto Kiralama (Rent a Car)</option>
         </optgroup>
 
-        {/* ================= OTO & MOTOR ================= */}
         <optgroup label="Oto & Motor Hizmetleri">
           <option value="oto-tamir">Oto Tamircisi</option>
           <option value="oto-elektrik">Oto Elektrikçisi</option>
@@ -143,7 +159,6 @@ function SearchBar() {
           <option value="motosiklet-tamir">Motosiklet Tamiri</option>
         </optgroup>
 
-        {/* ================= EV & İNŞAAT ================= */}
         <optgroup label="İnşaat & Ev Hizmetleri">
           <option value="insaat-ustasi">İnşaat Ustası</option>
           <option value="boyaci">Boyacı / Badanacı</option>
@@ -158,7 +173,6 @@ function SearchBar() {
           <option value="kombici">Kombi / Kalorifer</option>
         </optgroup>
 
-        {/* ================= MOBİLYA & AHŞAP ================= */}
         <optgroup label="Mobilya & Ahşap">
           <option value="marangoz">Marangoz</option>
           <option value="mobilya">Mobilya</option>
@@ -168,7 +182,6 @@ function SearchBar() {
           <option value="lake-ustasi">Lake Ustası</option>
         </optgroup>
 
-        {/* ================= GİYİM & BAKIM ================= */}
         <optgroup label="Giyim & Kişisel Bakım">
           <option value="berber">Berber</option>
           <option value="kuafor">Kuaför</option>
@@ -179,7 +192,6 @@ function SearchBar() {
           <option value="camasirhane">Çamaşırhane</option>
         </optgroup>
 
-        {/* ================= TEKNOLOJİ ================= */}
         <optgroup label="Teknoloji & Elektronik">
           <option value="telefon-tamir">Telefon Tamiri</option>
           <option value="bilgisayar-tamir">Bilgisayar Tamiri</option>
@@ -189,7 +201,6 @@ function SearchBar() {
           <option value="kamera-alarm">Kamera / Alarm Sistemleri</option>
         </optgroup>
 
-        {/* ================= SAĞLIK ================= */}
         <optgroup label="Sağlık & Medikal">
           <option value="eczane">Eczane</option>
           <option value="medikal">Medikal Ürünler</option>
@@ -198,7 +209,6 @@ function SearchBar() {
           <option value="veteriner">Veteriner</option>
         </optgroup>
 
-        {/* ================= TARIM ================= */}
         <optgroup label="Tarım & Hayvancılık">
           <option value="ciftci">Çiftçi</option>
           <option value="sutcu">Sütçü</option>
@@ -207,7 +217,6 @@ function SearchBar() {
           <option value="cicekci">Çiçekçi</option>
         </optgroup>
 
-        {/* ================= GENEL HİZMET ================= */}
         <optgroup label="Genel Hizmetler">
           <option value="temizlik">Temizlik Hizmeti</option>
           <option value="hali-yikama">Halı Yıkama</option>
@@ -219,14 +228,13 @@ function SearchBar() {
           <option value="danismanlik">Danışmanlık</option>
         </optgroup>
 
-        {/* ================= DİĞER ================= */}
         <optgroup label="Diğer">
           <option value="emlak">Emlak Danışmanı</option>
           <option value="sigorta">Sigorta Acentesi</option>
           <option value="seyyar-satici">Seyyar Satıcı</option>
           <option value="kuryelik">Kuryelik</option>
         </optgroup>
-      </select>
+      </select> */}
 
       {/* Arama Butonu */}
       <button type="button" className="form-button" onClick={handleClick}>

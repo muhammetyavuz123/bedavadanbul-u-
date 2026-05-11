@@ -11,6 +11,8 @@ import { AuthContext } from "../../context/AuthContext";
 import Popup from "../Popup/Popup";
 import MessagesPage from "../Contact/Contact";
 import Dashboard from "../../routes/profilePage/dashboard";
+import NewCategoriesPage from "../../routes/newCategoriesPage/newCategoriesPage";
+import CategoriesPage from "../../routes/categoriesPage/categoriesPage";
 
 export default function Sidebar() {
   const [activeTab, setActiveTab] = useState("home");
@@ -36,7 +38,10 @@ export default function Sidebar() {
         return <NewPostPage />;
       case "profile":
         return <ProfileUpdatePage />;
-
+      case "newCategories":
+        return <NewCategoriesPage />;
+      case "categories":
+        return <CategoriesPage />;
       case "contact":
         return <MessagesPage />;
 
@@ -62,9 +67,17 @@ export default function Sidebar() {
                 Kampanya Ekle
               </button>
               <button onClick={() => setActiveTab("profile")}>Profil</button>
+              <button onClick={() => setActiveTab("newCategories")}>
+                Kategori Ekle
+              </button>
               {currentUser?.user?.role === "admin" && (
                 <button onClick={() => setActiveTab("contact")}>
                   İletişim
+                </button>
+              )}
+              {currentUser?.user?.role === "admin" && (
+                <button onClick={() => setActiveTab("categories")}>
+                  Kategoriler
                 </button>
               )}
               <button onClick={() => setShowPopup(true)}>Çıkış</button>

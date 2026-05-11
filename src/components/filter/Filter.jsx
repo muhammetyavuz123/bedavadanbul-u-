@@ -6,26 +6,37 @@ import { useError } from "../../context/ErrorContext";
 
 function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [query, setQuery] = useState({
-    type: searchParams.get("type") || "",
+    categoryId: searchParams.get("categoryId") || "",
     city: searchParams.get("city") || "",
     district: searchParams.get("district") || "",
     search: searchParams.get("search") || "",
   });
 
   const { showError } = useError();
+
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
 
+  // ✅ KATEGORİLER
+  const [categories, setCategories] = useState([]);
+
+  // 🔥 SADECE ANA KATEGORİLER
+  const mainCategories = categories.filter((c) => !c.parentId);
+
+  // 🔥 ALT KATEGORİ GETİR
+  const getSubCategories = (parentId) => {
+    return categories.filter((c) => c.parentId === parentId);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Şehir değişirse ilçe sıfırla
     if (name === "city") {
       setQuery((prev) => ({
         ...prev,
         city: value,
-        district: "", // ilçe temizlenir
+        district: "",
       }));
     } else {
       setQuery((prev) => ({
@@ -38,9 +49,8 @@ function Filter() {
   const handleFilter = (e) => {
     e.preventDefault();
 
-    // Boş değerleri URL'e yazmamak için filtrele
     const cleanQuery = Object.fromEntries(
-      Object.entries(query).filter(([_, v]) => v !== "")
+      Object.entries(query).filter(([_, v]) => v !== ""),
     );
 
     setSearchParams(cleanQuery);
@@ -48,27 +58,34 @@ function Filter() {
 
   const clearField = (field) => {
     if (field === "city") {
-      // şehir silinirse ilçe de silinsin
-      setQuery((prev) => ({ ...prev, city: "", district: "" }));
+      setQuery((prev) => ({
+        ...prev,
+        city: "",
+        district: "",
+      }));
     } else {
-      setQuery((prev) => ({ ...prev, [field]: "" }));
+      setQuery((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
     }
   };
 
+  // ✅ ŞEHİRLER
   useEffect(() => {
     async function fetchCities() {
       try {
         const res = await apiRequest.get("/locations");
         setCities(res.data);
       } catch (error) {
-        showError(
-          "Şehir verisi alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
-        );
+        showError("Şehir verisi alınırken bir hata oluştu.");
       }
     }
+
     fetchCities();
   }, []);
 
+  // ✅ İLÇELER
   useEffect(() => {
     async function fetchDistricts() {
       if (query.city) {
@@ -76,21 +93,32 @@ function Filter() {
           const res = await apiRequest.get(`/locations/${query.city}`);
           setDistricts(res.data);
         } catch (error) {
-          showError(
-            "İlçe verisi alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin."
-          );
+          showError("İlçe verisi alınırken bir hata oluştu.");
         }
       } else {
-        setDistricts([]); // şehir silinirse ilçe temizle
+        setDistricts([]);
       }
     }
+
     fetchDistricts();
   }, [query.city]);
 
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await apiRequest.get("/categories");
+        setCategories(res.data);
+      } catch (error) {
+        showError("Kategori verisi alınırken hata oluştu.");
+      }
+    }
+
+    fetchCategories();
+  }, []);
   return (
     <div className="filter-container">
       <form className="filter-form" onSubmit={handleFilter}>
-        {/* 🔎 Arama */}
+        {/* 🔎 ARAMA */}
         <div className="search-input">
           <svg
             className="icon"
@@ -126,9 +154,10 @@ function Filter() {
           )}
         </div>
 
-        {/* 🏙️ Şehir */}
+        {/* 🏙️ ŞEHİR */}
         <div className="filter-group">
           <label htmlFor="city">Şehir</label>
+
           <div className="select-wrapper">
             <select
               id="city"
@@ -137,12 +166,14 @@ function Filter() {
               value={query.city}
             >
               <option value="">Tümü</option>
+
               {cities.map((city, i) => (
                 <option key={i} value={city?.il_adi}>
                   {city?.il_adi}
                 </option>
               ))}
             </select>
+
             {query.city && (
               <button
                 type="button"
@@ -155,9 +186,10 @@ function Filter() {
           </div>
         </div>
 
-        {/* 🏘️ İlçe */}
+        {/* 🏘️ İLÇE */}
         <div className="filter-group">
           <label htmlFor="district">İlçe</label>
+
           <div className="select-wrapper">
             <select
               id="district"
@@ -167,12 +199,14 @@ function Filter() {
               disabled={!query.city}
             >
               <option value="">Tümü</option>
+
               {districts.map((d, i) => (
                 <option key={i} value={d?.ilce_adi}>
                   {d?.ilce_adi}
                 </option>
               ))}
             </select>
+
             {query.district && (
               <button
                 type="button"
@@ -185,162 +219,43 @@ function Filter() {
           </div>
         </div>
 
+        {/* ✅ KATEGORİ */}
         <div className="filter-group">
-          <label htmlFor="type">Kategori</label>
+          <label htmlFor="categoryId">Kategori</label>
+
           <div className="select-wrapper">
             <select
-              id="type"
-              name="type"
+              id="categoryId"
+              name="categoryId"
               onChange={handleChange}
-              value={query.type}
+              value={query.categoryId}
             >
               <option value="">Kategori Seçin</option>
 
-              {/* ================= GIDA & YEME İÇME ================= */}
-              <optgroup label="Gıda & Yeme İçme">
-                <option value="bakkal">Bakkal</option>
-                <option value="market">Market</option>
-                <option value="manav">Manav</option>
-                <option value="kasap">Kasap</option>
-                <option value="sarkuteri">Şarküteri</option>
-                <option value="kuruyemisci">Kuruyemişçi</option>
-                <option value="balikci">Balıkçı</option>
-                <option value="firin">Fırın / Ekmekçi</option>
-                <option value="pastane">Pastane</option>
-                <option value="lokanta">Lokanta / Restoran</option>
-                <option value="donerci">Dönerci / Kebapçı</option>
-                <option value="fastfood">Fast Food</option>
-                <option value="tatlici">Tatlıcı / Baklavacı</option>
-                <option value="cigkofteci">Çiğköfteci</option>
-                <option value="kahveci">Kahveci</option>
-                <option value="cafe">Cafe / Kahvehane</option>
-                <option value="cay-ocagi">Çay Ocağı</option>
-                <option value="bufe">Büfe</option>
-                <option value="dondurmaci">Dondurmacı</option>
-                <option value="yufkaci">Yufkacı</option>
-                <option value="su-bayii">Su Bayii</option>
-              </optgroup>
+              {mainCategories.map((main) => {
+                const subCategories = getSubCategories(main.id);
 
-              {/* ================= ULAŞIM & TAŞIMACILIK ================= */}
-              <optgroup label="Ulaşım & Taşımacılık">
-                <option value="taksici">Taksici</option>
-                <option value="dolmuscu">Dolmuşçu</option>
-                <option value="minibuscu">Minibüsçü</option>
-                <option value="otobus-soforu">Otobüs Şoförü</option>
-                <option value="servis-araci">Servis Aracı</option>
-                <option value="nakliyeci">Nakliyeci</option>
-                <option value="kamyoncu">Kamyoncu</option>
-                <option value="motorlu-kurye">Motorlu Kurye</option>
-                <option value="bisikletli-kurye">Bisikletli Kurye</option>
-                <option value="kargo-dagitim">Kargo Dağıtım</option>
-                <option value="oto-kiralama">Oto Kiralama (Rent a Car)</option>
-              </optgroup>
+                return (
+                  <optgroup key={main.id} label={main.name}>
+                    {/* TÜMÜ */}
+                    <option value={main.id}>Tümü ({main.name})</option>
 
-              {/* ================= OTO & MOTOR ================= */}
-              <optgroup label="Oto & Motor Hizmetleri">
-                <option value="oto-tamir">Oto Tamircisi</option>
-                <option value="oto-elektrik">Oto Elektrikçisi</option>
-                <option value="kaportaci">Kaportacı</option>
-                <option value="oto-boyaci">Oto Boyacısı</option>
-                <option value="oto-yikama">Oto Yıkama</option>
-                <option value="lastikci">Lastikçi</option>
-                <option value="egzozcu">Egzozcu</option>
-                <option value="oto-aksesuar">Oto Aksesuar</option>
-                <option value="oto-ekspertiz">Oto Ekspertiz</option>
-                <option value="yedek-parca">Yedek Parça</option>
-                <option value="motosiklet-tamir">Motosiklet Tamiri</option>
-              </optgroup>
-
-              {/* ================= EV & İNŞAAT ================= */}
-              <optgroup label="İnşaat & Ev Hizmetleri">
-                <option value="insaat-ustasi">İnşaat Ustası</option>
-                <option value="boyaci">Boyacı / Badanacı</option>
-                <option value="tesisatci">Sıhhi Tesisatçı</option>
-                <option value="elektrikci">Elektrikçi</option>
-                <option value="alcipan">Alçıpan Ustası</option>
-                <option value="fayans">Fayans / Seramik</option>
-                <option value="camci">Camcı</option>
-                <option value="pvc-dograma">PVC Doğrama</option>
-                <option value="demir-dograma">Demir Doğrama</option>
-                <option value="cati">Çatı Ustası</option>
-                <option value="kombici">Kombi / Kalorifer</option>
-              </optgroup>
-
-              {/* ================= MOBİLYA & AHŞAP ================= */}
-              <optgroup label="Mobilya & Ahşap">
-                <option value="marangoz">Marangoz</option>
-                <option value="mobilya">Mobilya</option>
-                <option value="mobilya-imalat">Mobilya İmalatı</option>
-                <option value="mobilya-tamir">Mobilya Tamiri</option>
-                <option value="parke">Parke Ustası</option>
-                <option value="lake-ustasi">Lake Ustası</option>
-              </optgroup>
-
-              {/* ================= GİYİM & BAKIM ================= */}
-              <optgroup label="Giyim & Kişisel Bakım">
-                <option value="berber">Berber</option>
-                <option value="kuafor">Kuaför</option>
-                <option value="guzellik-salonu">Güzellik Salonu</option>
-                <option value="terzi">Terzi</option>
-                <option value="kuru-temizleme">Kuru Temizleme</option>
-                <option value="ayakkabi-tamir">Ayakkabı Tamiri</option>
-                <option value="camasirhane">Çamaşırhane</option>
-              </optgroup>
-
-              {/* ================= TEKNOLOJİ ================= */}
-              <optgroup label="Teknoloji & Elektronik">
-                <option value="telefon-tamir">Telefon Tamiri</option>
-                <option value="bilgisayar-tamir">Bilgisayar Tamiri</option>
-                <option value="beyaz-esya">Beyaz Eşya</option>
-                <option value="beyaz-esya">Beyaz Eşya Servisi</option>
-                <option value="tv-tamir">Televizyon Tamiri</option>
-                <option value="kamera-alarm">Kamera / Alarm Sistemleri</option>
-              </optgroup>
-
-              {/* ================= SAĞLIK ================= */}
-              <optgroup label="Sağlık & Medikal">
-                <option value="eczane">Eczane</option>
-                <option value="medikal">Medikal Ürünler</option>
-                <option value="optik">Optik</option>
-                <option value="dis-klinigi">Diş Kliniği</option>
-                <option value="veteriner">Veteriner</option>
-              </optgroup>
-
-              {/* ================= TARIM ================= */}
-              <optgroup label="Tarım & Hayvancılık">
-                <option value="ciftci">Çiftçi</option>
-                <option value="sutcu">Sütçü</option>
-                <option value="yumurta">Yumurta Satıcısı</option>
-                <option value="arici">Arıcı</option>
-                <option value="cicekci">Çiçekçi</option>
-              </optgroup>
-
-              {/* ================= GENEL HİZMET ================= */}
-              <optgroup label="Genel Hizmetler">
-                <option value="temizlik">Temizlik Hizmeti</option>
-                <option value="hali-yikama">Halı Yıkama</option>
-                <option value="koltuk-yikama">Koltuk Yıkama</option>
-                <option value="organizasyon">Organizasyon</option>
-                <option value="fotografci">Fotoğrafçı</option>
-                <option value="matbaa">Matbaa</option>
-                <option value="cilingir">Çilingir</option>
-                <option value="danismanlik">Danışmanlık</option>
-              </optgroup>
-
-              {/* ================= DİĞER ================= */}
-              <optgroup label="Diğer">
-                <option value="emlak">Emlak Danışmanı</option>
-                <option value="sigorta">Sigorta Acentesi</option>
-                <option value="seyyar-satici">Seyyar Satıcı</option>
-                <option value="kuryelik">Kuryelik</option>
-              </optgroup>
+                    {/* ALT KATEGORİLER */}
+                    {subCategories.map((sub) => (
+                      <option key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                );
+              })}
             </select>
 
-            {query.type && (
+            {query.categoryId && (
               <button
                 type="button"
                 className="clear-btn"
-                onClick={() => clearField("type")}
+                onClick={() => clearField("categoryId")}
               >
                 ✕
               </button>
@@ -348,7 +263,7 @@ function Filter() {
           </div>
         </div>
 
-        {/* 🔘 Filtrele Butonu */}
+        {/* 🔘 BUTTON */}
         <button type="submit" className="search-btn">
           <img src="/search.png" alt="Ara" />
           Filtrele

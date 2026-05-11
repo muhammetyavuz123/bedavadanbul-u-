@@ -16,7 +16,7 @@ function ListPage() {
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
 
-  const type = searchParams.get("type");
+  const categoryId = searchParams.get("categoryId");
   const city = searchParams.get("city");
   const district = searchParams.get("district");
   const search = searchParams.get("search");
@@ -37,7 +37,7 @@ function ListPage() {
         approved: "true",
       });
 
-      if (type) query.append("type", type);
+      if (categoryId) query.append("categoryId", categoryId);
       if (city) query.append("city", city);
       if (district) query.append("district", district);
       if (search) query.append("search", search); // search parametresi ekleniyor

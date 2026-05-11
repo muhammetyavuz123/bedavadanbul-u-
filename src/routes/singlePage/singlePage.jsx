@@ -138,7 +138,7 @@ function SinglePage() {
           {/* 🔹 KATEGORİLER */}
           <div className="categories">
             <h4>Kategori</h4>
-            <div className="catItem">{post.type}</div>
+            <div className="catItem">{post.category?.name}</div>
           </div>
 
           {/* 🔹 AÇIKLAMA */}

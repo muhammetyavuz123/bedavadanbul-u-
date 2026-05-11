@@ -10,6 +10,7 @@ import { useError } from "../../context/ErrorContext";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { useCategories } from "../../lib/useCategories";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -28,7 +29,7 @@ function NewPostPage() {
   const [districhs, setDistrichs] = useState([]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [businessName, setBusinessName] = useState("");
-  const [type, setType] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [loadingLocation, setLoadingLocation] = useState(false);
@@ -42,6 +43,8 @@ function NewPostPage() {
   const [mapCenter, setMapCenter] = useState([41.0082, 28.9784]); // fallback
   const [mapPosition, setMapPosition] = useState(null);
   const mapRef = useRef(null);
+  const categories = useCategories();
+
   const [locationMode, setLocationMode] = useState("map");
   function LocationPicker({ setLatitude, setLongitude, setMapPosition }) {
     useMapEvents({
@@ -57,6 +60,7 @@ function NewPostPage() {
 
     return null;
   }
+
   const getCoordsFromCityDistrict = async (city, district) => {
     try {
       const q = `${district}, ${city}, Turkey`;
@@ -78,6 +82,7 @@ function NewPostPage() {
     }
     return null;
   };
+
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       showError("Tarayıcınız konum özelliğini desteklemiyor.");
@@ -194,7 +199,7 @@ function NewPostPage() {
       if (currentUser?.user?.district) setDistrict(currentUser?.user?.district);
       if (currentUser?.user?.phone) setPhoneNumber(currentUser?.user?.phone);
       setBusinessName(currentUser?.user?.username || "");
-      setType(currentUser?.user?.type || "");
+      setCategoryId(currentUser?.user?.categoryId || "");
     }
   }, [currentUser]);
 
@@ -231,6 +236,7 @@ function NewPostPage() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
+    console.log("🚀 ~ handleSubmit ~ inputs:", inputs);
     const newErrors = {};
 
     if (!inputs.title?.trim()) newErrors.title = "Kampanya başlığı boş olamaz";
@@ -240,7 +246,7 @@ function NewPostPage() {
     if (!district) newErrors.district = "İlçe seçiniz";
     if (!latitude) newErrors.latitude = "Konum bilgisi alınamadı";
     if (!longitude) newErrors.longitude = "Konum bilgisi alınamadı";
-    if (!inputs.type) newErrors.type = "Kampanya türü seçiniz";
+    if (!inputs.categoryId) newErrors.categoryId = "Kampanya türü seçiniz";
     if (!inputs.businessName?.trim())
       newErrors.businessName = "İşletme adı boş olamaz";
     if (!inputs.campaignDuration?.trim())
@@ -265,7 +271,7 @@ function NewPostPage() {
           address: inputs.address,
           city: citie,
           district,
-          type: currentUser?.user?.type || inputs.type,
+          categoryId: currentUser?.user?.categoryId || inputs.categoryId,
           businessName: currentUser?.user?.username || inputs.businessName,
           // username: currentUser?.user?.username,
           latitude,
@@ -284,8 +290,10 @@ function NewPostPage() {
 
       navigate("/" + res.data.id);
     } catch (err) {
-      console.log(err);
-      setError({ submit: "Sunucu hatası, lütfen tekrar deneyiniz." });
+      setError({
+        submit:
+          "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz. veya destek için iletişime geçiniz.",
+      });
     }
   };
   useEffect(() => {
@@ -293,6 +301,7 @@ function NewPostPage() {
       mapRef.current.setView([latitude, longitude], 15);
     }
   }, [latitude, longitude]);
+
   return (
     <div className="newPostPage">
       <div className="formContainer">
@@ -506,15 +515,37 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="type">Kampanya Türü</label>
-
               <select
                 id="type"
+                name="categoryId"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+              >
+                <option value="">Kategori seç</option>
+
+                {categories
+                  .filter((c) => !c.parentId)
+                  .map((parent) => (
+                    <optgroup key={parent.id} label={parent.name}>
+                      <option value={parent.id}>Tümü ({parent.name})</option>
+
+                      {categories
+                        .filter((c) => c.parentId === parent.id)
+                        .map((child) => (
+                          <option key={child.id} value={child.id}>
+                            {child.name}
+                          </option>
+                        ))}
+                    </optgroup>
+                  ))}
+              </select>
+              {/* <select
+                id="type"
                 name="type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
               >
                 <option value="">Kategori Seçin</option>
-                {/* ================= GIDA & YEME İÇME ================= */}
                 <optgroup label="Gıda & Yeme İçme">
                   <option value="bakkal">Bakkal</option>
                   <option value="market">Market</option>
@@ -539,7 +570,6 @@ function NewPostPage() {
                   <option value="su-bayii">Su Bayii</option>
                 </optgroup>
 
-                {/* ================= ULAŞIM & TAŞIMACILIK ================= */}
                 <optgroup label="Ulaşım & Taşımacılık">
                   <option value="taksici">Taksici</option>
                   <option value="dolmuscu">Dolmuşçu</option>
@@ -556,7 +586,6 @@ function NewPostPage() {
                   </option>
                 </optgroup>
 
-                {/* ================= OTO & MOTOR ================= */}
                 <optgroup label="Oto & Motor Hizmetleri">
                   <option value="oto-tamir">Oto Tamircisi</option>
                   <option value="oto-elektrik">Oto Elektrikçisi</option>
@@ -571,7 +600,6 @@ function NewPostPage() {
                   <option value="motosiklet-tamir">Motosiklet Tamiri</option>
                 </optgroup>
 
-                {/* ================= EV & İNŞAAT ================= */}
                 <optgroup label="İnşaat & Ev Hizmetleri">
                   <option value="insaat-ustasi">İnşaat Ustası</option>
                   <option value="boyaci">Boyacı / Badanacı</option>
@@ -586,7 +614,6 @@ function NewPostPage() {
                   <option value="kombici">Kombi / Kalorifer</option>
                 </optgroup>
 
-                {/* ================= MOBİLYA & AHŞAP ================= */}
                 <optgroup label="Mobilya & Ahşap">
                   <option value="marangoz">Marangoz</option>
                   <option value="mobilya">Mobilya</option>
@@ -596,7 +623,6 @@ function NewPostPage() {
                   <option value="lake-ustasi">Lake Ustası</option>
                 </optgroup>
 
-                {/* ================= GİYİM & BAKIM ================= */}
                 <optgroup label="Giyim & Kişisel Bakım">
                   <option value="berber">Berber</option>
                   <option value="kuafor">Kuaför</option>
@@ -607,7 +633,6 @@ function NewPostPage() {
                   <option value="camasirhane">Çamaşırhane</option>
                 </optgroup>
 
-                {/* ================= TEKNOLOJİ ================= */}
                 <optgroup label="Teknoloji & Elektronik">
                   <option value="telefon-tamir">Telefon Tamiri</option>
                   <option value="bilgisayar-tamir">Bilgisayar Tamiri</option>
@@ -619,7 +644,6 @@ function NewPostPage() {
                   </option>
                 </optgroup>
 
-                {/* ================= SAĞLIK ================= */}
                 <optgroup label="Sağlık & Medikal">
                   <option value="eczane">Eczane</option>
                   <option value="medikal">Medikal Ürünler</option>
@@ -628,7 +652,6 @@ function NewPostPage() {
                   <option value="veteriner">Veteriner</option>
                 </optgroup>
 
-                {/* ================= TARIM ================= */}
                 <optgroup label="Tarım & Hayvancılık">
                   <option value="ciftci">Çiftçi</option>
                   <option value="sutcu">Sütçü</option>
@@ -637,7 +660,6 @@ function NewPostPage() {
                   <option value="cicekci">Çiçekçi</option>
                 </optgroup>
 
-                {/* ================= GENEL HİZMET ================= */}
                 <optgroup label="Genel Hizmetler">
                   <option value="temizlik">Temizlik Hizmeti</option>
                   <option value="hali-yikama">Halı Yıkama</option>
@@ -649,16 +671,16 @@ function NewPostPage() {
                   <option value="danismanlik">Danışmanlık</option>
                 </optgroup>
 
-                {/* ================= DİĞER ================= */}
                 <optgroup label="Diğer">
                   <option value="emlak">Emlak Danışmanı</option>
                   <option value="sigorta">Sigorta Acentesi</option>
                   <option value="seyyar-satici">Seyyar Satıcı</option>
                   <option value="kuryelik">Kuryelik</option>
                 </optgroup>
-              </select>
-
-              {error.type && <span className="error">{error.type}</span>}
+              </select> */}
+              {error.categoryId && (
+                <span className="error">{error.categoryId}</span>
+              )}{" "}
             </div>
 
             <div className="item">
