@@ -17,14 +17,16 @@ function ProfilList() {
       try {
         const res = await apiRequest.get(
           currentUser?.user?.role === "admin"
-            ? `/posts?approved=${false}`
+            ? `/posts?page=1&limit=100`
             : `/posts?userId=${currentUser?.user?.id}`,
         );
+
         setConfirmData(res.data);
       } catch (err) {
         console.log(err);
       }
     };
+
     confirmPostGet();
   }, []);
 

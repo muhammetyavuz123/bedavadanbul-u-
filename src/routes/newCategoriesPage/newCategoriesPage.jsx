@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../../lib/apiRequest";
+import "./newCategoriesPage.scss";
 
 function NewCategoryPage() {
   const [categories, setCategories] = useState([]);
@@ -25,7 +26,7 @@ function NewCategoryPage() {
     setSuccess("");
 
     try {
-      // 🔵 VAR OLAN ANA KATEGORİYE ALT EKLE
+      // ALT KATEGORİ EKLE
       if (parentId) {
         await apiRequest.post("/categories", {
           name,
@@ -37,7 +38,7 @@ function NewCategoryPage() {
         return;
       }
 
-      // 🟢 YENİ ANA + ALT EKLE
+      // YENİ ANA + ALT
       if (newParentName) {
         const res = await apiRequest.post("/categories", {
           name: newParentName,
@@ -52,8 +53,10 @@ function NewCategoryPage() {
         });
 
         setSuccess("Ana ve alt kategori oluşturuldu ✅");
+
         setName("");
         setNewParentName("");
+
         return;
       }
 
@@ -64,48 +67,68 @@ function NewCategoryPage() {
   };
 
   return (
-    <div>
-      <h1>Kategori Sistemi</h1>
+    <div className="newCategoryPage">
+      <div className="categoryCard">
+        <div className="top">
+          <h1>Kategori Sistemi</h1>
+          <p>Yeni ana kategori veya alt kategori oluşturabilirsiniz.</p>
+        </div>
 
-      {/* ANA KATEGORİ SEÇ */}
-      <select value={parentId} onChange={(e) => setParentId(e.target.value)}>
-        <option value="">Ana kategori seç (varsa)</option>
+        {/* VAR OLAN ANA */}
+        <div className="formGroup">
+          <label>Var Olan Ana Kategori</label>
 
-        {mainCategories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
+          <select
+            value={parentId}
+            onChange={(e) => setParentId(e.target.value)}
+          >
+            <option value="">Ana kategori seç (varsa)</option>
 
-      <hr />
+            {mainCategories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* YENİ ANA */}
-      <input
-        placeholder="Yeni ana kategori (yoksa)"
-        value={newParentName}
-        onChange={(e) => setNewParentName(e.target.value)}
-      />
+        <div className="divider">
+          <span>veya</span>
+        </div>
 
-      <hr />
+        {/* YENİ ANA */}
+        <div className="formGroup">
+          <label>Yeni Ana Kategori</label>
 
-      {/* ALT KATEGORİ */}
-      <input
-        placeholder="Alt kategori adı"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Örn: Teknoloji"
+            value={newParentName}
+            onChange={(e) => setNewParentName(e.target.value)}
+          />
+        </div>
 
-      <hr />
+        {/* ALT */}
+        <div className="formGroup">
+          <label>Alt Kategori</label>
 
-      {/* MESAJLAR */}
-      {error && <div style={{ color: "red", marginBottom: 10 }}>{error}</div>}
+          <input
+            type="text"
+            placeholder="Örn: Telefon Tamiri"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
 
-      {success && (
-        <div style={{ color: "green", marginBottom: 10 }}>{success}</div>
-      )}
+        {/* MESAJ */}
+        {error && <div className="message error">{error}</div>}
 
-      <button onClick={submit}>Kaydet</button>
+        {success && <div className="message success">{success}</div>}
+
+        <button onClick={submit} className="saveBtn">
+          Kaydet
+        </button>
+      </div>
     </div>
   );
 }

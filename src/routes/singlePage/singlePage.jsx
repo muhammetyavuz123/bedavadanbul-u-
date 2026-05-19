@@ -60,7 +60,9 @@ function SinglePage() {
                 </li>
                 <li>
                   <span>Bitiş Tarihi:</span>{" "}
-                  {post.postDetail?.campaignDuration?.split("T")[0]}
+                  {post.expireDate
+                    ? new Date(post.expireDate).toLocaleDateString("tr-TR")
+                    : "Henüz onaylanmadı"}{" "}
                 </li>
                 <li>
                   <span>Telefon:</span> {post.phoneNumber}

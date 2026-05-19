@@ -1,0 +1,199 @@
+.newCategoryPage {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: #f5f7fb;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .categoryCard {
+    width: 100%;
+    max-width: 650px;
+
+    background: #fff;
+
+    border-radius: 24px;
+
+    padding: 35px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+
+    .top {
+      margin-bottom: 30px;
+
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 10px;
+      }
+
+      p {
+        color: #6b7280;
+        font-size: 15px;
+        line-height: 1.6;
+      }
+    }
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      margin-bottom: 24px;
+
+      label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      input,
+      select {
+        width: 100%;
+        height: 52px;
+
+        border: 1px solid #d1d5db;
+
+        border-radius: 14px;
+
+        padding: 0 16px;
+
+        font-size: 15px;
+
+        outline: none;
+
+        transition: 0.3s;
+
+        background: #fff;
+
+        &:focus {
+          border-color: #ff3c38;
+
+          box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
+        }
+      }
+    }
+
+    .divider {
+      width: 100%;
+      position: relative;
+
+      margin: 25px 0;
+
+      display: flex;
+      justify-content: center;
+
+      &::before {
+        content: "";
+
+        position: absolute;
+
+        top: 50%;
+        left: 0;
+
+        width: 100%;
+        height: 1px;
+
+        background: #e5e7eb;
+      }
+
+      span {
+        position: relative;
+
+        background: #fff;
+
+        padding: 0 14px;
+
+        color: #9ca3af;
+
+        font-size: 14px;
+      }
+    }
+
+    .message {
+      padding: 14px 16px;
+
+      border-radius: 12px;
+
+      margin-bottom: 20px;
+
+      font-size: 14px;
+
+      font-weight: 500;
+
+      &.error {
+        background: #fee2e2;
+        color: #dc2626;
+      }
+
+      &.success {
+        background: #dcfce7;
+        color: #16a34a;
+      }
+    }
+
+    .saveBtn {
+      width: 100%;
+      height: 55px;
+
+      border: none;
+
+      border-radius: 16px;
+
+      background: #ff3c38;
+
+      color: white;
+
+      font-size: 16px;
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: 0.3s;
+
+      &:hover {
+        transform: translateY(-2px);
+
+        background: #eb2f2b;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .newCategoryPage {
+    padding: 20px 14px;
+
+    .categoryCard {
+      padding: 24px;
+
+      border-radius: 18px;
+
+      .top {
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
+
+      .formGroup {
+        input,
+        select {
+          height: 48px;
+          font-size: 14px;
+        }
+      }
+
+      .saveBtn {
+        height: 50px;
+        font-size: 15px;
+      }
+    }
+  }
+}

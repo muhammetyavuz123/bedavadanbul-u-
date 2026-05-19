@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../lib/apiRequest";
+import "./categoriesPage.scss";
 
 function CategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -34,37 +35,49 @@ function CategoriesPage() {
     return items
       .filter((c) => (c.parentId || null) === parentId)
       .map((c) => (
-        <div
-          key={c.id}
-          style={{
-            marginLeft: level * 20,
-            padding: "8px",
-            borderLeft: "2px solid #ddd",
-          }}
-        >
-          <div style={{ display: "flex", gap: 10 }}>
-            <span>
-              {c.name} {!c.isApproved && "(Bekliyor)"}
-            </span>
+        <div key={c.id} className={`categoryItem level-${level}`}>
+          <div className="categoryCard">
+            <div className="left">
+              <div className="categoryInfo">
+                <h4>{c.name}</h4>
 
-            {!c.isApproved && (
-              <button onClick={() => approve(c.id)}>Onayla</button>
-            )}
+                <span
+                  className={`status ${c.isApproved ? "approved" : "pending"}`}
+                >
+                  {c.isApproved ? "Onaylandı" : "Onay Bekliyor"}
+                </span>
+              </div>
+            </div>
 
-            <button onClick={() => remove(c.id)} style={{ color: "red" }}>
-              Sil
-            </button>
+            <div className="actions">
+              {!c.isApproved && (
+                <button className="approveBtn" onClick={() => approve(c.id)}>
+                  Onayla
+                </button>
+              )}
+
+              <button className="deleteBtn" onClick={() => remove(c.id)}>
+                Sil
+              </button>
+            </div>
           </div>
 
-          {renderCategories(items, c.id, level + 1)}
+          <div className="children">
+            {renderCategories(items, c.id, level + 1)}
+          </div>
         </div>
       ));
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Kategori Yönetimi</h2>
-      {renderCategories(categories)}
+    <div className="categoriesPage">
+      <div className="top">
+        <h1>Kategori Yönetimi</h1>
+
+        <p>Tüm kategori ve alt kategorileri buradan yönetebilirsiniz.</p>
+      </div>
+
+      <div className="categoriesWrapper">{renderCategories(categories)}</div>
     </div>
   );
 }

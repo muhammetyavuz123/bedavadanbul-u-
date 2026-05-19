@@ -249,8 +249,7 @@ function NewPostPage() {
     if (!inputs.categoryId) newErrors.categoryId = "Kampanya türü seçiniz";
     if (!inputs.businessName?.trim())
       newErrors.businessName = "İşletme adı boş olamaz";
-    if (!inputs.campaignDuration?.trim())
-      newErrors.campaignDuration = "Kampanya süresi boş olamaz";
+    if (!inputs.adDuration) newErrors.adDuration = "Reklam süresi seçiniz";
     if (!inputs.discountAmount?.trim())
       newErrors.discountAmount = "İndirim miktarı boş olamaz";
     if (!phoneNumber?.trim())
@@ -273,13 +272,16 @@ function NewPostPage() {
           district,
           categoryId: currentUser?.user?.categoryId || inputs.categoryId,
           businessName: currentUser?.user?.username || inputs.businessName,
-          // username: currentUser?.user?.username,
           latitude,
           longitude,
           phoneNumber,
           images,
+
           approved: false,
+
           listingType,
+
+          adDuration: Number(inputs.adDuration),
         },
         postDetail: {
           desc: value,
@@ -684,14 +686,18 @@ function NewPostPage() {
             </div>
 
             <div className="item">
-              <label htmlFor="campaignDuration">Kampanya Süresi</label>
-              <input
-                id="campaignDuration"
-                name="campaignDuration"
-                type="text"
-              />
-              {error.campaignDuration && (
-                <span className="error">{error.campaignDuration}</span>
+              <label htmlFor="adDuration">Reklam Yayın Süresi</label>
+
+              <select id="adDuration" name="adDuration">
+                <option value="">Süre Seçiniz</option>
+                <option value="1">1 Ay</option>
+                <option value="3">3 Ay</option>
+                <option value="6">6 Ay</option>
+                <option value="12">1 Yıl</option>
+              </select>
+
+              {error.adDuration && (
+                <span className="error">{error.adDuration}</span>
               )}
             </div>
 
