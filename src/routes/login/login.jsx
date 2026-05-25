@@ -29,7 +29,10 @@ function Login() {
         password,
       });
 
-      updateUser(res.data);
+      localStorage.setItem("token", res.data.token);
+
+      updateUser(res.data.user);
+
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Bir hata oluştu");

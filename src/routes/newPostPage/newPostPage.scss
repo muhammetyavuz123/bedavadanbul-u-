@@ -93,6 +93,10 @@
           &:hover {
             background-color: #ff3c38;
           }
+          .sendButton:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
         }
       }
     }

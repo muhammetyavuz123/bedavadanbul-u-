@@ -159,7 +159,7 @@ function SinglePage() {
             {currentUser && (
               <CommentForms
                 postId={post.id}
-                userId={currentUser?.user?.id}
+                userId={currentUser?.id}
                 onCommentAdded={() => setRefresh((p) => !p)}
               />
             )}

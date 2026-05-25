@@ -79,7 +79,7 @@ const CommentLists = ({ postId }) => {
               <span className="username">{comment.user?.username}</span>
             </div>
 
-            {currentUser?.user?.id === comment.userId && (
+            {currentUser?.id === comment.userId && (
               <>
                 {" "}
                 <button

@@ -38,7 +38,7 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
   return (
     <form className="comment-form" onSubmit={handleSubmit}>
       <img
-        src={currentUser?.user?.avatar || defaultAvatar}
+        src={currentUser?.avatar || defaultAvatar}
         alt="avatar"
         className="avatar"
       />

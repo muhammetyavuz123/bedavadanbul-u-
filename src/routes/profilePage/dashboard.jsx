@@ -11,9 +11,9 @@ export default function Dashboard() {
     const fetchCampaigns = async () => {
       try {
         const res = await apiRequest.get(
-          currentUser?.user?.role === "admin"
+          currentUser?.role === "admin"
             ? `/posts?approved=false` // admin onay bekleyenleri görebilir
-            : `/posts?userId=${currentUser?.user?.id}`, // normal kullanıcı kendi kampanyalarını görür
+            : `/posts?userId=${currentUser?.id}`, // normal kullanıcı kendi kampanyalarını görür
         );
         const campaignsArray = Array.isArray(res.data)
           ? res.data
@@ -47,18 +47,18 @@ export default function Dashboard() {
         <div className="user-info">
           <img
             src={
-              currentUser?.user?.avatar ||
+              currentUser?.avatar ||
               "https://cdn-icons-png.flaticon.com/512/149/149071.png"
             }
             alt="Profil"
           />
           <div className="details">
-            <span className="username">{currentUser?.user?.username}</span>
+            <span className="username">{currentUser?.username}</span>
             <span className="role">
-              {currentUser?.user?.role === "admin" ? "Yönetici" : "Esnaf"}
+              {currentUser?.role === "admin" ? "Yönetici" : "Esnaf"}
             </span>
             <span className="location">
-              {currentUser?.user?.city}, {currentUser?.user?.district}
+              {currentUser?.city}, {currentUser?.district}
             </span>
           </div>
         </div>

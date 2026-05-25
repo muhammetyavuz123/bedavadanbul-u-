@@ -61,7 +61,7 @@ function List({ posts }) {
   return (
     <>
       {/* TABS */}
-      {currentUser?.user?.role === "admin" && (
+      {currentUser?.role === "admin" && (
         <div
           style={{
             display: "flex",
@@ -144,7 +144,7 @@ function List({ posts }) {
               <Card item={item} />
 
               {/* ADMIN INFO */}
-              {currentUser?.user?.role === "admin" && (
+              {currentUser?.role === "admin" && (
                 <div
                   style={{
                     marginTop: "14px",
@@ -238,7 +238,7 @@ function List({ posts }) {
                 }}
               >
                 {/* APPROVE */}
-                {currentUser?.user?.role === "admin" && !item.approved && (
+                {currentUser?.role === "admin" && !item.approved && (
                   <button
                     className="buttonDelete"
                     style={{

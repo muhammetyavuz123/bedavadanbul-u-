@@ -1,7 +1,6 @@
-import { useContext, Suspense } from "react";
+import { Suspense } from "react";
 import SearchBar from "../../components/searchBar/SearchBar";
 import "./homePage.scss";
-import { AuthContext } from "../../context/AuthContext";
 import w from "../../assets/ee.png";
 import CategoryCard from "./categoryCard";
 import Carusel from "./carusel";
@@ -13,8 +12,6 @@ import Loader from "../../components/loader/Loader";
 
 function HomePage() {
   const data = useLoaderData();
-
-  const { currentUser } = useContext(AuthContext);
 
   return (
     <>

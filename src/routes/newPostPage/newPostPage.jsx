@@ -44,7 +44,7 @@ function NewPostPage() {
   const [mapPosition, setMapPosition] = useState(null);
   const mapRef = useRef(null);
   const categories = useCategories();
-
+  const [pending, setPending] = useState(false);
   const [locationMode, setLocationMode] = useState("map");
   function LocationPicker({ setLatitude, setLongitude, setMapPosition }) {
     useMapEvents({
@@ -195,11 +195,11 @@ function NewPostPage() {
 
   useEffect(() => {
     if (currentUser) {
-      if (currentUser?.user?.city) setCitie(currentUser?.user?.city);
-      if (currentUser?.user?.district) setDistrict(currentUser?.user?.district);
-      if (currentUser?.user?.phone) setPhoneNumber(currentUser?.user?.phone);
-      setBusinessName(currentUser?.user?.username || "");
-      setCategoryId(currentUser?.user?.categoryId || "");
+      if (currentUser?.city) setCitie(currentUser?.city);
+      if (currentUser?.district) setDistrict(currentUser?.district);
+      if (currentUser?.phone) setPhoneNumber(currentUser?.phone);
+      setBusinessName(currentUser?.username || "");
+      setCategoryId(currentUser?.categoryId || "");
     }
   }, [currentUser]);
 
@@ -234,9 +234,12 @@ function NewPostPage() {
   // Form gönder
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (pending) return;
+
     const formData = new FormData(e.target);
+
     const inputs = Object.fromEntries(formData);
-    console.log("🚀 ~ handleSubmit ~ inputs:", inputs);
     const newErrors = {};
 
     if (!inputs.title?.trim()) newErrors.title = "Kampanya başlığı boş olamaz";
@@ -263,6 +266,8 @@ function NewPostPage() {
 
     setError({});
     try {
+      setPending(true);
+
       const res = await apiRequest.post("/posts", {
         postData: {
           title: inputs.title,
@@ -270,17 +275,14 @@ function NewPostPage() {
           address: inputs.address,
           city: citie,
           district,
-          categoryId: currentUser?.user?.categoryId || inputs.categoryId,
-          businessName: currentUser?.user?.username || inputs.businessName,
+          categoryId: currentUser?.categoryId || inputs.categoryId,
+          businessName: currentUser?.username || inputs.businessName,
           latitude,
           longitude,
           phoneNumber,
           images,
-
           approved: false,
-
           listingType,
-
           adDuration: Number(inputs.adDuration),
         },
         postDetail: {
@@ -293,9 +295,10 @@ function NewPostPage() {
       navigate("/" + res.data.id);
     } catch (err) {
       setError({
-        submit:
-          "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz. veya destek için iletişime geçiniz.",
+        submit: "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz.",
       });
+    } finally {
+      setPending(false);
     }
   };
   useEffect(() => {
@@ -328,7 +331,6 @@ function NewPostPage() {
               <input id="title" name="title" type="text" />
               {error.title && <span className="error">{error.title}</span>}
             </div>
-
             <div className="item">
               <label htmlFor="city">İl</label>
               <select
@@ -349,7 +351,6 @@ function NewPostPage() {
               </select>
               {error.city && <span className="error">{error.city}</span>}
             </div>
-
             <div className="item">
               <label htmlFor="district">İlçe</label>
               <select
@@ -492,7 +493,6 @@ function NewPostPage() {
                 )}
               </div>
             </div>
-
             <div className="item">
               <label htmlFor="price">Fiyat</label>
               <input id="price" name="price" type="number" />
@@ -541,150 +541,10 @@ function NewPostPage() {
                     </optgroup>
                   ))}
               </select>
-              {/* <select
-                id="type"
-                name="type"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                <option value="">Kategori Seçin</option>
-                <optgroup label="Gıda & Yeme İçme">
-                  <option value="bakkal">Bakkal</option>
-                  <option value="market">Market</option>
-                  <option value="manav">Manav</option>
-                  <option value="kasap">Kasap</option>
-                  <option value="sarkuteri">Şarküteri</option>
-                  <option value="kuruyemisci">Kuruyemişçi</option>
-                  <option value="balikci">Balıkçı</option>
-                  <option value="firin">Fırın / Ekmekçi</option>
-                  <option value="pastane">Pastane</option>
-                  <option value="lokanta">Lokanta / Restoran</option>
-                  <option value="donerci">Dönerci / Kebapçı</option>
-                  <option value="fastfood">Fast Food</option>
-                  <option value="tatlici">Tatlıcı / Baklavacı</option>
-                  <option value="cigkofteci">Çiğköfteci</option>
-                  <option value="kahveci">Kahveci</option>
-                  <option value="cafe">Cafe / Kahvehane</option>
-                  <option value="cay-ocagi">Çay Ocağı</option>
-                  <option value="bufe">Büfe</option>
-                  <option value="dondurmaci">Dondurmacı</option>
-                  <option value="yufkaci">Yufkacı</option>
-                  <option value="su-bayii">Su Bayii</option>
-                </optgroup>
-
-                <optgroup label="Ulaşım & Taşımacılık">
-                  <option value="taksici">Taksici</option>
-                  <option value="dolmuscu">Dolmuşçu</option>
-                  <option value="minibuscu">Minibüsçü</option>
-                  <option value="otobus-soforu">Otobüs Şoförü</option>
-                  <option value="servis-araci">Servis Aracı</option>
-                  <option value="nakliyeci">Nakliyeci</option>
-                  <option value="kamyoncu">Kamyoncu</option>
-                  <option value="motorlu-kurye">Motorlu Kurye</option>
-                  <option value="bisikletli-kurye">Bisikletli Kurye</option>
-                  <option value="kargo-dagitim">Kargo Dağıtım</option>
-                  <option value="oto-kiralama">
-                    Oto Kiralama (Rent a Car)
-                  </option>
-                </optgroup>
-
-                <optgroup label="Oto & Motor Hizmetleri">
-                  <option value="oto-tamir">Oto Tamircisi</option>
-                  <option value="oto-elektrik">Oto Elektrikçisi</option>
-                  <option value="kaportaci">Kaportacı</option>
-                  <option value="oto-boyaci">Oto Boyacısı</option>
-                  <option value="oto-yikama">Oto Yıkama</option>
-                  <option value="lastikci">Lastikçi</option>
-                  <option value="egzozcu">Egzozcu</option>
-                  <option value="oto-aksesuar">Oto Aksesuar</option>
-                  <option value="oto-ekspertiz">Oto Ekspertiz</option>
-                  <option value="yedek-parca">Yedek Parça</option>
-                  <option value="motosiklet-tamir">Motosiklet Tamiri</option>
-                </optgroup>
-
-                <optgroup label="İnşaat & Ev Hizmetleri">
-                  <option value="insaat-ustasi">İnşaat Ustası</option>
-                  <option value="boyaci">Boyacı / Badanacı</option>
-                  <option value="tesisatci">Sıhhi Tesisatçı</option>
-                  <option value="elektrikci">Elektrikçi</option>
-                  <option value="alcipan">Alçıpan Ustası</option>
-                  <option value="fayans">Fayans / Seramik</option>
-                  <option value="camci">Camcı</option>
-                  <option value="pvc-dograma">PVC Doğrama</option>
-                  <option value="demir-dograma">Demir Doğrama</option>
-                  <option value="cati">Çatı Ustası</option>
-                  <option value="kombici">Kombi / Kalorifer</option>
-                </optgroup>
-
-                <optgroup label="Mobilya & Ahşap">
-                  <option value="marangoz">Marangoz</option>
-                  <option value="mobilya">Mobilya</option>
-                  <option value="mobilya-imalat">Mobilya İmalatı</option>
-                  <option value="mobilya-tamir">Mobilya Tamiri</option>
-                  <option value="parke">Parke Ustası</option>
-                  <option value="lake-ustasi">Lake Ustası</option>
-                </optgroup>
-
-                <optgroup label="Giyim & Kişisel Bakım">
-                  <option value="berber">Berber</option>
-                  <option value="kuafor">Kuaför</option>
-                  <option value="guzellik-salonu">Güzellik Salonu</option>
-                  <option value="terzi">Terzi</option>
-                  <option value="kuru-temizleme">Kuru Temizleme</option>
-                  <option value="ayakkabi-tamir">Ayakkabı Tamiri</option>
-                  <option value="camasirhane">Çamaşırhane</option>
-                </optgroup>
-
-                <optgroup label="Teknoloji & Elektronik">
-                  <option value="telefon-tamir">Telefon Tamiri</option>
-                  <option value="bilgisayar-tamir">Bilgisayar Tamiri</option>
-                  <option value="beyaz-esya">Beyaz Eşya</option>
-                  <option value="beyaz-esya">Beyaz Eşya Servisi</option>
-                  <option value="tv-tamir">Televizyon Tamiri</option>
-                  <option value="kamera-alarm">
-                    Kamera / Alarm Sistemleri
-                  </option>
-                </optgroup>
-
-                <optgroup label="Sağlık & Medikal">
-                  <option value="eczane">Eczane</option>
-                  <option value="medikal">Medikal Ürünler</option>
-                  <option value="optik">Optik</option>
-                  <option value="dis-klinigi">Diş Kliniği</option>
-                  <option value="veteriner">Veteriner</option>
-                </optgroup>
-
-                <optgroup label="Tarım & Hayvancılık">
-                  <option value="ciftci">Çiftçi</option>
-                  <option value="sutcu">Sütçü</option>
-                  <option value="yumurta">Yumurta Satıcısı</option>
-                  <option value="arici">Arıcı</option>
-                  <option value="cicekci">Çiçekçi</option>
-                </optgroup>
-
-                <optgroup label="Genel Hizmetler">
-                  <option value="temizlik">Temizlik Hizmeti</option>
-                  <option value="hali-yikama">Halı Yıkama</option>
-                  <option value="koltuk-yikama">Koltuk Yıkama</option>
-                  <option value="organizasyon">Organizasyon</option>
-                  <option value="fotografci">Fotoğrafçı</option>
-                  <option value="matbaa">Matbaa</option>
-                  <option value="cilingir">Çilingir</option>
-                  <option value="danismanlik">Danışmanlık</option>
-                </optgroup>
-
-                <optgroup label="Diğer">
-                  <option value="emlak">Emlak Danışmanı</option>
-                  <option value="sigorta">Sigorta Acentesi</option>
-                  <option value="seyyar-satici">Seyyar Satıcı</option>
-                  <option value="kuryelik">Kuryelik</option>
-                </optgroup>
-              </select> */}
               {error.categoryId && (
                 <span className="error">{error.categoryId}</span>
               )}{" "}
             </div>
-
             <div className="item">
               <label htmlFor="adDuration">Reklam Yayın Süresi</label>
 
@@ -700,7 +560,6 @@ function NewPostPage() {
                 <span className="error">{error.adDuration}</span>
               )}
             </div>
-
             <div className="item">
               <label htmlFor="discountAmount">İndirim Miktarı</label>
               <input id="discountAmount" name="discountAmount" type="text" />
@@ -708,7 +567,6 @@ function NewPostPage() {
                 <span className="error">{error.discountAmount}</span>
               )}
             </div>
-
             {/* 🔹 currentUser.phone otomatik dolu */}
             <div className="item">
               <label htmlFor="phoneNumber">Telefon Numarası</label>
@@ -723,13 +581,11 @@ function NewPostPage() {
                 <span className="error">{error.phoneNumber}</span>
               )}
             </div>
-
             <div className="item description">
               <label htmlFor="desc">Açıklama</label>
               <ReactQuill theme="snow" onChange={setValue} value={value} />
               {error.desc && <span className="error">{error.desc}</span>}
             </div>
-
             <div className="uploadMobileWrapper">
               <UploadWidget
                 uwConfig={{
@@ -748,8 +604,9 @@ function NewPostPage() {
                 ))}
               </div>
             </div>
-
-            <button className="sendButton">Ekle</button>
+            <button className="sendButton" disabled={pending}>
+              {pending ? "Yükleniyor..." : "Ekle"}
+            </button>{" "}
             {error.submit && <span className="error">{error.submit}</span>}
           </form>
         </div>

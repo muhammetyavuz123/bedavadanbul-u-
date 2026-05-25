@@ -18,7 +18,7 @@ function ProfilList() {
         const res = await apiRequest.get(
           currentUser?.user?.role === "admin"
             ? `/posts?page=1&limit=100`
-            : `/posts?userId=${currentUser?.user?.id}`,
+            : `/posts?userId=${currentUser?.id}`,
         );
 
         setConfirmData(res.data);

@@ -59,7 +59,7 @@ export default function Sidebar() {
               <h2>Menü</h2>
               <button onClick={() => setActiveTab("home")}>Ana Sayfa</button>
               <button onClick={() => setActiveTab("profilList")}>
-                {currentUser?.user?.role === "admin"
+                {currentUser?.role === "admin"
                   ? "kampanyalar"
                   : "Kampanyalarım"}
               </button>
@@ -70,12 +70,12 @@ export default function Sidebar() {
               <button onClick={() => setActiveTab("newCategories")}>
                 Kategori Ekle
               </button>
-              {currentUser?.user?.role === "admin" && (
+              {currentUser?.role === "admin" && (
                 <button onClick={() => setActiveTab("contact")}>
                   İletişim
                 </button>
               )}
-              {currentUser?.user?.role === "admin" && (
+              {currentUser?.role === "admin" && (
                 <button onClick={() => setActiveTab("categories")}>
                   Kategoriler
                 </button>
