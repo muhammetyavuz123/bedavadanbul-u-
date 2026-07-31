@@ -11,13 +11,11 @@ export default function PrivacyPolicy() {
           <strong>Son Güncelleme:</strong> Kasım 2025
         </p>
         <p>
-          <strong>Veri Sorumlusu:</strong> Muhammed Yavuz
+          <strong>Veri Sorumlusu:</strong> BedavadanBul.com
         </p>
         <p>
           <strong>İletişim:</strong>{" "}
-          <a href="mailto:bedavadanbul@gmail.com">
-            bedavadanbul@gmail.com
-          </a>
+          <a href="mailto:bedavadanbul@gmail.com">bedavadanbul@gmail.com</a>
         </p>
 
         <h2>1. Genel Bilgilendirme</h2>
@@ -25,7 +23,7 @@ export default function PrivacyPolicy() {
           Bu Gizlilik Politikası, Bedavadanbul.com (“Platform”) üzerinden
           sunulan hizmetlerin kullanımı sırasında toplanan kişisel verilerin
           işlenme, saklanma ve korunma süreçlerini açıklamaktadır. Platformun
-          sahibi ve veri sorumlusu Muhammed Yavuz’dur.
+          sahibi ve veri sorumlusu BedavadanBul.com’dur.
         </p>
 
         <h2>2. Toplanan Kişisel Veriler</h2>

@@ -2,13 +2,13 @@
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem 1.5rem;
+  padding: 2rem 1rem;
 
   .carousel-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: #222;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
     text-align: left;
   }
   .cg-wrapper {
@@ -34,7 +34,7 @@
   .slick-track {
     display: flex !important; /* make track use flex so slides behave predictably */
     align-items: stretch;
-    margin-top: 8px;
+    margin-top: 20px;
   }
 
   .slick-slide {
@@ -64,7 +64,7 @@
     background: #fff;
     border: 1px solid #eaeaea;
     border-radius: 16px;
-    padding: 0.85rem 0.75rem;
+    padding: 1rem 0.75rem;
     text-align: center;
     transition: all 0.25s ease;
     cursor: pointer;
@@ -73,7 +73,7 @@
        but allow full width inside its slide */
     max-width: 260px;
     width: 100%;
-    height: 150px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -86,16 +86,16 @@
     }
 
     .icon-wrapper {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
 
       img {
-        width: 46px;
-        height: 46px;
+        width: 55px;
+        height: 55px;
         object-fit: contain;
       }
     }
@@ -149,11 +149,11 @@
 
     .category-card {
       max-width: 150px;
-      height: 110px;
+      height: 120px;
 
       .icon-wrapper img {
-        width: 42px;
-        height: 42px;
+        width: 45px;
+        height: 45px;
       }
     }
 
@@ -167,8 +167,8 @@
   @media (max-width: 480px) {
     .category-card {
       max-width: 150px;
-      height: 110px;
-      padding: 0.65rem;
+      height: 120px;
+      padding: 0.75rem;
     }
 
     .category-name {

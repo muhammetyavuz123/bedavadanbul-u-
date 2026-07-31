@@ -14,7 +14,7 @@ export default function TermsOfUse() {
           <strong>Platform:</strong> Bedavadanbul.com
         </p>
         <p>
-          <strong>Sahibi:</strong> Muhammed Yavuz
+          <strong>Sahibi:</strong> BedavadanBul.com
         </p>
 
         <h2>1. Tanımlar</h2>
@@ -52,7 +52,7 @@ export default function TermsOfUse() {
 
         <h2>6. Fikri Mülkiyet Hakları</h2>
         <p>
-          Platformun tasarımı, içeriği ve kodları Muhammed Yavuz’a aittir.
+          Platformun tasarımı, içeriği ve kodları BedavadanBul.com’a aittir.
           İzinsiz kopyalanamaz veya dağıtılamaz.
         </p>
 

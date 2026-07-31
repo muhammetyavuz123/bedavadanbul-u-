@@ -4,6 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Footer from "../../components/Footer/Footer";
+import FloatingContact from "../../components/FloatingContact/FloatingContact";
 
 function Layout() {
   return (
@@ -15,6 +16,7 @@ function Layout() {
         <Outlet />
         <Footer />
       </div>
+      <FloatingContact />
     </div>
   );
 }

@@ -9,13 +9,11 @@ export default function KVKKClarification() {
 
         <div className="section">
           <p>
-            <strong>Veri Sorumlusu:</strong> Muhammed Yavuz
+            <strong>Veri Sorumlusu:</strong> BedavadanBul.com
           </p>
           <p>
             <strong>İletişim:</strong>{" "}
-            <a href="mailto:bedavadanbul@gmail.com">
-              bedavadanbul@gmail.com
-            </a>
+            <a href="mailto:bedavadanbul@gmail.com">bedavadanbul@gmail.com</a>
           </p>
         </div>
 
@@ -78,7 +76,7 @@ export default function KVKKClarification() {
           <FiMail /> E-posta:{" "}
           <a href="mailto:bedavadanbul@gmail.com">bedavadanbul@gmail.com</a>
           <br />
-          <FiUser /> Veri Sorumlusu: Muhammed Yavuz
+          <FiUser /> Veri Sorumlusu: BedavadanBul.com
         </p>
       </div>
     </div>

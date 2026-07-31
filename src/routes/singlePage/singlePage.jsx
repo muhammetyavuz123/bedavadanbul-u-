@@ -3,6 +3,7 @@ import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import DOMPurify from "dompurify";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
@@ -69,8 +70,27 @@ function SinglePage() {
     : null;
   const discount = post.postDetail?.discountAmount;
 
+  const plainDesc = (post.postDetail?.desc || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+
   return (
     <>
+      <Helmet>
+        <title>
+          {post.title} | {post.city} {post.district} - BedavadanBul.com
+        </title>
+        <meta
+          name="description"
+          content={
+            plainDesc ||
+            `${post.title} kampanyasını BedavadanBul.com'da incele, ${post.city} / ${post.district} bölgesindeki fırsatları kaçırma.`
+          }
+        />
+      </Helmet>
+
       <Breadcrumb
         title="Kampanya Detay"
         breadcrumbText={`Anasayfa / ${post.title}`}

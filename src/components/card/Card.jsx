@@ -7,9 +7,9 @@ function Card({ item }) {
     <div className="shop-card">
       <Link to={`/${item.id}`} className="imageContainer">
         {item?.images?.[0] ? (
-          <img src={item.images[0]} alt={item?.title || ""} />
+          <img src={item.images[0]} alt={item?.title || ""} loading="lazy" />
         ) : (
-          <img src={defaulImage} alt="" />
+          <img src={defaulImage} alt="" loading="lazy" />
         )}
 
         {item?.listingType && item.listingType !== "standard" && (

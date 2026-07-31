@@ -25,7 +25,7 @@ const AppBanner = () => {
               <FaGooglePlay /> Google Play
             </a>
             <a
-              href="https://apps.apple.com"
+              href="https://apps.apple.com/tr/app/bedavadanbul-com/id6756208680?l=tr"
               className="btn apple"
               target="_blank"
               rel="noopener noreferrer"
