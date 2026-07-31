@@ -2,6 +2,11 @@ import axios from "axios";
 
 const apiRequest = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+  // API farklı bir domain'de çalışıyor (cross-origin). withCredentials
+  // olmadan tarayıcı httpOnly "token" cookie'sini isteklere hiç eklemiyordu;
+  // bu yüzden sunucudaki cookie tabanlı kontroller (örn. ilan sayfasında
+  // "kaydedildi mi" bilgisi) production'da hiç çalışmıyordu.
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
