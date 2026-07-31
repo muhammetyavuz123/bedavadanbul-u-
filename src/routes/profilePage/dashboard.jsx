@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./dashboard.scss";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
+import { FiCheckCircle, FiClock, FiXCircle } from "react-icons/fi";
 
 export default function Dashboard() {
   const { currentUser } = useContext(AuthContext);
@@ -67,14 +68,17 @@ export default function Dashboard() {
 
       <div className="stats">
         <div className="card active">
+          <FiCheckCircle className="cardIcon" />
           <h3>Yayında Kampanyalar</h3>
           <p>{activeCount}</p>
         </div>
         <div className="card pending">
+          <FiClock className="cardIcon" />
           <h3>Onay Bekleyenler</h3>
           <p>{pendingCount}</p>
         </div>
         <div className="card rejected">
+          <FiXCircle className="cardIcon" />
           <h3>Reddedilenler</h3>
           <p>{rejectedCount}</p>
         </div>

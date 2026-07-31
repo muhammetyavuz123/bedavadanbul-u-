@@ -14,7 +14,10 @@ export default function PrivacyPolicy() {
           <strong>Veri Sorumlusu:</strong> Muhammed Yavuz
         </p>
         <p>
-          <strong>İletişim:</strong> [e-posta adresinizi buraya ekleyin]
+          <strong>İletişim:</strong>{" "}
+          <a href="mailto:bedavadanbul@gmail.com">
+            bedavadanbul@gmail.com
+          </a>
         </p>
 
         <h2>1. Genel Bilgilendirme</h2>
@@ -77,7 +80,11 @@ export default function PrivacyPolicy() {
           <li>Veri taşınabilirliği talep etme</li>
         </ul>
         <p>
-          Talepler <strong>[e-posta adresi]</strong> adresine iletilebilir.
+          Talepler{" "}
+          <a href="mailto:bedavadanbul@gmail.com">
+            <strong>bedavadanbul@gmail.com</strong>
+          </a>{" "}
+          adresine iletilebilir.
         </p>
 
         <h2>8. Güvenlik</h2>

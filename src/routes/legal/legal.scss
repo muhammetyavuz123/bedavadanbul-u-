@@ -18,8 +18,21 @@
   h1 {
     font-size: 32px;
     margin-bottom: 20px;
-    font-weight: 700;
-    color: #222;
+    font-weight: 800;
+    color: #1a1a1a;
+    position: relative;
+    padding-bottom: 14px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 64px;
+      height: 4px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+    }
   }
 
   h2 {
@@ -33,6 +46,28 @@
   p {
     margin-bottom: 14px;
     font-size: 16px;
+  }
+
+  a {
+    color: #ff3c38;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .contactLine {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    svg {
+      vertical-align: middle;
+      margin-right: 4px;
+      color: #ff3c38;
+    }
   }
 
   ul {

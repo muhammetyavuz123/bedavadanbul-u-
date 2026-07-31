@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
 import { useError } from "../../context/ErrorContext";
 
 const CommentForms = ({ postId, userId, onCommentAdded }) => {
@@ -23,9 +22,6 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
       if (res.status === 201) {
         setContent("");
         if (onCommentAdded) onCommentAdded();
-      } else {
-        const err = await res.json();
-        alert(err.message || "Yorum eklenemedi.");
       }
     } catch (error) {
       showError(
@@ -48,11 +44,7 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      {/* {currentUser ? (
-        <Link to="/login"></Link>
-      ) : ( */}
       <button type="submit">Gönder</button>
-      {/* )} */}
     </form>
   );
 };

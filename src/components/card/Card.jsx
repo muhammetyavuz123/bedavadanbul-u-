@@ -4,55 +4,45 @@ import defaulImage from "../../assets/r.png";
 
 function Card({ item }) {
   return (
-    <>
-      <div className="shop-card">
-        <Link to={`/${item.id}`} className="imageContainer">
-          {item?.images[0] ? (
-            <img src={item?.images[0]} alt="" />
-          ) : (
-            <img src={defaulImage} alt="" />
-          )}
-        </Link>
-        <div className="shop-card__info">
-          <h3 className="title">
-            <a href={`/${item?.id}`}>{item?.title}</a>
-          </h3>
-          <p className="location">
-            {item?.city}/{item?.district}
-          </p>
-          {/* <p className="description">
-            <span>{item?.address}</span>
-          </p> */}
-          <p className="price">{item.price}₺</p>
-          <a href={`/${item?.id}`}>
-            {" "}
+    <div className="shop-card">
+      <Link to={`/${item.id}`} className="imageContainer">
+        {item?.images?.[0] ? (
+          <img src={item.images[0]} alt={item?.title || ""} />
+        ) : (
+          <img src={defaulImage} alt="" />
+        )}
+
+        {item?.listingType && item.listingType !== "standard" && (
+          <span className={`typeBadge ${item.listingType}`}>
+            {item.listingType === "doping" ? "Doping" : "Vitrin"}
+          </span>
+        )}
+      </Link>
+
+      <div className="shop-card__info">
+        <h3 className="title">
+          <Link to={`/${item?.id}`}>{item?.title}</Link>
+        </h3>
+        <p className="location">
+          {item?.city}/{item?.district}
+        </p>
+        <p className="price">{item?.price?.toLocaleString("tr-TR")}₺</p>
+
+        <div className="cardFooter">
+          <Link to={`/${item?.id}`}>
             <button>İncele</button>
-          </a>
-          {item.approved === false ? (
-            item.approved ? (
-              <span style={{ color: "green", paddingLeft: "5px" }}>
-                Onaylanmıştır
-              </span>
-            ) : (
-              <span
-                style={{
-                  paddingLeft: "5px",
-                  backgroundColor: "red",
-                  padding: "8px",
-                  borderRadius: "5px",
-                  color: "white",
-                  marginLeft: "5px",
-                }}
-              >
-                Onay Bekleniyor
-              </span>
-            )
-          ) : (
-            ""
+          </Link>
+
+          {typeof item?.approved === "boolean" && (
+            <span
+              className={`statusBadge ${item.approved ? "approved" : "pending"}`}
+            >
+              {item.approved ? "Onaylandı" : "Onay Bekleniyor"}
+            </span>
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

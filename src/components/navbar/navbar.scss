@@ -1,118 +1,176 @@
 @import "../../responsive.scss";
 
-nav {
-  height: 100px;
+.siteNavbar {
+  height: 92px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #dbd9d9;
-
-  a {
-    transition: all 0.4s ease;
-
-    @include sm {
-      display: none;
-    }
-
-    &:hover {
-      scale: 1.05;
-    }
-  }
+  border-bottom: 1px solid #eee;
+  position: relative;
 
   .left {
-    flex: 3;
+    flex: 1;
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 40px;
+    min-width: 0;
 
     .logo {
-      font-weight: bold;
-      font-size: 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      flex-shrink: 0;
 
       img {
-        width: 200px;
+        width: 170px;
+      }
+    }
+
+    .navLinks {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      @include md {
+        display: none;
       }
 
-      span {
-        @include md {
-          display: none;
+      .navLink {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        color: #444;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #fff1f0;
+          color: #ff3c38;
         }
 
-        @include sm {
-          display: initial;
+        &.active {
+          background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+          color: #fff;
+          box-shadow: 0 4px 14px rgba(255, 60, 56, 0.25);
         }
       }
     }
   }
+
   .right {
-    flex: 2;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    // background-color: #fcf5f3;
-    height: 100%;
-    z-index: 99;
+    gap: 14px;
 
-    @include md {
-      background-color: transparent;
-    }
-
-    a {
-      padding: 12px 24px;
-      margin: 20px;
-    }
-
-    .user {
+    .loginCta {
       display: flex;
       align-items: center;
-      font-weight: bold;
+      gap: 8px;
+      background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+      color: #fff;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(255, 60, 56, 0.25);
+      transition: transform 0.15s ease;
 
-      img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        // margin-right: 10px;
-      }
-
-      span {
-        @include sm {
-          display: none;
-        }
-      }
-
-      .profile {
-        padding: 12px 24px;
-        background-color: #ff3c38;
-        cursor: pointer;
-        border: none;
-        position: relative;
-
-        .notification {
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          background-color: red;
-          color: white;
-          border-radius: 50%;
-          width: 26px;
-          height: 26px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+      &:hover {
+        transform: translateY(-1px);
       }
     }
 
-    .register {
-      background-color: #ff3c38;
+    .userArea {
+      display: flex;
+      align-items: center;
+
+      .userChip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 16px 6px 6px;
+        border-radius: 50px;
+        background: #f4f5f7;
+        text-decoration: none;
+        color: #222;
+        font-weight: 600;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #ffe9e8;
+        }
+
+        .avatarWrap {
+          position: relative;
+
+          img {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ff3c38;
+          }
+
+          .notifBadge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #dc2626;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+          }
+        }
+
+        .userName {
+          @include sm {
+            display: none;
+          }
+        }
+      }
+
+      .logoutBtnNav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        background: #f4f5f7;
+        color: #444;
+        padding: 9px 18px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        &:hover {
+          background: #fdeceb;
+          color: #d9362d;
+        }
+      }
     }
 
     .menuIcon {
       display: none;
+      align-items: center;
+      justify-content: center;
       z-index: 999;
 
       img {
@@ -121,38 +179,161 @@ nav {
         cursor: pointer;
       }
 
-      @include sm {
-        display: inline;
+      @include md {
+        display: flex;
+      }
+    }
+  }
+
+  /* === MOBILE DRAWER === */
+  .mobileOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 998;
+
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .mobileMenu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(320px, 85%);
+    height: 100vh;
+    background: #fff;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    transition: right 0.3s ease;
+
+    &.open {
+      right: 0;
+    }
+
+    .closeBtn {
+      align-self: flex-end;
+      background: #f4f5f7;
+      border: none;
+      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .mobileLinks {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .navLink {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        color: #333;
+        font-weight: 600;
+        text-decoration: none;
+
+        &.active {
+          background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+          color: #fff;
+        }
       }
     }
 
-    .menu {
-      position: fixed;
-      top: 0;
-      right: -50%;
-      background-color: #1e293b;
-      color: white;
-      height: 100vh;
-      width: 50%;
-      transition: all 1s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+    .mobileUser {
+      margin-top: auto;
+      border-top: 1px solid #eee;
+      padding-top: 1.25rem;
 
-      &.active {
-        right: 0;
+      .userChip,
+      .logoutBtnNav,
+      .loginCta {
+        width: 100%;
+        justify-content: center;
       }
 
-      @include sm {
-        a {
-          display: initial;
+      .userChip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #f4f5f7;
+        text-decoration: none;
+        color: #222;
+        font-weight: 600;
+
+        img {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #ff3c38;
         }
+
+        .notifBadge {
+          background: #dc2626;
+          color: #fff;
+          font-size: 0.7rem;
+          font-weight: 700;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .logoutBtnNav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        background: #f4f5f7;
+        color: #444;
+        padding: 10px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+
+      .loginCta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+        color: #fff;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
       }
     }
   }
 }
+
 .error {
   color: red;
   font-size: 0.85rem;

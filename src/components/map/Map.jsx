@@ -9,7 +9,7 @@ function Map({ items }) {
       center={
         items.length === 1
           ? [items[0].latitude, items[0].longitude]
-          : [52.4797, -1.90269]
+          : [39.9208, 32.8541] // Türkiye merkezi (Ankara) - varsayılan
       }
       zoom={7}
       scrollWheelZoom={false}

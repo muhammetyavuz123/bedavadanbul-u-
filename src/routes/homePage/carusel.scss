@@ -2,13 +2,13 @@
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 1.5rem;
 
   .carousel-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #222;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
     text-align: left;
   }
   .cg-wrapper {
@@ -34,7 +34,7 @@
   .slick-track {
     display: flex !important; /* make track use flex so slides behave predictably */
     align-items: stretch;
-    margin-top: 20px;
+    margin-top: 8px;
   }
 
   .slick-slide {
@@ -54,6 +54,7 @@
     flex: 0 0 auto;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 0; /* padding handled by .slick-slide */
@@ -63,7 +64,7 @@
     background: #fff;
     border: 1px solid #eaeaea;
     border-radius: 16px;
-    padding: 1rem 0.75rem;
+    padding: 0.85rem 0.75rem;
     text-align: center;
     transition: all 0.25s ease;
     cursor: pointer;
@@ -72,7 +73,7 @@
        but allow full width inside its slide */
     max-width: 260px;
     width: 100%;
-    height: 200px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -85,30 +86,33 @@
     }
 
     .icon-wrapper {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
 
       img {
-        width: 55px;
-        height: 55px;
+        width: 46px;
+        height: 46px;
         object-fit: contain;
       }
     }
+  }
 
-    .category-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #333;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
-    }
+  .category-name {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: 260px;
   }
 
   .slick-prev,
@@ -145,16 +149,17 @@
 
     .category-card {
       max-width: 150px;
-      height: 120px;
+      height: 110px;
 
       .icon-wrapper img {
-        width: 45px;
-        height: 45px;
+        width: 42px;
+        height: 42px;
       }
+    }
 
-      .category-name {
-        font-size: 12px;
-      }
+    .category-name {
+      font-size: 12px;
+      max-width: 150px;
     }
   }
 
@@ -162,12 +167,13 @@
   @media (max-width: 480px) {
     .category-card {
       max-width: 150px;
-      height: 120px;
-      padding: 0.75rem;
+      height: 110px;
+      padding: 0.65rem;
+    }
 
-      .category-name {
-        font-size: 12px;
-      }
+    .category-name {
+      font-size: 12px;
+      max-width: 150px;
     }
   }
 }

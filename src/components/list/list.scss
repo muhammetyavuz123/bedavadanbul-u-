@@ -3,6 +3,155 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.adminTabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+
+  .tabBtn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #eee;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      background 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &.all.active {
+      background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(255, 60, 56, 0.25);
+    }
+
+    &.pending.active {
+      background: linear-gradient(135deg, #ff9800, #ffb74d);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(255, 152, 0, 0.25);
+    }
+
+    &.approved.active {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25);
+    }
+  }
+}
+
+.listItem {
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 25px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.adminInfoBox {
+  margin-top: 14px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 14px 16px;
+  border-radius: 12px;
+
+  .infoRow {
+    color: #555;
+
+    strong {
+      margin-left: 6px;
+      color: #222;
+
+      &.cap {
+        text-transform: capitalize;
+      }
+
+      &.ok {
+        color: #16a34a;
+      }
+
+      &.warn {
+        color: #ff9800;
+      }
+
+      &.danger {
+        color: #dc2626;
+      }
+    }
+  }
+}
+
+.actionsRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+
+  .actionBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.86rem;
+    color: #fff;
+    transition: transform 0.15s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &.approve {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    &.edit {
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+    }
+
+    &.delete {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+    }
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 0;
+  color: #999;
+
+  .emptyIcon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: #ccc;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+/* legacy class kept for backward compatibility */
 .buttonDelete {
   background-color: #ff3c38;
   color: white;

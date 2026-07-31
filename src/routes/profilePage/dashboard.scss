@@ -15,10 +15,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #fff, #fff7f6);
+    padding: 22px 24px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     margin-bottom: 25px;
 
     .user-info {
@@ -81,14 +81,21 @@
 
     .card {
       background-color: #fff;
-      padding: 20px;
-      border-radius: 12px;
+      padding: 22px 20px;
+      border-radius: 14px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
 
       &:hover {
-        transform: translateY(-3px);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .cardIcon {
+        font-size: 1.6rem;
+        color: #ff3c38;
+        margin-bottom: 8px;
       }
 
       h3 {
@@ -98,17 +105,23 @@
       }
 
       p {
-        font-size: 1.5rem;
-        font-weight: bold;
+        font-size: 1.6rem;
+        font-weight: 700;
         color: #ff3c38;
       }
 
-      &.pending p {
-        color: #ffa500;
+      &.pending {
+        .cardIcon,
+        p {
+          color: #ffa500;
+        }
       }
 
-      &.rejected p {
-        color: #999;
+      &.rejected {
+        .cardIcon,
+        p {
+          color: #999;
+        }
       }
     }
   }

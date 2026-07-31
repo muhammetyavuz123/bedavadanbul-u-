@@ -1,21 +1,24 @@
 import { useContext, useState } from "react";
 import "./navbar.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useNotificationStore } from "../../lib/notificationStore";
 import apiRequest from "../../lib/apiRequest";
 
+const NAV_LINKS = [
+  { to: "/", label: "Ana Sayfa", end: true },
+  { to: "/list", label: "Kampanyalar" },
+  { to: "/aboutUs", label: "Hakkımızda" },
+  { to: "/contact", label: "İletişim" },
+];
+
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const { updateUser } = useContext(AuthContext);
+  const { updateUser, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const { currentUser } = useContext(AuthContext);
-
-  const fetch = useNotificationStore((state) => state.fetch);
   const number = useNotificationStore((state) => state.number);
 
-  // if (currentUser) fetch();
   const handleLogout = async () => {
     try {
       await apiRequest.post("/auth/logout");
@@ -23,52 +26,65 @@ function Navbar() {
       navigate("/");
     } catch (err) {
       console.log(err);
+    } finally {
+      setOpen(false);
     }
   };
-  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; // ya da kendi default icon'un
+
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+  const isShopOrAdmin = currentUser && currentUser.role !== "user";
 
   return (
-    <nav>
+    <nav className="siteNavbar">
       <div className="left">
-        <a href="/" className="logo">
-          <img src="/logo.png" alt="" />
-          {/* <span>Kampanyadan</span> */}
-        </a>
-        <a href="/">Ana Sayfa</a>
-        <a href="/list">Kampanyalar</a>
+        <Link to="/" className="logo">
+          <img src="/logo.png" alt="Bedavadanbul" />
+        </Link>
 
-        <a href="/aboutUs">Hakkımızda</a>
-        <a href="/contact">İletişim</a>
+        <div className="navLinks">
+          {NAV_LINKS.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+            >
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </div>
       </div>
+
       <div className="right">
         {currentUser ? (
-          <div className="user">
-            <img src={currentUser?.avatar || defaultAvatar} alt="" />
-            <span>{currentUser?.username}</span>
-            {currentUser?.role !== "user" ? (
-              <Link to="/profile" className="profile">
-                {number > 0 && <div className="notification">{number}</div>}
-                <span style={{ color: "white" }}>Profil</span>
+          <div className="userArea">
+            {isShopOrAdmin ? (
+              <Link to="/profile" className="userChip">
+                <div className="avatarWrap">
+                  <img src={currentUser?.avatar || defaultAvatar} alt="" />
+                  {number > 0 && (
+                    <span className="notifBadge">
+                      {number > 9 ? "9+" : number}
+                    </span>
+                  )}
+                </div>
+                <span className="userName">{currentUser?.username}</span>
               </Link>
             ) : (
-              <button
-                to="/login"
-                className="profile"
-                style={{ marginLeft: "10px" }}
-                onClick={handleLogout}
-              >
-                {number > 0 && <div className="notification">{number}</div>}
-                <span style={{ color: "white" }}>Çıkış</span>
+              <button className="logoutBtnNav" onClick={handleLogout}>
+                <img src={currentUser?.avatar || defaultAvatar} alt="" />
+                <span>Çıkış</span>
               </button>
             )}
           </div>
         ) : (
-          <>
-            <a style={{ color: "white" }} href="/login" className="register">
-              Giriş
-            </a>
-          </>
+          <Link to="/login" className="loginCta">
+            Giriş Yap
+          </Link>
         )}
+
         <div className="menuIcon">
           <img
             src="/menu.png"
@@ -76,39 +92,69 @@ function Navbar() {
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
-        <div className={open ? "menu active" : "menu"}>
-          <a href="/">Ana Sayfa</a>
-          <a href="/list">Kampanyalar</a>
-          <a href="/aboutUs">Hakkımızda</a>
-          <a href="/contact">İletişim</a>
+      </div>
+
+      {/* MOBILE DRAWER */}
+      <div
+        className={open ? "mobileOverlay show" : "mobileOverlay"}
+        onClick={() => setOpen(false)}
+      />
+      <div className={open ? "mobileMenu open" : "mobileMenu"}>
+        <button
+          className="closeBtn"
+          aria-label="Menüyü kapat"
+          onClick={() => setOpen(false)}
+        >
+          ✕
+        </button>
+
+        <div className="mobileLinks">
+          {NAV_LINKS.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              onClick={() => setOpen(false)}
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+            >
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="mobileUser">
           {currentUser ? (
-            <div className="user">
-              <img src={currentUser?.user?.avatar || defaultAvatar} alt="" />
-              <span>{currentUser?.user?.username}</span>
-              {currentUser?.user?.role !== "user" ? (
-                <Link to="/profile" className="profile">
-                  {number > 0 && <div className="notification">{number}</div>}
-                  <p style={{ color: "white", fontSize: "10px" }}>Profil</p>
-                </Link>
-              ) : (
-                <button
-                  to="/login"
-                  className="profile"
-                  style={{ marginLeft: "10px", fontSize: "10px" }}
-                  onClick={handleLogout}
-                >
-                  {number > 0 && <div className="notification">{number}</div>}
-                  <p style={{ color: "white" }}>Çıkış</p>
-                </button>
-              )}
-            </div>
+            isShopOrAdmin ? (
+              <Link
+                to="/profile"
+                className="userChip"
+                onClick={() => setOpen(false)}
+              >
+                <img src={currentUser?.avatar || defaultAvatar} alt="" />
+                <span className="userName">{currentUser?.username}</span>
+                {number > 0 && (
+                  <span className="notifBadge">
+                    {number > 9 ? "9+" : number}
+                  </span>
+                )}
+              </Link>
+            ) : (
+              <button className="logoutBtnNav" onClick={handleLogout}>
+                <img src={currentUser?.avatar || defaultAvatar} alt="" />
+                <span>Çıkış Yap</span>
+              </button>
+            )
           ) : (
-            <>
-              <a style={{ color: "white" }} href="/login" className="register">
-                Giriş
-              </a>
-            </>
-          )}{" "}
+            <Link
+              to="/login"
+              className="loginCta"
+              onClick={() => setOpen(false)}
+            >
+              Giriş Yap
+            </Link>
+          )}
         </div>
       </div>
     </nav>

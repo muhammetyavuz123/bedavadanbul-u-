@@ -11,6 +11,8 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useCategories } from "../../lib/useCategories";
+import { getListingPrice } from "../../lib/pricing";
+import PaymentModal from "../../components/PaymentModal/PaymentModal";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -46,6 +48,10 @@ function NewPostPage() {
   const categories = useCategories();
   const [pending, setPending] = useState(false);
   const [locationMode, setLocationMode] = useState("map");
+  const [adDuration, setAdDuration] = useState("");
+  const [showPayment, setShowPayment] = useState(false);
+  const [pendingInputs, setPendingInputs] = useState(null);
+  const currentPrice = getListingPrice(listingType, Number(adDuration || 0));
   function LocationPicker({ setLatitude, setLongitude, setMapPosition }) {
     useMapEvents({
       click(e) {
@@ -265,6 +271,25 @@ function NewPostPage() {
     }
 
     setError({});
+
+    // 🔹 Sadece Vitrin/Doping ücretlidir; Standart ilan her zaman ücretsiz
+    // yayınlanır (bkz. lib/pricing.js). Ücretli bir seçenekse önce ödeme
+    // adımını göster, ilanı ancak ödeme (simülasyonu) tamamlanınca oluştur.
+    const price = getListingPrice(listingType, Number(inputs.adDuration));
+
+    if (price > 0) {
+      setPendingInputs(inputs);
+      setShowPayment(true);
+      return;
+    }
+
+    await publishPost(inputs);
+  };
+
+  // ✅ İlanı fiilen oluşturan istek. Standart ilanlarda handleSubmit
+  // tarafından doğrudan, ücretli ilanlarda ise ödeme modalındaki
+  // "Öde ve Yayınla" başarılı olduğunda çağrılır.
+  const publishPost = async (inputs) => {
     try {
       setPending(true);
 
@@ -299,6 +324,7 @@ function NewPostPage() {
       });
     } finally {
       setPending(false);
+      setShowPayment(false);
     }
   };
   useEffect(() => {
@@ -498,19 +524,41 @@ function NewPostPage() {
               <input id="price" name="price" type="number" />
               {error.price && <span className="error">{error.price}</span>}
             </div>
-            <div className="item">
-              <label htmlFor="listingType">İlan Tipi</label>
+            <div className="item listingTypePicker">
+              <label>İlan Tipi</label>
 
-              <select
-                id="listingType"
-                name="listingType"
-                value={listingType}
-                onChange={(e) => setListingType(e.target.value)}
-              >
-                <option value="standard">Standart İlan</option>
-                <option value="featured">Vitrin İlan (Öne Çıkar)</option>
-                <option value="doping">Doping</option>
-              </select>
+              <div className="typeCards">
+                <button
+                  type="button"
+                  className={`typeCard${listingType === "standard" ? " selected" : ""}`}
+                  onClick={() => setListingType("standard")}
+                >
+                  <span className="badge free">Ücretsiz</span>
+                  <h4>Standart İlan</h4>
+                  <p>Kategori listesinde normal sırada yayınlanır.</p>
+                </button>
+
+                <button
+                  type="button"
+                  className={`typeCard${listingType === "featured" ? " selected" : ""}`}
+                  onClick={() => setListingType("featured")}
+                >
+                  <span className="badge paid">Vitrin</span>
+                  <h4>Vitrin İlan</h4>
+                  <p>Kategori sayfasında öne çıkarılır, daha çok görüntülenir.</p>
+                </button>
+
+                <button
+                  type="button"
+                  className={`typeCard${listingType === "doping" ? " selected" : ""}`}
+                  onClick={() => setListingType("doping")}
+                >
+                  <span className="badge paid">Doping</span>
+                  <h4>Doping İlan</h4>
+                  <p>En üstte, en yüksek görünürlükle yayınlanır.</p>
+                </button>
+              </div>
+
               {error.listingType && (
                 <span className="error">{error.listingType}</span>
               )}
@@ -545,19 +593,46 @@ function NewPostPage() {
                 <span className="error">{error.categoryId}</span>
               )}{" "}
             </div>
-            <div className="item">
-              <label htmlFor="adDuration">Reklam Yayın Süresi</label>
+            <div className="item durationPicker">
+              <label>Reklam Yayın Süresi</label>
+              <input type="hidden" name="adDuration" value={adDuration} />
 
-              <select id="adDuration" name="adDuration">
-                <option value="">Süre Seçiniz</option>
-                <option value="1">1 Ay</option>
-                <option value="3">3 Ay</option>
-                <option value="6">6 Ay</option>
-                <option value="12">1 Yıl</option>
-              </select>
+              <div className="durationChips">
+                {[1, 3, 6, 12].map((months) => {
+                  const price = getListingPrice(listingType, months);
+                  return (
+                    <button
+                      type="button"
+                      key={months}
+                      className={`durationChip${adDuration === String(months) ? " selected" : ""}`}
+                      onClick={() => setAdDuration(String(months))}
+                    >
+                      <span className="months">
+                        {months === 12 ? "1 Yıl" : `${months} Ay`}
+                      </span>
+                      <span className="price">
+                        {price > 0
+                          ? `${price.toLocaleString("tr-TR")} ₺`
+                          : "Ücretsiz"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
               {error.adDuration && (
                 <span className="error">{error.adDuration}</span>
+              )}
+
+              {adDuration && (
+                <div className="priceSummary">
+                  <span>Toplam Tutar</span>
+                  <strong>
+                    {currentPrice > 0
+                      ? `${currentPrice.toLocaleString("tr-TR")} ₺`
+                      : "Ücretsiz"}
+                  </strong>
+                </div>
               )}
             </div>
             <div className="item">
@@ -605,7 +680,11 @@ function NewPostPage() {
               </div>
             </div>
             <button className="sendButton" disabled={pending}>
-              {pending ? "Yükleniyor..." : "Ekle"}
+              {pending
+                ? "Yükleniyor..."
+                : currentPrice > 0
+                  ? `Ödemeye Geç · ${currentPrice.toLocaleString("tr-TR")} ₺`
+                  : "İlanı Ücretsiz Yayınla"}
             </button>{" "}
             {error.submit && <span className="error">{error.submit}</span>}
           </form>
@@ -631,6 +710,16 @@ function NewPostPage() {
           ))}
         </div>
       </div>
+
+      {showPayment && (
+        <PaymentModal
+          amount={currentPrice}
+          listingType={listingType}
+          duration={pendingInputs?.adDuration || adDuration}
+          onClose={() => setShowPayment(false)}
+          onSuccess={() => publishPost(pendingInputs)}
+        />
+      )}
     </div>
   );
 }

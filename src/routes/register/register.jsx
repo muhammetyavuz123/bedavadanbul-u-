@@ -6,6 +6,13 @@ import AuthLayout from "../../components/AuthLayout/AuthLayout";
 import InputMask from "react-input-mask";
 import { normalizePhone } from "../../lib/normalizePhone";
 import { useError } from "../../context/ErrorContext";
+import {
+  FiEye,
+  FiEyeOff,
+  FiCheckCircle,
+  FiXCircle,
+  FiArrowLeft,
+} from "react-icons/fi";
 
 function Register() {
   const [error, setError] = useState("");
@@ -114,7 +121,7 @@ function Register() {
             className="toggle-icon"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? <FiEyeOff /> : <FiEye />}
           </span>
         </div>
       </div>
@@ -132,7 +139,7 @@ function Register() {
             className="toggle-icon"
             onClick={() => setShowConfirm(!showConfirm)}
           >
-            {showConfirm ? "🙈" : "👁️"}
+            {showConfirm ? <FiEyeOff /> : <FiEye />}
           </span>
         </div>
       </div>
@@ -141,9 +148,15 @@ function Register() {
         <p
           className={`match-text ${password === confirm ? "success" : "error"}`}
         >
-          {password === confirm
-            ? "✅ Şifreler eşleşiyor"
-            : "❌ Şifreler uyuşmuyor"}
+          {password === confirm ? (
+            <>
+              <FiCheckCircle /> Şifreler eşleşiyor
+            </>
+          ) : (
+            <>
+              <FiXCircle /> Şifreler uyuşmuyor
+            </>
+          )}
         </p>
       )}
       {error && <span className="error-text">{error}</span>}
@@ -276,7 +289,7 @@ function Register() {
             </button>
             {error && <span className="error-text">{error}</span>}
             <Link to="/login">
-              <span style={{ color: "#ff3c38" }}>Zaten bir hesabım var</span>
+              <span className="accountLink">Zaten bir hesabım var</span>
             </Link>
           </form>
         )}
@@ -304,138 +317,6 @@ function Register() {
               )}
             </InputMask>
 
-            {/* <select name="type" required>
-              <option value="">Kategori Seçin</option>
-
-              <optgroup label="Gıda & Yeme İçme">
-                <option value="bakkal">Bakkal</option>
-                <option value="market">Market</option>
-                <option value="manav">Manav</option>
-                <option value="kasap">Kasap</option>
-                <option value="sarkuteri">Şarküteri</option>
-                <option value="kuruyemisci">Kuruyemişçi</option>
-                <option value="balikci">Balıkçı</option>
-                <option value="firin">Fırın / Ekmekçi</option>
-                <option value="pastane">Pastane</option>
-                <option value="lokanta">Lokanta / Restoran</option>
-                <option value="donerci">Dönerci / Kebapçı</option>
-                <option value="fastfood">Fast Food</option>
-                <option value="tatlici">Tatlıcı / Baklavacı</option>
-                <option value="cigkofteci">Çiğköfteci</option>
-                <option value="kahveci">Kahveci</option>
-                <option value="cafe">Cafe / Kahvehane</option>
-                <option value="cay-ocagi">Çay Ocağı</option>
-                <option value="bufe">Büfe</option>
-                <option value="dondurmaci">Dondurmacı</option>
-                <option value="yufkaci">Yufkacı</option>
-                <option value="su-bayii">Su Bayii</option>
-              </optgroup>
-
-              <optgroup label="Ulaşım & Taşımacılık">
-                <option value="taksici">Taksici</option>
-                <option value="dolmuscu">Dolmuşçu</option>
-                <option value="minibuscu">Minibüsçü</option>
-                <option value="otobus-soforu">Otobüs Şoförü</option>
-                <option value="servis-araci">Servis Aracı</option>
-                <option value="nakliyeci">Nakliyeci</option>
-                <option value="kamyoncu">Kamyoncu</option>
-                <option value="motorlu-kurye">Motorlu Kurye</option>
-                <option value="bisikletli-kurye">Bisikletli Kurye</option>
-                <option value="kargo-dagitim">Kargo Dağıtım</option>
-                <option value="oto-kiralama">Oto Kiralama (Rent a Car)</option>
-              </optgroup>
-
-              <optgroup label="Oto & Motor Hizmetleri">
-                <option value="oto-tamir">Oto Tamircisi</option>
-                <option value="oto-elektrik">Oto Elektrikçisi</option>
-                <option value="kaportaci">Kaportacı</option>
-                <option value="oto-boyaci">Oto Boyacısı</option>
-                <option value="oto-yikama">Oto Yıkama</option>
-                <option value="lastikci">Lastikçi</option>
-                <option value="egzozcu">Egzozcu</option>
-                <option value="oto-aksesuar">Oto Aksesuar</option>
-                <option value="oto-ekspertiz">Oto Ekspertiz</option>
-                <option value="yedek-parca">Yedek Parça</option>
-                <option value="motosiklet-tamir">Motosiklet Tamiri</option>
-              </optgroup>
-
-              <optgroup label="İnşaat & Ev Hizmetleri">
-                <option value="insaat-ustasi">İnşaat Ustası</option>
-                <option value="boyaci">Boyacı / Badanacı</option>
-                <option value="tesisatci">Sıhhi Tesisatçı</option>
-                <option value="elektrikci">Elektrikçi</option>
-                <option value="alcipan">Alçıpan Ustası</option>
-                <option value="fayans">Fayans / Seramik</option>
-                <option value="camci">Camcı</option>
-                <option value="pvc-dograma">PVC Doğrama</option>
-                <option value="demir-dograma">Demir Doğrama</option>
-                <option value="cati">Çatı Ustası</option>
-                <option value="kombici">Kombi / Kalorifer</option>
-              </optgroup>
-
-              <optgroup label="Mobilya & Ahşap">
-                <option value="marangoz">Marangoz</option>
-                <option value="mobilya">Mobilya</option>
-                <option value="mobilya-imalat">Mobilya İmalatı</option>
-                <option value="mobilya-tamir">Mobilya Tamiri</option>
-                <option value="parke">Parke Ustası</option>
-                <option value="lake-ustasi">Lake Ustası</option>
-              </optgroup>
-
-              <optgroup label="Giyim & Kişisel Bakım">
-                <option value="berber">Berber</option>
-                <option value="kuafor">Kuaför</option>
-                <option value="guzellik-salonu">Güzellik Salonu</option>
-                <option value="terzi">Terzi</option>
-                <option value="kuru-temizleme">Kuru Temizleme</option>
-                <option value="ayakkabi-tamir">Ayakkabı Tamiri</option>
-                <option value="camasirhane">Çamaşırhane</option>
-              </optgroup>
-
-              <optgroup label="Teknoloji & Elektronik">
-                <option value="telefon-tamir">Telefon Tamiri</option>
-                <option value="bilgisayar-tamir">Bilgisayar Tamiri</option>
-                <option value="beyaz-esya">Beyaz Eşya</option>
-                <option value="beyaz-esya-servisi">Beyaz Eşya Servisi</option>
-                <option value="tv-tamir">Televizyon Tamiri</option>
-                <option value="kamera-alarm">Kamera / Alarm Sistemleri</option>
-              </optgroup>
-
-              <optgroup label="Sağlık & Medikal">
-                <option value="eczane">Eczane</option>
-                <option value="medikal">Medikal Ürünler</option>
-                <option value="optik">Optik</option>
-                <option value="dis-klinigi">Diş Kliniği</option>
-                <option value="veteriner">Veteriner</option>
-              </optgroup>
-
-              <optgroup label="Tarım & Hayvancılık">
-                <option value="ciftci">Çiftçi</option>
-                <option value="sutcu">Sütçü</option>
-                <option value="yumurta">Yumurta Satıcısı</option>
-                <option value="arici">Arıcı</option>
-                <option value="cicekci">Çiçekçi</option>
-              </optgroup>
-
-              <optgroup label="Genel Hizmetler">
-                <option value="temizlik">Temizlik Hizmeti</option>
-                <option value="hali-yikama">Halı Yıkama</option>
-                <option value="koltuk-yikama">Koltuk Yıkama</option>
-                <option value="organizasyon">Organizasyon</option>
-                <option value="fotografci">Fotoğrafçı</option>
-                <option value="matbaa">Matbaa</option>
-                <option value="cilingir">Çilingir</option>
-                <option value="danismanlik">Danışmanlık</option>
-              </optgroup>
-
-              <optgroup label="Diğer">
-                <option value="emlak">Emlak Danışmanı</option>
-                <option value="sigorta">Sigorta Acentesi</option>
-                <option value="seyyar-satici">Seyyar Satıcı</option>
-                <option value="kuryelik">Kuryelik</option>
-              </optgroup>
-            </select> */}
-
             {renderLocationFields()}
             {renderPasswordFields()}
             {renderLegalCheckboxes()}
@@ -444,14 +325,14 @@ function Register() {
               {isLoading ? "Gönderiliyor..." : "Kayıt Ol"}
             </button>
             <Link to="/login">
-              <span style={{ color: "#ff3c38" }}>Zaten bir hesabım var</span>
+              <span className="accountLink">Zaten bir hesabım var</span>
             </Link>
           </form>
         )}
 
         {userType && (
           <button className="back-btn" onClick={() => setUserType("")}>
-            ⬅ Geri
+            <FiArrowLeft /> Geri
           </button>
         )}
       </div>

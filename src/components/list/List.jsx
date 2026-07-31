@@ -5,6 +5,7 @@ import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
 import Popup from "../Popup/Popup";
 import { useNavigate } from "react-router-dom";
+import { FiCheckCircle, FiEdit2, FiTrash2, FiInbox } from "react-icons/fi";
 
 function List({ posts }) {
   const { currentUser } = useContext(AuthContext);
@@ -62,56 +63,25 @@ function List({ posts }) {
     <>
       {/* TABS */}
       {currentUser?.role === "admin" && (
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            marginBottom: "25px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="adminTabs">
           <button
+            className={`tabBtn all ${activeTab === "all" ? "active" : ""}`}
             onClick={() => setActiveTab("all")}
-            style={{
-              padding: "10px 18px",
-              border: "none",
-              borderRadius: "10px",
-              cursor: "pointer",
-              background: activeTab === "all" ? "#ff3c38" : "#eee",
-              color: activeTab === "all" ? "#fff" : "#333",
-              fontWeight: "600",
-            }}
           >
             Tüm İlanlar ({posts?.data?.length || 0})
           </button>
 
           <button
+            className={`tabBtn pending ${activeTab === "pending" ? "active" : ""}`}
             onClick={() => setActiveTab("pending")}
-            style={{
-              padding: "10px 18px",
-              border: "none",
-              borderRadius: "10px",
-              cursor: "pointer",
-              background: activeTab === "pending" ? "#ff9800" : "#eee",
-              color: activeTab === "pending" ? "#fff" : "#333",
-              fontWeight: "600",
-            }}
           >
             Onay Bekleyen (
             {posts?.data?.filter((item) => !item.approved).length || 0})
           </button>
 
           <button
+            className={`tabBtn approved ${activeTab === "approved" ? "active" : ""}`}
             onClick={() => setActiveTab("approved")}
-            style={{
-              padding: "10px 18px",
-              border: "none",
-              borderRadius: "10px",
-              cursor: "pointer",
-              background: activeTab === "approved" ? "#16a34a" : "#eee",
-              color: activeTab === "approved" ? "#fff" : "#333",
-              fontWeight: "600",
-            }}
           >
             Yayındaki İlanlar (
             {posts?.data?.filter((item) => item.approved).length || 0})
@@ -133,66 +103,33 @@ function List({ posts }) {
             item.expireDate && new Date(item.expireDate) < new Date();
 
           return (
-            <div
-              key={item.id || item._id}
-              style={{
-                marginBottom: "25px",
-                borderBottom: "1px solid #e5e5e5",
-                paddingBottom: "25px",
-              }}
-            >
+            <div key={item.id || item._id} className="listItem">
               <Card item={item} />
 
               {/* ADMIN INFO */}
               {currentUser?.role === "admin" && (
-                <div
-                  style={{
-                    marginTop: "14px",
-                    marginBottom: "14px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    fontSize: "14px",
-                    background: "#fafafa",
-                    padding: "14px",
-                    borderRadius: "12px",
-                  }}
-                >
-                  <span>
+                <div className="adminInfoBox">
+                  <span className="infoRow">
                     Durum:
-                    <strong
-                      style={{
-                        color: item.approved ? "#16a34a" : "#ff9800",
-                        marginLeft: "6px",
-                      }}
-                    >
+                    <strong className={item.approved ? "ok" : "warn"}>
                       {item.approved ? "Onaylandı" : "Onay Bekliyor"}
                     </strong>
                   </span>
 
-                  <span>
+                  <span className="infoRow">
                     İlan Tipi:
-                    <strong
-                      style={{
-                        marginLeft: "6px",
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      {item.listingType}
-                    </strong>
+                    <strong className="cap">{item.listingType}</strong>
                   </span>
 
-                  <span>
+                  <span className="infoRow">
                     Reklam Süresi:
-                    <strong style={{ marginLeft: "6px" }}>
-                      {item.adDuration} Ay
-                    </strong>
+                    <strong>{item.adDuration} Ay</strong>
                   </span>
 
                   {item.startDate && (
-                    <span>
+                    <span className="infoRow">
                       Başlangıç:
-                      <strong style={{ marginLeft: "6px" }}>
+                      <strong>
                         {new Date(item.startDate).toLocaleDateString("tr-TR")}
                       </strong>
                     </span>
@@ -200,26 +137,25 @@ function List({ posts }) {
 
                   {item.expireDate && (
                     <>
-                      <span>
+                      <span className="infoRow">
                         Bitiş Tarihi:
-                        <strong style={{ marginLeft: "6px" }}>
+                        <strong>
                           {new Date(item.expireDate).toLocaleDateString(
                             "tr-TR",
                           )}
                         </strong>
                       </span>
 
-                      <span>
+                      <span className="infoRow">
                         Kalan Gün:
                         <strong
-                          style={{
-                            marginLeft: "6px",
-                            color: isExpired
-                              ? "red"
+                          className={
+                            isExpired
+                              ? "danger"
                               : remainingDays <= 7
-                                ? "#ff9800"
-                                : "#16a34a",
-                          }}
+                                ? "warn"
+                                : "ok"
+                          }
                         >
                           {isExpired ? "Süresi Doldu" : `${remainingDays} gün`}
                         </strong>
@@ -230,55 +166,35 @@ function List({ posts }) {
               )}
 
               {/* BUTTONS */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  flexWrap: "wrap",
-                }}
-              >
+              <div className="actionsRow">
                 {/* APPROVE */}
                 {currentUser?.role === "admin" && !item.approved && (
                   <button
-                    className="buttonDelete"
-                    style={{
-                      background: "#16a34a",
-                      marginTop: "10px",
-                    }}
+                    className="actionBtn approve"
                     onClick={() => handleConfirm(item)}
                   >
-                    Onayla
+                    <FiCheckCircle /> Onayla
                   </button>
                 )}
 
                 {/* EDIT */}
                 <button
-                  className="buttonDelete"
-                  style={{
-                    background: "#16a34a",
-                    marginTop: "10px",
-                  }}
+                  className="actionBtn edit"
                   onClick={() => navigate(`/edit/${item.id || item._id}`)}
                 >
-                  Düzenle
+                  <FiEdit2 /> Düzenle
                 </button>
 
                 {/* DELETE */}
-                {/* {currentUser?.user?.role === "admin" && ( */}
                 <button
-                  className="buttonDelete"
-                  style={{
-                    background: "#dc2626",
-                    marginTop: "10px",
-                  }}
+                  className="actionBtn delete"
                   onClick={() => {
                     setSelectedItem(item);
                     setShowPopup(true);
                   }}
                 >
-                  Sil
+                  <FiTrash2 /> Sil
                 </button>
-                {/* )} */}
               </div>
             </div>
           );
@@ -287,15 +203,9 @@ function List({ posts }) {
 
       {/* EMPTY */}
       {filteredPosts?.length === 0 && (
-        <div
-          style={{
-            textAlign: "center",
-            padding: "40px 0",
-            fontSize: "16px",
-            color: "#777",
-          }}
-        >
-          İlan bulunamadı.
+        <div className="emptyState">
+          <FiInbox className="emptyIcon" />
+          <p>İlan bulunamadı.</p>
         </div>
       )}
 

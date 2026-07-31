@@ -1,4 +1,5 @@
 import "./legal.scss";
+import { FiMail, FiUser } from "react-icons/fi";
 
 export default function KVKKClarification() {
   return (
@@ -11,7 +12,10 @@ export default function KVKKClarification() {
             <strong>Veri Sorumlusu:</strong> Muhammed Yavuz
           </p>
           <p>
-            <strong>İletişim:</strong> [e-posta adresinizi yazın]
+            <strong>İletişim:</strong>{" "}
+            <a href="mailto:bedavadanbul@gmail.com">
+              bedavadanbul@gmail.com
+            </a>
           </p>
         </div>
 
@@ -56,8 +60,11 @@ export default function KVKKClarification() {
         </ul>
 
         <p>
-          Taleplerinizi <strong>[e-posta adresi]</strong> adresine
-          iletebilirsiniz.
+          Taleplerinizi{" "}
+          <a href="mailto:bedavadanbul@gmail.com">
+            <strong>bedavadanbul@gmail.com</strong>
+          </a>{" "}
+          adresine iletebilirsiniz.
         </p>
 
         <h2>5. Veri Saklama Süresi</h2>
@@ -67,9 +74,11 @@ export default function KVKKClarification() {
         </p>
 
         <h2>6. İletişim</h2>
-        <p>
-          📧 E-posta: [e-posta adresiniz] <br />
-          👤 Veri Sorumlusu: Muhammed Yavuz
+        <p className="contactLine">
+          <FiMail /> E-posta:{" "}
+          <a href="mailto:bedavadanbul@gmail.com">bedavadanbul@gmail.com</a>
+          <br />
+          <FiUser /> Veri Sorumlusu: Muhammed Yavuz
         </p>
       </div>
     </div>

@@ -3,18 +3,34 @@
   padding: 30px 20px;
   text-align: center;
   color: white;
-  // position: relative;
-  border-radius: 10px;
+  position: relative;
+  border-radius: 20px;
   margin: 20px 0;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 
   @media (min-width: 768px) {
     background-position: center;
   }
 
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.25)
+    );
+  }
+
   .overlay {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 40px 20px;
-    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(2px);
+    padding: 40px 30px;
+    border-radius: 14px;
     display: inline-block;
     max-width: 90%;
     margin: 0 auto;
@@ -22,12 +38,13 @@
 
   h1 {
     font-size: 36px;
+    font-weight: 800;
     margin-bottom: 10px;
   }
 
   .breadcrumb {
     font-size: 16px;
-    color: #ddd;
+    color: #eee;
   }
 
   @media (max-width: 600px) {

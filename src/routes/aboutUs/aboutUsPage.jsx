@@ -3,17 +3,17 @@ import AboutUs from "../../components/AboutUs/AboutUs";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 
-const aboutUsPage = () => {
+const AboutUsPage = () => {
   return (
     <div>
       <Breadcrumb
         title="Hakkımızda"
         breadcrumbText="Anasayfa / Hakkımızda"
         backgroundImage={BreadcrumbImage}
-      />{" "}
-      <AboutUs></AboutUs>
+      />
+      <AboutUs />
     </div>
   );
 };
 
-export default aboutUsPage;
+export default AboutUsPage;

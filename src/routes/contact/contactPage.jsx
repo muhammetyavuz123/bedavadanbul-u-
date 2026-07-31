@@ -3,6 +3,7 @@ import "./contactPage.scss";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import apiRequest from "../../lib/apiRequest";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
+import { FiMapPin, FiMail, FiSend, FiCheckCircle, FiXCircle } from "react-icons/fi";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const ContactPage = () => {
     phone: "",
   });
   const [status, setStatus] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -23,16 +26,20 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("");
+    setIsLoading(true);
 
     try {
       const res = await apiRequest.post("/contact", formData);
-      setStatus(res.data.message);
+      setStatus(res.data.message || "Mesajınız başarıyla gönderildi.");
+      setSuccess(true);
       setFormData({ name: "", email: "", message: "", phone: "" });
     } catch (error) {
-      console.error(error);
+      setSuccess(false);
       setStatus(
-        error.response?.data?.message || "Gönderme sırasında hata oluştu."
+        error.response?.data?.message || "Gönderme sırasında hata oluştu.",
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,30 +49,31 @@ const ContactPage = () => {
         title="İletişim"
         breadcrumbText="Anasayfa / İletişim"
         backgroundImage={BreadcrumbImage}
-      />{" "}
+      />
       <section className="contact-page">
         <div className="contact-wrapper">
           <div className="contact-info">
             <h2>İletişim Bilgileri</h2>
             <p className="contact-desc">
-              Aşağıdaki bilgilerden bize ulaşabilir ya da formu doldurarak mesaj
-              bırakabilirsiniz.
+              Aşağıdaki bilgilerden bize ulaşabilir ya da formu doldurarak
+              mesaj bırakabilirsiniz.
             </p>
 
             <div className="info-item">
-              <i className="fa-solid fa-location-dot"></i>
+              <span className="iconBox">
+                <FiMapPin />
+              </span>
               <span>İstanbul, Türkiye</span>
             </div>
 
             <div className="info-item">
-              <i className="fa-solid fa-envelope"></i>
-              <a href="mailto:info@site.com">bedavadanbul@gmail.com</a>
+              <span className="iconBox">
+                <FiMail />
+              </span>
+              <a href="mailto:bedavadanbul@gmail.com">
+                bedavadanbul@gmail.com
+              </a>
             </div>
-
-            {/* <div className="info-item">
-              <i className="fa-solid fa-phone"></i>
-              <a href="tel:+905551112233">+90 555 111 22 33</a>
-            </div> */}
           </div>
 
           <div className="contact-form-container">
@@ -88,9 +96,9 @@ const ContactPage = () => {
                 required
               />
               <input
-                type="phone"
+                type="tel"
                 name="phone"
-                placeholder="Phone"
+                placeholder="Telefon"
                 value={formData.phone}
                 onChange={handleChange}
                 required
@@ -102,8 +110,15 @@ const ContactPage = () => {
                 onChange={handleChange}
                 required
               />
-              <span>{status}</span>
-              <button type="submit">Gönder</button>
+              {status && (
+                <span className={`formStatus ${success ? "success" : "error"}`}>
+                  {success ? <FiCheckCircle /> : <FiXCircle />} {status}
+                </span>
+              )}
+              <button type="submit" disabled={isLoading}>
+                <FiSend />
+                {isLoading ? "Gönderiliyor..." : "Gönder"}
+              </button>
             </form>
           </div>
         </div>

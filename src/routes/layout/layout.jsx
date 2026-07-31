@@ -11,7 +11,7 @@ function Layout() {
       <div className="navbar">
         <Navbar />
       </div>
-      <div className="">
+      <div className="content">
         <Outlet />
         <Footer />
       </div>

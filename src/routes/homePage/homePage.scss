@@ -1,7 +1,8 @@
 .hero {
   display: flex;
+  align-items: center;
   gap: 2rem;
-  padding: 2rem;
+  padding: 3rem 2rem 2.5rem;
   flex-wrap: wrap;
 
   .hero-left {
@@ -14,6 +15,7 @@
       font-size: clamp(1.8rem, 4vw + 1rem, 2.8rem);
       margin-bottom: 1rem;
       color: #003c6c;
+      line-height: 1.25;
     }
 
     p {
@@ -40,7 +42,7 @@
 
     .hero-visual {
       width: 100%;
-      height: 560px;
+      height: 380px;
       background: radial-gradient(circle at center, #ffe6f2 0%, #f8f9ff 70%);
       border-radius: 32px;
       position: relative;
@@ -127,6 +129,64 @@
 
     .hero-right {
       // display: none;
+    }
+  }
+}
+
+.content-list {
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 0 2rem;
+
+  .sectionHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a1a1a;
+      position: relative;
+      padding-bottom: 8px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 56px;
+        height: 4px;
+        border-radius: 4px;
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+      }
+    }
+
+    .viewAllLink {
+      font-weight: 700;
+      color: #ff3c38;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease;
+      display: inline-block;
+
+      &:hover {
+        transform: translateX(3px);
+      }
+    }
+  }
+
+  .product-grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .sectionHeading {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
     }
   }
 }

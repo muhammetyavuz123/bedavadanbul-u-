@@ -8,6 +8,7 @@ import BreadcrumbImage from "../../assets/breadcrumb.png";
 import Loader from "../../components/loader/Loader";
 import { useSearchParams } from "react-router-dom";
 import { useError } from "../../context/ErrorContext";
+import { FiSearch, FiInbox } from "react-icons/fi";
 
 function ListPage() {
   const [posts, setPosts] = useState([]);
@@ -82,14 +83,8 @@ function ListPage() {
       />
       <div className="page-container">
         <aside className="sidebarContent">
-          <h2
-            style={{
-              color: "#ff3c38",
-              marginLeft: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            Arama
+          <h2 className="sidebarTitle">
+            <FiSearch /> Arama
           </h2>
           <div className="filter-group">
             <Filter />
@@ -104,7 +99,7 @@ function ListPage() {
           </div>
 
           {/* 📦 Pagination veya durum mesajları */}
-          <div style={{ textAlign: "center", marginTop: "30px" }}>
+          <div className="listStatus">
             {loading && <Loader />}
 
             {!loading && posts.length > 0 && hasMore && (
@@ -118,11 +113,14 @@ function ListPage() {
             )}
 
             {!loading && !hasMore && posts.length > 0 && (
-              <p style={{ marginTop: "10px" }}>Tüm Kampanyalar Gösteriliyor.</p>
+              <p className="allShownText">Tüm kampanyalar gösteriliyor.</p>
             )}
 
             {!loading && posts.length === 0 && (
-              <p>İl ve ilçeye ait kampanya bulunamadı.</p>
+              <div className="emptyState">
+                <FiInbox className="emptyIcon" />
+                <p>İl ve ilçeye ait kampanya bulunamadı.</p>
+              </div>
             )}
           </div>
         </main>

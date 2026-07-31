@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import "./commentList.scss";
 import Popup from "../Popup/Popup";
 import { useError } from "../../context/ErrorContext";
+import { FiTrash2, FiMessageSquare } from "react-icons/fi";
 
 const CommentLists = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -63,7 +64,9 @@ const CommentLists = ({ postId }) => {
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; // ya da kendi default icon'un
   return (
     <div className="comment-list">
-      <h4>Yorumlar</h4>
+      <h4>
+        <FiMessageSquare /> Yorumlar
+      </h4>
 
       {comments.length === 0 && <p className="no-comments">Henüz yorum yok.</p>}
 
@@ -86,7 +89,7 @@ const CommentLists = ({ postId }) => {
                   className="delete-button"
                   onClick={() => setShowPopup(true)}
                 >
-                  Sil
+                  <FiTrash2 /> Sil
                 </button>
                 <Popup
                   isOpen={showPopup}

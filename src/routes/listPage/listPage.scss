@@ -1,6 +1,7 @@
 .page-container {
   display: flex;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 24px;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -8,11 +9,26 @@
 }
 
 .sidebarContent {
-  width: 250px;
-  min-height: 500px;
-  // background: #1e293b;
-  // padding: 20px;
-  border-radius: 8px;
+  width: 270px;
+  flex-shrink: 0;
+  min-height: 300px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  padding: 22px;
+  margin-top: 25px;
+  position: sticky;
+  top: 20px;
+
+  .sidebarTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ff3c38;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
 
   .filter-group {
     margin-bottom: 20px;
@@ -31,12 +47,13 @@
 
   @media (max-width: 768px) {
     width: 100%;
+    position: static;
   }
 }
 
 .content-list {
   flex: 1;
-  padding: 20px;
+  min-width: 0;
   border-radius: 8px;
   margin-top: 25px;
   @media (max-width: 768px) {
@@ -47,58 +64,60 @@
 
 .product-grid-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-
-  @media (max-width: 992px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   @media (max-width: 600px) {
     grid-template-columns: repeat(1, 1fr);
   }
 }
 
-.product-card {
-  background: #fafafa;
-  padding: 10px;
-  border-radius: 6px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+.listStatus {
   text-align: center;
+  margin-top: 30px;
 
-  img {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-    border-radius: 4px;
+  .allShownText {
+    margin-top: 10px;
+    color: #888;
+    font-size: 0.9rem;
   }
 
-  h3 {
-    font-size: 1rem;
-    margin-bottom: 5px;
-  }
+  .emptyState {
+    padding: 50px 0;
+    color: #999;
 
-  p {
-    font-weight: bold;
-    color: #333;
+    .emptyIcon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: #ccc;
+    }
+
+    p {
+      margin: 0;
+    }
   }
 }
+
 .load-more-button {
-  padding: 12px 24px;
-  background-color: #ff3c38;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #ff3c38, #ff6a3d);
   color: white;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 700;
   border: none;
-  border-radius: 6px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(255, 60, 56, 0.25);
+  transition: transform 0.15s ease;
 
   &:hover {
-    background-color: #3949ab;
+    transform: translateY(-2px);
   }
 
   &:disabled {
-    background-color: #ccc;
+    background: #ccc;
+    box-shadow: none;
     cursor: not-allowed;
+    transform: none;
   }
 }

@@ -2,6 +2,9 @@
   margin-top: 2rem;
 
   h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 1.3rem;
     margin-bottom: 1rem;
     color: #222;
@@ -51,11 +54,15 @@
       }
 
       .delete-button {
+        display: flex;
+        align-items: center;
+        gap: 5px;
         background: none;
         border: none;
         color: #c0392b;
         cursor: pointer;
         font-size: 0.9rem;
+        font-weight: 600;
 
         &:hover {
           color: #a93226;
@@ -113,15 +120,16 @@
   button {
     padding: 0.5rem 1.2rem;
     border: none;
-    background-color: #2e86de;
+    background: linear-gradient(135deg, #ff3c38, #ff6a3d);
     color: white;
-    font-weight: 500;
+    font-weight: 700;
     border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    box-shadow: 0 4px 12px rgba(255, 60, 56, 0.25);
+    transition: transform 0.15s ease;
 
     &:hover {
-      background-color: #1e6fbe;
+      transform: translateY(-1px);
     }
   }
 
