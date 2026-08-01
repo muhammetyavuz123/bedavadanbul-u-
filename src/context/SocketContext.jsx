@@ -9,8 +9,25 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
-  }, []);
+    // Giriş yapmamış ziyaretçi için socket bağlantısına hiç gerek yok —
+    // chat özelliği zaten sadece giriş yapmış kullanıcılar için. Önceden
+    // burası herkes (anonim ziyaretçiler dahil) için koşulsuz bağlanıyordu;
+    // bu da her sayfa yüklemesinde gereksiz (ve socket sunucusu adresi
+    // ayarlı değilse başarısız) bir bağlantı denemesine yol açıyordu.
+    if (!currentUser) {
+      setSocket(null);
+      return;
+    }
+
+    // Production'da gerçek socket sunucusu adresi VITE_SOCKET_URL ile
+    // verilmeli (bkz. client/.env). Değer yoksa yerel geliştirmeye düşer.
+    const newSocket = io(
+      import.meta.env.VITE_SOCKET_URL || "http://localhost:4000",
+    );
+    setSocket(newSocket);
+
+    return () => newSocket.disconnect();
+  }, [currentUser]);
 
   useEffect(() => {
     currentUser && socket?.emit("newUser", currentUser?.id);
