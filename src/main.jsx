@@ -5,15 +5,15 @@ import App from "./App.jsx";
 import "./index.scss";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { ErrorProvider } from "./context/ErrorContext.jsx";
-import { SocketContextProvider } from "./context/SocketContext.jsx";
+// import { SocketContextProvider } from "./context/SocketContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HelmetProvider>
     <ErrorProvider>
       <AuthContextProvider>
-        <SocketContextProvider>
-          <App />
-        </SocketContextProvider>
+        {/* <SocketContextProvider> */}
+        <App />
+        {/* </SocketContextProvider> */}
       </AuthContextProvider>
     </ErrorProvider>
-  </HelmetProvider>
+  </HelmetProvider>,
 );
