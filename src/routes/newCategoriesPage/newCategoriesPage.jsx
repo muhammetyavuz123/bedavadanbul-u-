@@ -14,7 +14,11 @@ function NewCategoryPage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    apiRequest.get("/categories").then((res) => {
+    // ⚠️ all=true: onay bekleyen kategoriler de listede görünsün, aksi
+    // halde henüz onaylanmamış bir "Sağlık" varken kullanıcı bunu dropdown'da
+    // göremiyor, elle "Sağlık" yazıp aynı isimde ikinci bir kategori daha
+    // oluşturuyordu.
+    apiRequest.get("/categories?all=true").then((res) => {
       setCategories(res.data);
     });
   }, []);
@@ -40,19 +44,39 @@ function NewCategoryPage() {
 
       // YENİ ANA + ALT
       if (newParentName) {
-        const res = await apiRequest.post("/categories", {
-          name: newParentName,
-          parentId: null,
-        });
+        let newParentId;
+        let parentAlreadyExisted = false;
 
-        const newParentId = res.data.id;
+        try {
+          const res = await apiRequest.post("/categories", {
+            name: newParentName,
+            parentId: null,
+          });
+
+          newParentId = res.data.id;
+        } catch (err) {
+          // ⚠️ Bu isimde bir ana kategori zaten varsa (409), yeni bir tane
+          // daha oluşturmaya çalışmak yerine var olanı kullanıp sadece
+          // alt kategoriyi ona bağlıyoruz — "varsa var desin, sadece alt
+          // kategoriyi eklesin" davranışı.
+          if (err.response?.status === 409 && err.response.data?.existingId) {
+            newParentId = err.response.data.existingId;
+            parentAlreadyExisted = true;
+          } else {
+            throw err;
+          }
+        }
 
         await apiRequest.post("/categories", {
           name,
           parentId: newParentId,
         });
 
-        setSuccess("Ana ve alt kategori oluşturuldu ✅");
+        setSuccess(
+          parentAlreadyExisted
+            ? `"${newParentName}" zaten vardı, alt kategori ona eklendi ✅`
+            : "Ana ve alt kategori oluşturuldu ✅",
+        );
 
         setName("");
         setNewParentName("");
@@ -87,6 +111,7 @@ function NewCategoryPage() {
             {mainCategories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
+                {!cat.isApproved ? " (onay bekliyor)" : ""}
               </option>
             ))}
           </select>
