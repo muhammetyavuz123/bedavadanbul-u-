@@ -173,6 +173,18 @@
       justify-content: center;
       z-index: 999;
 
+      // Görsel olarak eskisiyle birebir aynı kalsın diye butonun varsayılan
+      // kenarlık/arkaplan/padding'i sıfırlanıyor — sadece ikon görünür.
+      .menuToggleBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+      }
+
       img {
         width: 36px;
         height: 36px;

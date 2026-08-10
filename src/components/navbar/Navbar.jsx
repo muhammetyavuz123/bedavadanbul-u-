@@ -86,11 +86,18 @@ function Navbar() {
         )}
 
         <div className="menuIcon">
-          <img
-            src="/menu.png"
-            alt=""
+          {/* ⚠️ Erişilebilirlik fix: önceden onClick doğrudan <img alt=""> üzerindeydi
+              — bu hem klavyeyle odaklanılamıyordu hem de alt="" olduğu için ekran
+              okuyucular menü butonunu hiç göremiyordu. Gerçek bir <button> yapıp
+              aria-label ekledik. */}
+          <button
+            type="button"
+            className="menuToggleBtn"
+            aria-label={open ? "Menüyü kapat" : "Menüyü aç"}
             onClick={() => setOpen((prev) => !prev)}
-          />
+          >
+            <img src="/menu.png" alt="" />
+          </button>
         </div>
       </div>
 

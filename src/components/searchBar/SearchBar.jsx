@@ -61,7 +61,12 @@ function SearchBar() {
     <form className="form-wrapper">
       {/* İl ve İlçe */}
       <div className="city-district">
-        <select name="city" value={query.city} onChange={handleChange}>
+        <select
+          name="city"
+          aria-label="Şehir seçin"
+          value={query.city}
+          onChange={handleChange}
+        >
           <option value="">Şehir Seçiniz</option>
           {cities.map((city, index) => (
             <option key={index} value={city.il_adi}>
@@ -72,6 +77,7 @@ function SearchBar() {
 
         <select
           name="district"
+          aria-label="İlçe seçin"
           value={query.district}
           onChange={handleChange}
           disabled={!query.city}
@@ -84,7 +90,13 @@ function SearchBar() {
           ))}
         </select>
       </div>
-      <select id="type" name="type" onChange={handleChange} value={query.type}>
+      <select
+        id="type"
+        name="type"
+        aria-label="Kategori seçin"
+        onChange={handleChange}
+        value={query.type}
+      >
         <option value="">Kategori seç</option>
 
         {categories
