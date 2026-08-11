@@ -20,7 +20,6 @@ import ForgotPassword from "./routes/forgotPassword/forgotPassword";
 import PrivacyPolicy from "./routes/legal/PrivacyPolicy";
 import TermsOfUse from "./routes/legal/TermsOfUse";
 import KVKKClarification from "./routes/legal/KVKKClarification";
-import ScrollToTop from "./components/ScrollToTop";
 import Loader from "./components/loader/Loader";
 import EditPostPage from "./routes/newPostPage/editPostPage";
 import MapPage from "./routes/mapPage/mapPage";
@@ -118,11 +117,11 @@ function App() {
     },
   ]);
 
+  // ⚠️ RouterProvider'a child geçmek bir işe yaramıyordu (bkz. layout.jsx'teki
+  // ScrollToTop taşıma notu) — self-closing kullanıyoruz.
   return (
     <>
-      <RouterProvider router={router} fallbackElement={<Loader />}>
-        <ScrollToTop /> {/* artık Router context içinde */}
-      </RouterProvider>
+      <RouterProvider router={router} fallbackElement={<Loader />} />
     </>
   );
 }
