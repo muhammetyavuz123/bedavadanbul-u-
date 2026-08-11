@@ -23,6 +23,7 @@ import KVKKClarification from "./routes/legal/KVKKClarification";
 import ScrollToTop from "./components/ScrollToTop";
 import Loader from "./components/loader/Loader";
 import EditPostPage from "./routes/newPostPage/editPostPage";
+import MapPage from "./routes/mapPage/mapPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -46,6 +47,15 @@ function App() {
           path: "/list",
           element: <ListPage />,
           // loader: listPageLoader,
+        },
+        {
+          // ⚠️ "/:id" catch-all rotasından ÖNCE tanımlanmasına gerek yok —
+          // React Router v6 statik path segmentlerini (ör. "/harita")
+          // dinamik segmentlerden (":id") her zaman daha spesifik sayıp
+          // önceliklendiriyor, ama okunurluk için yine de /list'in yanına
+          // koyduk.
+          path: "/harita",
+          element: <MapPage />,
         },
         {
           path: "/:id",

@@ -31,27 +31,32 @@
     overflow: hidden;
   }
 
+  // ⚠️ FIX: Burada önceden .slick-track/.slick-slide flex'e zorlanıyordu
+  // (`display:flex !important`). react-slick slide genişliklerini YÜZDE
+  // olarak inline style ile hesaplıyor (bkz.
+  // node_modules/react-slick/lib/track.js) — bunu flex ile karıştırmak, "Öne
+  // Çıkan Kampanyalar" bölümünde daha önce tam olarak aynı sebeple tespit
+  // edilip düzeltilen bozukluğun birebir aynısını (kartların ikon
+  // genişliğine kadar büzülmesi) burada da yaratıyordu. Kütüphanenin
+  // varsayılan (float tabanlı) düzenine dokunmuyoruz; iç hizalama/boşluk
+  // .category-item'ın kendi flex'i ve .slick-slide'ın padding'i ile
+  // sağlanıyor.
   .slick-track {
-    display: flex !important; /* make track use flex so slides behave predictably */
-    align-items: stretch;
     margin-top: 20px;
   }
 
   .slick-slide {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    height: auto;
     box-sizing: border-box;
     padding: 0 8px; /* slide gap */
-    /* Prevent Slick from forcing tiny inline widths */
-    min-width: 0;
   }
 
+  // ⚠️ FIX: Eskiden `flex: 0 0 auto; width: auto;` idi. .slick-slide artık
+  // (yukarıdaki fix ile) flex değil normal blok/float bir kutu olduğu için
+  // .category-item de normal bir blok çocuğu — width:100% artık slide'ın
+  // gerçek genişliğine göre doğrudan hesaplanıyor, döngüsel/tanımsız bir
+  // referansa düşmüyor.
   .category-item {
-    /* let slide content size itself, but avoid flex-grow */
-    width: auto;
-    flex: 0 0 auto;
+    width: 100%;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -85,19 +90,15 @@
       transform: translateY(-4px);
     }
 
-    .icon-wrapper {
-      width: 60px;
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    // ⚠️ FIX: JSX'te `<img>` bir `.icon-wrapper` div'i içine sarılmıyor
+    // (bkz. carusel.jsx — img doğrudan .category-card'ın çocuğu), bu yüzden
+    // `.icon-wrapper img` seçicisi hiç eşleşmiyordu ve img boyutsuz/intrinsic
+    // boyutunda kalıyordu. Doğru seçiciyle (doğrudan img) düzeltildi.
+    img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
       margin-bottom: 0.6rem;
-
-      img {
-        width: 55px;
-        height: 55px;
-        object-fit: contain;
-      }
     }
   }
 
@@ -151,7 +152,7 @@
       max-width: 150px;
       height: 120px;
 
-      .icon-wrapper img {
+      img {
         width: 45px;
         height: 45px;
       }

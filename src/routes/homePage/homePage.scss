@@ -255,6 +255,16 @@
 }
 
 .content-list {
+  // ⚠️ FIX: Bu öğe `.content`'in (layout.scss) flex-column içinde bir
+  // çocuğu. Genişliği "auto" + yatay margin'leri "auto" olduğunda tarayıcı
+  // align-items:stretch'i uygulamayıp öğeyi İÇERİĞİNE göre büzüp
+  // sonra ortalıyor (CSS flexbox spec: cross-axis auto margin varsa
+  // stretch devre dışı kalır). Bu, muhtemelen daha önce fark edilen "kartlar
+  // beklenenden dar duruyor" sorununun gerçek kök nedeniydi — o an cache
+  // sanılmıştı. width:100% ile bu özel durumu devre dışı bırakıp normal
+  // "tam genişlik, max-width'e kadar, ortalanmış" davranışını sağlıyoruz.
+  width: 100%;
+  box-sizing: border-box;
   max-width: 1300px;
   margin: 2.5rem auto;
   padding: 0 2rem;
@@ -297,13 +307,12 @@
     }
   }
 
-  .product-grid-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-
+  // ⚠️ FIX: Eskiden bir CSS grid'di (auto-fill, minmax(250px,1fr)); dar bir
+  // kapsayıcıda tek sütuna düşüp kartları alt alta diziyordu. Kategoriler
+  // bölümündeki (carusel.scss) react-slick deseniyle aynı yatay kaydırmalı
+  // carousel'e çevrildi.
+  .product-carousel {
     .emptyState {
-      grid-column: 1 / -1;
       padding: 50px 0;
       text-align: center;
       color: #999;
@@ -318,6 +327,69 @@
         margin: 0;
       }
     }
+
+    // ⚠️ FIX: Daha önce burada .slick-track/.slick-slide'ı flex yapan özel
+    // bir CSS vardı (Kategoriler carousel'inden kopyalanmıştı). O flex
+    // katmanı, react-slick'in slide'lara verdiği YÜZDE tabanlı inline width'i
+    // (ör. "width: 33.333%" — node_modules/react-slick/lib/track.js) flex
+    // hesabıyla çakıştırıp kartları sıkışık/dar hale getiriyordu — flex-basis/
+    // flex-shrink kombinasyonlarının hiçbiri kalıcı çözmedi. En sağlam çözüm:
+    // react-slick'in VARSAYILAN (float tabanlı, flex'siz) düzenine hiç
+    // dokunmamak — kütüphane zaten bunun için tasarlanmış ve test edilmiş.
+    .slick-list {
+      overflow: hidden;
+    }
+
+    .slick-slide > div {
+      height: 100%;
+    }
+
+    .product-slide {
+      height: 100%;
+      padding: 0 0.75rem;
+      box-sizing: border-box;
+
+      .shop-card {
+        height: 100%;
+      }
+    }
+
+    .slick-prev,
+    .slick-next {
+      z-index: 5;
+      width: 38px;
+      height: 38px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: #ff3c38;
+        border-color: #ff3c38;
+
+        &::before {
+          color: #fff;
+        }
+      }
+
+      &::before {
+        color: #666;
+        font-size: 18px;
+      }
+    }
+
+    .slick-prev {
+      left: -14px;
+    }
+
+    .slick-next {
+      right: -14px;
+    }
+
+    .slick-disabled {
+      opacity: 0.35;
+    }
   }
 
   @media (max-width: 600px) {
@@ -325,6 +397,92 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 8px;
+    }
+  }
+}
+
+// ⚠️ /harita sayfasına götüren tıklanabilir tanıtım kartı — önceden burada
+// hem ayrı bir metin banner'ı hem de altında küçültülmüş canlı bir harita
+// vardı (bkz. homePage.jsx yorumu); ikisi birleştirilip tek, sade bir karta
+// dönüştürüldü. Aynı max-width/margin mantığı .content-list ile aynı —
+// o yüzden aynı flex-column "auto margin stretch'i devre dışı bırakır"
+// sorununa düşmemesi için burada da width:100% açıkça veriliyor.
+.mapPromoCard {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 1.75rem 2rem;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+
+    .mapPromoCta {
+      transform: translateX(3px);
+    }
+  }
+
+  .mapPromoIcon {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+    color: #fff;
+    font-size: 1.8rem;
+  }
+
+  .mapPromoText {
+    flex: 1;
+    min-width: 0;
+
+    h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #1a1a1a;
+    }
+
+    p {
+      margin: 0 0 0.6rem;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .mapPromoCta {
+      display: inline-block;
+      font-weight: 700;
+      color: #ff3c38;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease;
+    }
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+
+    .mapPromoIcon {
+      width: 56px;
+      height: 56px;
+      font-size: 1.5rem;
     }
   }
 }

@@ -1,0 +1,62 @@
+.map-page-container {
+  // ⚠️ FIX: `.content` (layout.scss) bir flex-column konteyner. Bu öğenin
+  // genişliği "auto" + yatay margin'leri "auto" olunca, tarayıcı
+  // align-items:stretch'i uygulamayıp öğeyi İÇERİĞİNE göre büzüp
+  // ortalıyordu — burada tek "içerik" kısa bir metin satırı olduğu için
+  // konteyner (ve onun %100'ü olan harita) o metnin genişliğine kadar
+  // çöküyordu. width:100% ile bu özel durumu devre dışı bırakıp normal
+  // "tam genişlik, max-width'e kadar, ortalanmış" davranışını sağlıyoruz.
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 0 2rem;
+
+  .resultCount {
+    margin: 0 0 1rem;
+    font-weight: 700;
+    color: #444;
+    font-size: 0.95rem;
+  }
+
+  .mapWrap {
+    width: 100%;
+    height: calc(100vh - 260px);
+    min-height: 480px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .mapLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+  }
+
+  .emptyState {
+    padding: 80px 0;
+    text-align: center;
+    color: #999;
+
+    .emptyIcon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: #ccc;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 0 1rem;
+
+    .mapWrap {
+      height: calc(100vh - 320px);
+      min-height: 380px;
+    }
+  }
+}

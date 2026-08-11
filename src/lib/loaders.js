@@ -18,8 +18,17 @@ export const listPageLoader = async ({ request }) => {
 
   const postPromise = apiRequest("/posts?" + url.searchParams.toString());
 
+  // ⚠️ Anasayfadaki "Sona Erecek Kampanyalar" bölümü için ayrı, bağımsız bir
+  // istek — ana `postPromise`'a sort eklemek /list sayfasını da etkiler
+  // (bu loader şu an sadece "/" route'unda kullanılıyor olsa da, ileride
+  // /list'e de bağlanabilir), o yüzden anasayfaya özel küçük bir sorgu.
+  const endingSoonPromise = apiRequest(
+    "/posts?approved=true&sort=expiring&limit=8",
+  );
+
   return defer({
     postResponse: postPromise,
+    endingSoonResponse: endingSoonPromise,
   });
 };
 
