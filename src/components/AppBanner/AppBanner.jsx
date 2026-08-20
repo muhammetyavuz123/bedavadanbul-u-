@@ -17,7 +17,7 @@ const AppBanner = () => {
           </p>
           <div className="app-banner__buttons">
             <a
-              href="https://play.google.com"
+              href="https://play.google.com/store/apps/details?id=com.bedavadanbul.mobil&hl=tr"
               className="btn google"
               target="_blank"
               rel="noopener noreferrer"
