@@ -36,6 +36,13 @@ function EditPostPage() {
 
   const [categoryId, setCategoryId] = useState("");
   const [listingType, setListingType] = useState("standard");
+  // ⚠️ FIX: ilanın YÜKLENDİĞİ ANDAKİ ilan tipini ayrıca saklıyoruz. Aşağıdaki
+  // `currentPrice`, seçili `listingType` "featured"/"doping" olduğu sürece
+  // (kullanıcı hiçbir şey değiştirmese, ilan zaten o tipte olsa bile) her
+  // zaman > 0 dönüyordu — bu yüzden sadece ismi değiştirip kaydet'e basmak
+  // bile ödeme popup'ını açıyordu. Ödeme sadece ilan tipi GERÇEKTEN
+  // değiştiğinde istenmeli.
+  const [initialListingType, setInitialListingType] = useState("standard");
   const [adDuration, setAdDuration] = useState(""); // salt-okunur: oluşturmada belirlenir
   const [phoneNumber, setPhoneNumber] = useState("");
   const [images, setImages] = useState([]);
@@ -45,7 +52,10 @@ function EditPostPage() {
   const [showPayment, setShowPayment] = useState(false);
   const [pendingInputs, setPendingInputs] = useState(null);
 
+  const listingTypeChanged = listingType !== initialListingType;
   const currentPrice = getListingPrice(listingType, Number(adDuration || 0));
+  // Ödeme SADECE ilan tipi değiştiğinde ve yeni tip ücretliyse gerekiyor.
+  const requiresPayment = listingTypeChanged && currentPrice > 0;
 
   // ✅ İLANI GETİR
   useEffect(() => {
@@ -64,6 +74,7 @@ function EditPostPage() {
         setDistrict(post.district || "");
         setCategoryId(post.categoryId || "");
         setListingType(post.listingType || "standard");
+        setInitialListingType(post.listingType || "standard");
         setAdDuration(post.adDuration ? String(post.adDuration) : "");
         setPhoneNumber(post.phoneNumber || "");
         setImages(post.images || []);
@@ -141,8 +152,11 @@ function EditPostPage() {
 
     // 🔹 Vitrin/Doping her zaman ücretlidir (bkz. lib/pricing.js) — mevcut
     // ilanın yayın süresi değiştirilemediği için fiyat, ilan oluşturulurken
-    // seçilmiş olan süre üzerinden hesaplanır.
-    if (currentPrice > 0) {
+    // seçilmiş olan süre üzerinden hesaplanır. Ama düzenlemede ödeme SADECE
+    // ilan tipi gerçekten değiştiyse istenir — ilan zaten "featured"/"doping"
+    // olarak kayıtlıyken sadece başlık/adres gibi başka bir alanı
+    // değiştirmek tekrar ödeme istememeli.
+    if (requiresPayment) {
       setPendingInputs(inputs);
       setShowPayment(true);
       return;
@@ -367,9 +381,9 @@ function EditPostPage() {
                 </div>
               )}
 
-              {currentPrice > 0 && (
+              {requiresPayment && (
                 <div className="priceSummary">
-                  <span>Bu ilan tipiyle kaydetmek için ödeme gerekir</span>
+                  <span>Bu ilan tipine geçmek için ödeme gerekir</span>
                   <strong>{currentPrice.toLocaleString("tr-TR")} ₺</strong>
                 </div>
               )}
@@ -449,7 +463,7 @@ function EditPostPage() {
             <button className="sendButton" disabled={pending}>
               {pending
                 ? "Kaydediliyor..."
-                : currentPrice > 0
+                : requiresPayment
                   ? `Ödemeye Geç · ${currentPrice.toLocaleString("tr-TR")} ₺`
                   : "Değişiklikleri Kaydet"}
             </button>{" "}
