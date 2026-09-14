@@ -10,7 +10,7 @@
 export const PRICING = {
   standard: { 1: 0, 3: 0, 6: 0, 12: 0 },
   featured: { 1: 149, 3: 399, 6: 699, 12: 1199 },
-  doping: { 1: 249, 3: 649, 6: 1099, 12: 1899 },
+  doping: { 1: 150, 3: 490, 6: 590, 12: 980 },
 };
 
 export const LISTING_TYPE_LABELS = {
