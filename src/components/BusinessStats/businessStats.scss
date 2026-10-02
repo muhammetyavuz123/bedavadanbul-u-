@@ -1,0 +1,188 @@
+$brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #1c1f2e;
+$muted: #7a7f8e;
+
+.bizStats {
+  width: 100%;
+  box-sizing: border-box;
+
+  .statsHead {
+    margin-bottom: 18px;
+
+    h2 {
+      margin: 0 0 4px;
+      color: $ink;
+    }
+
+    p {
+      margin: 0;
+      color: $muted;
+      font-size: 0.9rem;
+    }
+  }
+
+  .statCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .statCard {
+    background: #fff;
+    border: 1px solid #eceef5;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 6px 18px rgba(28, 31, 46, 0.04);
+
+    .statIcon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: #fff3f2;
+      color: $brand;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    strong {
+      font-size: 1.7rem;
+      color: $ink;
+      line-height: 1.1;
+    }
+
+    .statLabel {
+      font-weight: 700;
+      color: #3a3e4e;
+      font-size: 0.88rem;
+    }
+
+    small {
+      color: #a0a5b4;
+      font-size: 0.75rem;
+    }
+  }
+
+  .statChart {
+    background: #fff;
+    border: 1px solid #eceef5;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(28, 31, 46, 0.04);
+
+    .chartHead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      h3 {
+        margin: 0;
+        color: $ink;
+      }
+    }
+
+    .metricTabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+
+      button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #eceef5;
+        background: #fff;
+        color: $muted;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        cursor: pointer;
+
+        &.active {
+          background: linear-gradient(135deg, $brand, $brand2);
+          border-color: transparent;
+          color: #fff;
+        }
+      }
+    }
+
+    .chartTotal {
+      margin: 12px 0 6px;
+      color: $muted;
+
+      strong {
+        color: $ink;
+        font-size: 1.5rem;
+      }
+    }
+
+    .chartWrap {
+      svg {
+        width: 100%;
+        height: 170px;
+        display: block;
+      }
+
+      .gridLine {
+        stroke: #eef0f6;
+        stroke-width: 1;
+      }
+
+      .bar {
+        fill: #ffb3ae;
+        transition: fill 0.15s;
+
+        &.hot {
+          fill: $brand;
+        }
+      }
+
+      .axisRow {
+        display: flex;
+        justify-content: space-between;
+        color: #a0a5b4;
+        font-size: 0.72rem;
+        margin-top: 4px;
+      }
+
+      .chartTip {
+        text-align: right;
+        font-size: 0.8rem;
+        color: $muted;
+        margin-top: 2px;
+      }
+    }
+
+    .statsHint {
+      margin: 12px 0 0;
+      padding: 10px 14px;
+      background: #f7f8fc;
+      border-radius: 10px;
+      color: $muted;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.statsEmpty {
+  text-align: center;
+  padding: 40px 16px;
+  color: $muted;
+
+  h3 {
+    color: $ink;
+  }
+}
+
+.statsError {
+  color: #c62828;
+}

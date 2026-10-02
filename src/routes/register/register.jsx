@@ -17,7 +17,12 @@ import {
 function Register() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState("");
+  // /register?type=business ile işyeri kaydı doğrudan açılır
+  const [userType, setUserType] = useState(() =>
+    new URLSearchParams(window.location.search).get("type") === "business"
+      ? "business"
+      : "",
+  );
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);

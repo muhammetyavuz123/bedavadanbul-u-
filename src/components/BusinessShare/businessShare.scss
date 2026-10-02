@@ -1,0 +1,135 @@
+$brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #1c1f2e;
+$muted: #7a7f8e;
+
+.bizShare {
+  width: 100%;
+  box-sizing: border-box;
+
+  .shareHead {
+    margin-bottom: 18px;
+
+    h2 {
+      margin: 0 0 4px;
+      color: $ink;
+    }
+
+    p {
+      margin: 0;
+      color: $muted;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+
+  .shareGrid {
+    display: grid;
+    grid-template-columns: minmax(240px, 340px) 1fr;
+    gap: 28px;
+    align-items: start;
+
+    @media (max-width: 760px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .posterBox {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(28, 31, 46, 0.18);
+    background: #f3f4f9;
+    max-width: 340px;
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .shareActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 420px;
+  }
+
+  .shareBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #e3e6ef;
+    background: #fff;
+    color: $ink;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+
+    &:hover {
+      border-color: $brand;
+      color: $brand;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    &.primary {
+      background: linear-gradient(135deg, $brand, $brand2);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(255, 60, 56, 0.28);
+
+      &:hover {
+        color: #fff;
+        filter: brightness(1.05);
+      }
+    }
+
+    &.wa {
+      background: #e9f9ef;
+      border-color: #bfeccf;
+      color: #178a43;
+
+      &:hover {
+        background: #25d366;
+        border-color: #25d366;
+        color: #fff;
+      }
+    }
+  }
+
+  .shareUrl {
+    margin: 4px 0 0;
+    padding: 9px 12px;
+    background: #f7f8fc;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: $muted;
+    word-break: break-all;
+  }
+
+  .shareTip {
+    margin: 0;
+    font-size: 0.82rem;
+    color: $muted;
+    line-height: 1.5;
+  }
+}
+
+.shareEmpty {
+  text-align: center;
+  padding: 40px 16px;
+  color: $muted;
+
+  h3 {
+    color: $ink;
+  }
+}

@@ -1,0 +1,1630 @@
+$brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #1c1f2e;
+$muted: #7a7f8e;
+$shadow: 0 10px 30px rgba(28, 31, 46, 0.07);
+
+.bizPage {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 0 48px;
+
+  .bizCrumb {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 14px;
+
+    a {
+      color: #888;
+      text-decoration: none;
+
+      &:hover {
+        color: $brand;
+      }
+    }
+
+    span {
+      color: #333;
+    }
+  }
+
+  /* ---------- Butonlar ---------- */
+  .primaryBtn,
+  .ghostBtn,
+  .dangerBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease,
+      background 0.15s ease;
+    white-space: nowrap;
+
+    &.small {
+      padding: 9px 14px;
+      font-size: 0.85rem;
+    }
+  }
+
+  .primaryBtn {
+    background: linear-gradient(135deg, $brand, $brand2);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(255, 60, 56, 0.28);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(255, 60, 56, 0.36);
+    }
+
+    &:disabled {
+      background: #ccc;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+
+  .ghostBtn {
+    background: #fff;
+    color: $ink;
+    border: 1px solid #e6e8ee;
+
+    &:hover {
+      border-color: $brand;
+      color: $brand;
+      background: #fff7f6;
+    }
+  }
+
+  .dangerBtn {
+    background: #fff;
+    color: #c62828;
+    border: 1px solid #f0c4c4;
+  }
+
+  .full {
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .bizError {
+    color: #c62828;
+    font-size: 0.88rem;
+    margin: 4px 0;
+  }
+
+  .bizHint {
+    color: $muted;
+    font-size: 0.92rem;
+
+    &.small {
+      font-size: 0.8rem;
+      margin: 8px 0 0;
+    }
+
+    a {
+      color: $brand;
+      font-weight: 700;
+    }
+  }
+
+  .ownerTip {
+    margin: 12px 0 0;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border: 1px dashed #f3d18a;
+    border-radius: 12px;
+    color: #8a6411;
+    font-size: 0.85rem;
+
+    a {
+      color: $brand;
+      font-weight: 700;
+    }
+  }
+
+  .bizNotFound {
+    text-align: center;
+    padding: 80px 0;
+    color: #999;
+
+    svg {
+      font-size: 2.6rem;
+    }
+
+    a {
+      color: $brand;
+      font-weight: 700;
+    }
+  }
+
+  /* ---------- Hero ---------- */
+  .bizHero {
+    background: #fff;
+    border-radius: 26px;
+    box-shadow: $shadow;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+
+  .bizMedia {
+    position: relative;
+    height: 380px;
+    background: #14162a;
+
+    .photoStage {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      background: #14162a;
+
+      .photoMain {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        cursor: zoom-in;
+        animation: photoFade 0.35s ease;
+      }
+
+      .photoShade {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 40%;
+        background: linear-gradient(180deg, transparent, rgba(10, 12, 24, 0.6));
+        pointer-events: none;
+      }
+
+      .photoCounter {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: rgba(10, 12, 24, 0.66);
+        color: #fff;
+        border-radius: 999px;
+        padding: 5px 13px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .navArrow {
+        position: absolute;
+        top: 42%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.92);
+        color: $ink;
+        font-size: 1.4rem;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+
+        &.prev {
+          left: 16px;
+        }
+
+        &.next {
+          right: 16px;
+        }
+
+        &:hover {
+          background: #fff;
+          color: $brand;
+        }
+      }
+
+      /* Küçük resim şeridi: logonun sağında, görselin altında */
+      .thumbRail {
+        position: absolute;
+        bottom: 14px;
+        left: 176px;
+        right: 16px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 4px 2px;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        button {
+          flex-shrink: 0;
+          width: 74px;
+          height: 54px;
+          padding: 0;
+          border: 2px solid rgba(255, 255, 255, 0.55);
+          border-radius: 11px;
+          overflow: hidden;
+          background: none;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: all 0.15s ease;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+          }
+
+          &:hover {
+            opacity: 1;
+          }
+
+          &.active {
+            opacity: 1;
+            border-color: #fff;
+            box-shadow: 0 0 0 2px $brand;
+            transform: translateY(-3px);
+          }
+        }
+      }
+    }
+
+    .themedCover {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+
+      .watermark {
+        position: absolute;
+        right: 6%;
+        bottom: -12%;
+        font-size: 22rem;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        color: rgba(255, 255, 255, 0.16);
+        user-select: none;
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+
+        &.o1 {
+          width: 260px;
+          height: 260px;
+          left: -60px;
+          top: -80px;
+        }
+
+        &.o2 {
+          width: 140px;
+          height: 140px;
+          left: 28%;
+          bottom: 30px;
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.o3 {
+          width: 90px;
+          height: 90px;
+          right: 30%;
+          top: 40px;
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .coverCategory {
+        position: absolute;
+        left: 32px;
+        top: 30px;
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.95rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        opacity: 0.9;
+      }
+    }
+
+    .mediaBtn {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.92);
+      color: $ink;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+
+      &:hover {
+        background: #fff;
+        color: $brand;
+      }
+
+      &.share {
+        top: 16px;
+        right: 16px;
+      }
+
+      &.zoom {
+        top: 16px;
+        right: 118px;
+      }
+    }
+  }
+
+  .bizIdentity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 22px;
+    align-items: end;
+    padding: 0 30px 24px;
+    margin-top: -60px;
+    position: relative;
+  }
+
+  .bizLogo {
+    width: 128px;
+    height: 128px;
+    border-radius: 28px;
+    background: #fff;
+    border: 5px solid #fff;
+    box-shadow: 0 12px 30px rgba(28, 31, 46, 0.22);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .bizTitleBlock {
+    min-width: 0;
+    padding-top: 68px;
+
+    h1 {
+      margin: 8px 0 10px;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: $ink;
+      letter-spacing: -0.015em;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .bizChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+
+      &.category {
+        background: linear-gradient(135deg, #fff0ee, #ffe4de);
+        color: $brand;
+      }
+
+      &.place {
+        background: #f3f4f8;
+        color: #5a5f70;
+      }
+    }
+  }
+
+  .bizRatingLine {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: $muted;
+    font-size: 0.9rem;
+
+    .ratingBadge {
+      background: $ink;
+      color: #ffd166;
+      border-radius: 10px;
+      padding: 3px 9px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .ratingLink {
+      background: none;
+      border: none;
+      padding: 0;
+      color: $muted;
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        color: $brand;
+      }
+    }
+  }
+
+  .bizActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding-bottom: 4px;
+  }
+
+  /* ---------- Güven şeridi ---------- */
+  .trustStrip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    border-top: 1px solid #f0f1f6;
+    background: linear-gradient(180deg, #fcfcfe, #f8f9fc);
+
+    .trustItem {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 22px;
+      border-right: 1px solid #eef0f6;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      .trustIcon {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: #fff1ef;
+        color: $brand;
+        display: grid;
+        place-items: center;
+
+        &.green {
+          background: #e9f7ee;
+          color: #2f8a4d;
+        }
+      }
+
+      strong {
+        display: block;
+        color: $ink;
+        font-size: 0.95rem;
+      }
+
+      small {
+        display: block;
+        color: $muted;
+        font-size: 0.76rem;
+        margin-top: 1px;
+      }
+    }
+  }
+
+  /* ---------- Yapışkan bölüm menüsü ---------- */
+  .bizSectionNav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 10px 12px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #eef0f6;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(28, 31, 46, 0.06);
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    button {
+      flex-shrink: 0;
+      border: none;
+      background: transparent;
+      color: #555a6b;
+      font-weight: 700;
+      font-size: 0.88rem;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: #fff1ef;
+        color: $brand;
+      }
+    }
+  }
+
+  /* ---------- Gövde ---------- */
+  .bizColumns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .bizMainCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .bizCard {
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: $shadow;
+    padding: 26px;
+    box-sizing: border-box;
+    scroll-margin-top: 80px;
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.15rem;
+      color: $ink;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      &::before {
+        content: "";
+        width: 4px;
+        height: 18px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, $brand, $brand2);
+      }
+    }
+  }
+
+  .bizSideCol {
+    position: sticky;
+    top: 84px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .bizAbout {
+    margin: 0;
+    line-height: 1.8;
+    color: #454a5c;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* ---------- Konum ---------- */
+  .locGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .mapWrap {
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 260px;
+    background: #eef0f6;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      border: 0;
+      display: block;
+    }
+  }
+
+  .locInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .locBlock {
+      h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+        color: $ink;
+
+        svg {
+          color: $brand;
+        }
+      }
+
+      p {
+        margin: 0 0 12px;
+        color: #454a5c;
+        line-height: 1.6;
+        font-size: 0.93rem;
+      }
+    }
+
+    .hoursList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      li {
+        padding: 8px 12px;
+        background: #f8f9fc;
+        border-radius: 10px;
+        font-size: 0.88rem;
+        color: #3a3f50;
+        font-weight: 600;
+      }
+    }
+  }
+
+  /* ---------- İletişim kartı ---------- */
+  .bizContactCard {
+    border-top: 4px solid $brand;
+  }
+
+  .bizContact {
+    list-style: none;
+    margin: 0 0 8px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    li {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      color: #454a5c;
+      font-size: 0.93rem;
+      line-height: 1.5;
+      word-break: break-word;
+
+      .iconBox {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        background: #fff1ef;
+        color: $brand;
+        display: grid;
+        place-items: center;
+      }
+
+      a {
+        color: $ink;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          color: $brand;
+        }
+      }
+    }
+  }
+
+  .quickAsk {
+    h2 {
+      margin-bottom: 4px;
+    }
+  }
+
+  .quickChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 0;
+
+    button {
+      border: 1px solid #ffd9d2;
+      background: #fff8f7;
+      color: #c8352f;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover,
+      &.active {
+        background: $brand;
+        border-color: $brand;
+        color: #fff;
+      }
+    }
+  }
+
+  .privacyNote {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    background: #f6f7fb;
+    border-radius: 12px;
+    color: $muted;
+    font-size: 0.8rem;
+    line-height: 1.5;
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: #4a8f5b;
+    }
+  }
+
+  /* ---------- Yorumlar ---------- */
+  .reviewSummary {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+
+  .bigScore {
+    background: linear-gradient(160deg, #1c1f2e, #2d2250);
+    color: #fff;
+    border-radius: 18px;
+    padding: 20px 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    strong {
+      font-size: 2.8rem;
+      line-height: 1;
+    }
+
+    span {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  .reviewForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #f8f9fc;
+    border: 1px solid #eef0f6;
+    border-radius: 16px;
+    padding: 18px;
+
+    textarea {
+      border: 1px solid #dfe2ec;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+      width: 100%;
+      background: #fff;
+
+      &:focus {
+        outline: none;
+        border-color: $brand;
+      }
+    }
+
+    .reviewFormActions {
+      display: flex;
+      gap: 10px;
+    }
+  }
+
+  .reviewList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .reviewItem {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f1f6;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .reviewAvatar {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .reviewBody {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .reviewTop {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      strong {
+        color: $ink;
+      }
+
+      span {
+        color: #a0a5b4;
+        font-size: 0.78rem;
+      }
+    }
+
+    p {
+      margin: 4px 0 0;
+      color: #454a5c;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
+  .moreBtn {
+    margin-top: 14px;
+  }
+
+  /* ---------- Benzer işletmeler ---------- */
+  .similarSection {
+    margin-top: 32px;
+    scroll-margin-top: 80px;
+
+    .similarHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+
+      h2 {
+        margin: 0;
+        font-size: 1.3rem;
+        color: $ink;
+      }
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: $brand;
+        font-weight: 800;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+    }
+
+    .similarGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    .simCard {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #fff;
+      border: 1px solid #eef0f6;
+      border-radius: 20px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 6px 18px rgba(28, 31, 46, 0.05);
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+
+      &:hover {
+        transform: translateY(-4px);
+        border-color: #ffd0c9;
+        box-shadow: 0 16px 32px rgba(255, 60, 56, 0.14);
+      }
+
+      .simLogo {
+        flex-shrink: 0;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        overflow: hidden;
+        display: block;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .simInfo {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        strong {
+          color: $ink;
+          font-size: 0.97rem;
+          line-height: 1.3;
+        }
+
+        .simRating {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.78rem;
+          color: $muted;
+        }
+
+        small {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          color: $muted;
+          font-size: 0.78rem;
+
+          svg {
+            color: $brand;
+          }
+        }
+      }
+    }
+  }
+
+  /* ---------- Kapanış çağrısı ---------- */
+  .bizClosing {
+    margin-top: 32px;
+    border-radius: 26px;
+    padding: 34px 38px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(28, 31, 46, 0.18);
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -80px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    h2 {
+      margin: 0 0 6px;
+      font-size: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.92;
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    .closingActions {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .closingBtn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 14px;
+      padding: 14px 24px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &.solid {
+        background: #fff;
+        color: $ink;
+        border: none;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+      }
+
+      &.line {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        border: 2px solid rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  /* ---------- Lightbox ---------- */
+  .bizLightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 10, 20, 0.94);
+    z-index: 1100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+
+    > img {
+      max-width: min(1100px, 100%);
+      max-height: 86vh;
+      border-radius: 14px;
+      object-fit: contain;
+    }
+
+    .lbClose,
+    .lbNav {
+      position: absolute;
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    .lbClose {
+      top: 18px;
+      right: 18px;
+    }
+
+    .lbNav {
+      top: 50%;
+      transform: translateY(-50%);
+
+      &.prev {
+        left: 18px;
+      }
+
+      &.next {
+        right: 18px;
+      }
+    }
+
+    .lbCounter {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+  }
+
+  .bizStickyBar {
+    display: none;
+  }
+
+  /* ---------- Soru modalı ---------- */
+  .bizModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 24, 0.55);
+    backdrop-filter: blur(3px);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    z-index: 1200;
+  }
+
+  .bizModal {
+    background: #fff;
+    border-radius: 22px;
+    padding: 26px;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    max-height: 92vh;
+    overflow-y: auto;
+
+    h3 {
+      margin: 0;
+      color: $ink;
+    }
+
+    .quickChips {
+      margin: 0;
+    }
+
+    input,
+    textarea {
+      border: 1px solid #dfe2ec;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font: inherit;
+      box-sizing: border-box;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+        border-color: $brand;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .modalActions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1000px) {
+    .bizColumns {
+      grid-template-columns: 1fr;
+    }
+
+    .bizSideCol {
+      position: static;
+    }
+
+    .bizIdentity {
+      grid-template-columns: auto minmax(0, 1fr);
+
+      .bizActions {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+
+        > * {
+          flex: 1;
+        }
+      }
+    }
+
+    .locGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding-bottom: 90px;
+
+    .bizMedia {
+      height: 240px;
+
+      .mediaBtn.share span {
+        display: none;
+      }
+
+      .mediaBtn.zoom {
+        right: 62px;
+      }
+
+      .mediaBtn.zoom span {
+        display: none;
+      }
+
+      .photoStage {
+        .navArrow {
+          width: 36px;
+          height: 36px;
+          font-size: 1.15rem;
+        }
+
+        .thumbRail {
+          left: 112px;
+          bottom: 8px;
+
+          button {
+            width: 54px;
+            height: 40px;
+          }
+        }
+      }
+
+      .themedCover .watermark {
+        font-size: 12rem;
+      }
+    }
+
+    .bizIdentity {
+      grid-template-columns: 1fr;
+      padding: 0 18px 20px;
+      margin-top: -46px;
+      gap: 12px;
+    }
+
+    .bizLogo {
+      width: 92px;
+      height: 92px;
+      border-radius: 22px;
+    }
+
+    .bizTitleBlock {
+      padding-top: 0;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .bizActions {
+      display: none;
+    }
+
+    .trustStrip {
+      grid-template-columns: 1fr 1fr;
+
+      .trustItem {
+        padding: 12px 14px;
+        border-bottom: 1px solid #eef0f6;
+      }
+    }
+
+    .bizCard {
+      padding: 20px 18px;
+      border-radius: 18px;
+    }
+
+    .reviewSummary {
+      grid-template-columns: 1fr;
+    }
+
+    .bizClosing {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 26px 20px;
+
+      .closingActions {
+        flex-direction: column;
+      }
+
+      .closingBtn {
+        justify-content: center;
+      }
+    }
+
+    .bizStickyBar {
+      display: flex;
+      gap: 8px;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 900;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid #eceef4;
+      box-shadow: 0 -8px 24px rgba(28, 31, 46, 0.08);
+
+      > * {
+        flex: 1;
+        padding: 12px 10px;
+      }
+    }
+  }
+}
+
+@keyframes photoFade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== Favori, rozet, yorum yanıtı, kampanyalar ===== */
+.bizPage {
+  .bizHero .bizMedia .mediaBtn.fav {
+    top: 16px;
+    right: 130px;
+
+    &.withZoom {
+      right: 232px;
+    }
+
+    svg {
+      font-size: 1.05rem;
+    }
+
+    &.on {
+      color: $brand;
+
+      svg {
+        fill: $brand;
+      }
+    }
+  }
+
+  .bizBadgeRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 2px 0 6px;
+
+    .bizBadge {
+      font-size: 0.78rem;
+      padding: 4px 11px;
+    }
+  }
+
+  .ownerReply {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f7f8fc;
+    border-left: 3px solid $brand;
+    border-radius: 0 10px 10px 0;
+
+    .ownerReplyHead {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: $muted;
+
+      svg {
+        color: $brand;
+      }
+
+      strong {
+        color: $ink;
+      }
+
+      small {
+        margin-left: auto;
+        font-size: 0.74rem;
+        color: #a0a5b4;
+      }
+    }
+
+    p {
+      margin: 6px 0 0;
+      color: #3a3e4e;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+  }
+
+  .replyActions {
+    display: flex;
+    gap: 14px;
+    margin-top: 6px;
+
+    button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: $brand;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+
+      &.danger {
+        color: #a0a5b4;
+
+        &:hover {
+          color: #d33;
+        }
+      }
+    }
+  }
+
+  .replyForm {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #dfe2ec;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: $brand;
+      }
+    }
+
+    .replyFormActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+  }
+
+  .campaignGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+  }
+
+  .campaignCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eceef5;
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: $ink;
+    background: #fff;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: $shadow;
+    }
+
+    .campaignImg {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: #f3f4f9;
+      display: grid;
+      place-items: center;
+      color: #b6bacb;
+      font-size: 1.6rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .campaignDiscount {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .campaignInfo {
+      padding: 10px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      strong {
+        font-size: 0.92rem;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      small {
+        color: $muted;
+        font-size: 0.78rem;
+      }
+    }
+  }
+
+  .regionLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: -4px 0 14px;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid #eceef5;
+      color: $ink;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+
+      svg {
+        color: $brand;
+      }
+
+      &:hover {
+        border-color: $brand;
+        color: $brand;
+      }
+    }
+  }
+
+  @media (max-width: 720px) {
+    .bizHero .bizMedia .mediaBtn.fav {
+      right: 62px;
+
+      &.withZoom {
+        right: 108px;
+      }
+
+      span {
+        display: none;
+      }
+    }
+  }
+}

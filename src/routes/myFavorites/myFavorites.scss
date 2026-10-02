@@ -1,0 +1,185 @@
+$brand: #ff3c38;
+$ink: #1c1f2e;
+
+.myFavs {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 0 48px;
+
+  .favError {
+    color: #c62828;
+  }
+
+  .favEmpty {
+    text-align: center;
+    padding: 56px 16px;
+    color: #7a7f8e;
+
+    > svg {
+      font-size: 2.6rem;
+      color: $brand;
+    }
+
+    h2 {
+      margin: 12px 0 6px;
+      color: $ink;
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0 0 18px;
+    }
+
+    .favCta {
+      display: inline-block;
+      background: linear-gradient(135deg, $brand, #ff6a3d);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 11px 22px;
+      border-radius: 12px;
+    }
+  }
+
+  .favGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .favCard {
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+      transform 0.15s,
+      box-shadow 0.15s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .favRemove {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: #fff3f2;
+    color: $brand;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    z-index: 1;
+
+    svg {
+      fill: $brand;
+    }
+
+    &:hover {
+      background: $brand;
+      color: #fff;
+
+      svg {
+        fill: #fff;
+      }
+    }
+  }
+
+  .favMain {
+    display: flex;
+    gap: 14px;
+    padding: 18px 54px 14px 18px;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+  }
+
+  .favLogo {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    display: block;
+  }
+
+  .favInfo {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    strong {
+      color: $ink;
+      font-size: 1.02rem;
+    }
+
+    small {
+      color: #7a7f8e;
+      font-size: 0.8rem;
+    }
+
+    .favCat {
+      color: $brand;
+      font-weight: 700;
+    }
+
+    .favRating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: #555;
+    }
+
+    .favLoc {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  }
+
+  .favActions {
+    display: flex;
+    gap: 10px;
+    padding: 0 18px 16px;
+
+    a {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      background: #f3f4f9;
+      color: $ink;
+
+      &:first-child {
+        background: #fff3f2;
+        color: $brand;
+      }
+
+      &:hover {
+        background: $brand;
+        color: #fff;
+      }
+    }
+  }
+}

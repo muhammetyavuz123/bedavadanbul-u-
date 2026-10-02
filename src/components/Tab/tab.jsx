@@ -6,13 +6,17 @@ import ProfileUpdatePage from "../../routes/profileUpdatePage/profileUpdatePage"
 import ProfilList from "../../routes/profilList/profilList";
 
 import apiRequest from "../../lib/apiRequest";
-import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Popup from "../Popup/Popup";
 import MessagesPage from "../Contact/Contact";
 import Dashboard from "../../routes/profilePage/dashboard";
 import NewCategoriesPage from "../../routes/newCategoriesPage/newCategoriesPage";
 import CategoriesPage from "../../routes/categoriesPage/categoriesPage";
+import BusinessDashboard from "../../routes/businessDashboard/businessDashboard";
+import BusinessStats from "../BusinessStats/BusinessStats";
+import BusinessShare from "../BusinessShare/BusinessShare";
+import AdminBusinesses from "../AdminBusinesses/AdminBusinesses";
 import {
   FiHome,
   FiList,
@@ -22,21 +26,36 @@ import {
   FiMail,
   FiGrid,
   FiLogOut,
+  FiBriefcase,
+  FiBarChart2,
+  FiShare2,
 } from "react-icons/fi";
 
 const MENU_ITEMS = [
   { key: "home", label: "Ana Sayfa", icon: FiHome },
   { key: "profilList", label: "Kampanyalarım", labelAdmin: "Kampanyalar", icon: FiList },
   { key: "newPost", label: "Kampanya Ekle", icon: FiPlusCircle },
+  { key: "business", label: "İşletme Paneli", icon: FiBriefcase, businessOnly: true },
+  { key: "businessStats", label: "İstatistik", icon: FiBarChart2, businessOnly: true },
+  { key: "businessShare", label: "QR & Paylaşım", icon: FiShare2, businessOnly: true },
   { key: "profile", label: "Profil", icon: FiUser },
   { key: "newCategories", label: "Kategori Ekle", icon: FiFolderPlus },
   { key: "contact", label: "İletişim", icon: FiMail, adminOnly: true },
   { key: "categories", label: "Kategoriler", icon: FiGrid, adminOnly: true },
+  { key: "adminBusinesses", label: "İşletmeler", icon: FiBriefcase, adminOnly: true },
 ];
 
 export default function Sidebar() {
-  const [activeTab, setActiveTab] = useState("home");
+  const [searchParams] = useSearchParams();
   const { updateUser, currentUser } = useContext(AuthContext);
+  const isBusiness = currentUser?.role === "business";
+  // /profile?tab=business gibi doğrudan bir sekmeye link verilebilir
+  const [activeTab, setActiveTab] = useState(() => {
+    const requested = searchParams.get("tab");
+    const businessTabs = ["business", "businessStats", "businessShare"];
+    if (isBusiness && businessTabs.includes(requested)) return requested;
+    return "home";
+  });
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const isAdmin = currentUser?.role === "admin";
@@ -58,6 +77,14 @@ export default function Sidebar() {
         return <ProfilList />;
       case "newPost":
         return <NewPostPage />;
+      case "business":
+        return <BusinessDashboard embedded />;
+      case "businessStats":
+        return <BusinessStats />;
+      case "businessShare":
+        return <BusinessShare />;
+      case "adminBusinesses":
+        return <AdminBusinesses />;
       case "profile":
         return <ProfileUpdatePage />;
       case "newCategories":
@@ -94,7 +121,11 @@ export default function Sidebar() {
 
           <div className="filter-group">
             <div className="sidebar">
-              {MENU_ITEMS.filter((item) => !item.adminOnly || isAdmin).map(
+              {MENU_ITEMS.filter(
+                (item) =>
+                  (!item.adminOnly || isAdmin) &&
+                  (!item.businessOnly || isBusiness),
+              ).map(
                 (item) => {
                   const Icon = item.icon;
                   return (

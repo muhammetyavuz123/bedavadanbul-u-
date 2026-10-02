@@ -1,6 +1,10 @@
 import HomePage from "./routes/homePage/homePage";
 import AboutUsPage from "./routes/aboutUs/aboutUsPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import ListPage from "./routes/listPage/listPage";
 import { Layout, RequireAuth } from "./routes/layout/layout";
 import SinglePage from "./routes/singlePage/singlePage";
@@ -23,6 +27,10 @@ import KVKKClarification from "./routes/legal/KVKKClarification";
 import Loader from "./components/loader/Loader";
 import EditPostPage from "./routes/newPostPage/editPostPage";
 import MapPage from "./routes/mapPage/mapPage";
+import BusinessListPage from "./routes/businessListPage/businessListPage";
+import BusinessPage from "./routes/businessPage/businessPage";
+import MyInquiries from "./routes/myInquiries/myInquiries";
+import MyFavorites from "./routes/myFavorites/myFavorites";
 function App() {
   const router = createBrowserRouter([
     {
@@ -55,6 +63,22 @@ function App() {
           // koyduk.
           path: "/harita",
           element: <MapPage />,
+        },
+        {
+          path: "/isletmeler",
+          element: <BusinessListPage />,
+        },
+        {
+          path: "/isletmeler/:citySlug",
+          element: <BusinessListPage />,
+        },
+        {
+          path: "/isletmeler/:citySlug/:districtSlug",
+          element: <BusinessListPage />,
+        },
+        {
+          path: "/isletme/:id",
+          element: <BusinessPage />,
         },
         {
           path: "/:id",
@@ -112,6 +136,18 @@ function App() {
         {
           path: "/edit/:id",
           element: <EditPostPage />,
+        },
+        {
+          path: "/isletme-paneli",
+          element: <Navigate to="/profile?tab=business" replace />,
+        },
+        {
+          path: "/sorularim",
+          element: <MyInquiries />,
+        },
+        {
+          path: "/favorilerim",
+          element: <MyFavorites />,
         },
       ],
     },

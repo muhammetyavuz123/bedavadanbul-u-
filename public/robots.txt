@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /profile
+Disallow: /sorularim
+Disallow: /favorilerim
+Disallow: /add
+Disallow: /edit/
+
+Sitemap: https://bedavadanbul.com/sitemap.xml

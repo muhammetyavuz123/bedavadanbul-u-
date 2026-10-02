@@ -10,6 +10,7 @@ import CategoryCard from "./categoryCard";
 import Carusel from "./carusel";
 import Banner from "../../components/Banner/banner";
 import AppBanner from "../../components/AppBanner/AppBanner";
+import BusinessShowcase from "../../components/BusinessShowcase/BusinessShowcase";
 import { Await, Link, useLoaderData } from "react-router-dom";
 import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
@@ -152,6 +153,8 @@ function HomePage() {
       <div id="categories">
         <Carusel />
       </div>
+
+      <BusinessShowcase />
       {/* <div style={{ padding: 20 }}>
         <CategoryCard />
       </div> */}

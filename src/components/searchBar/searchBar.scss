@@ -23,6 +23,53 @@
   backdrop-filter: blur(5px); // hafif blur efekti
   border: 1px solid rgba(200, 200, 200, 0.3);
 
+  .search-mode {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f1f2f4;
+    border-radius: 12px;
+
+    button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.6rem 1rem;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #666;
+      cursor: pointer;
+      font-family: "Inter", sans-serif;
+      transition: all 0.2s ease;
+
+      &.active {
+        background: #fff;
+        color: #ff3c38;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  .business-name-input {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fafafa;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+
+    &:focus {
+      outline: none;
+      border-color: #ff3c38;
+      box-shadow: 0 0 8px rgba(255, 60, 56, 0.3);
+      background-color: #fff;
+    }
+  }
+
   select {
     padding: 0.8rem 1rem;
     font-size: 1rem;

@@ -8,6 +8,7 @@ import apiRequest from "../../lib/apiRequest";
 const NAV_LINKS = [
   { to: "/", label: "Ana Sayfa", end: true },
   { to: "/list", label: "Kampanyalar" },
+  { to: "/isletmeler", label: "İşletmeler" },
   { to: "/aboutUs", label: "Hakkımızda" },
   { to: "/contact", label: "İletişim" },
 ];
@@ -34,6 +35,17 @@ function Navbar() {
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
   const isShopOrAdmin = currentUser && currentUser.role !== "user";
 
+  // Bireysel kullanıcılar gönderdikleri özel soruları "Sorularım" ile görür.
+  // İşyeri hesapları için "İşletme Paneli" artık profil panelinin içinde.
+  const navLinks =
+    currentUser?.role === "user"
+      ? [
+          ...NAV_LINKS,
+          { to: "/sorularim", label: "Sorularım" },
+          { to: "/favorilerim", label: "Favorilerim" },
+        ]
+      : NAV_LINKS;
+
   return (
     <nav className="siteNavbar">
       <div className="left">
@@ -42,7 +54,7 @@ function Navbar() {
         </Link>
 
         <div className="navLinks">
-          {NAV_LINKS.map(({ to, label, end }) => (
+          {navLinks.map(({ to, label, end }) => (
             <NavLink
               key={to}
               to={to}
@@ -116,7 +128,7 @@ function Navbar() {
         </button>
 
         <div className="mobileLinks">
-          {NAV_LINKS.map(({ to, label, end }) => (
+          {navLinks.map(({ to, label, end }) => (
             <NavLink
               key={to}
               to={to}

@@ -1,0 +1,29 @@
+.starRating {
+  display: inline-flex;
+  gap: 2px;
+  line-height: 1;
+  color: #d9d9d9;
+
+  .on {
+    color: #ffb400;
+  }
+
+  &.interactive button {
+    background: none;
+    border: none;
+    padding: 0 1px;
+    font-size: inherit;
+    line-height: 1;
+    cursor: pointer;
+    color: #d9d9d9;
+    transition: transform 0.12s ease;
+
+    &.on {
+      color: #ffb400;
+    }
+
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+}

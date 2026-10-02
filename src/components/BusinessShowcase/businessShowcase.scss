@@ -1,0 +1,786 @@
+$brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #1c1f2e;
+$muted: #6f7486;
+
+.bizShowcase {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1300px;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .kicker {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: $brand;
+    background: #fff0ee;
+    border-radius: 999px;
+    padding: 5px 12px;
+
+    &.light {
+      color: #ffd9cf;
+      background: rgba(255, 255, 255, 0.14);
+    }
+  }
+
+  .bizBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &.primary {
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(255, 60, 56, 0.32);
+    }
+
+    &.light {
+      background: #fff;
+      color: $brand;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+  }
+
+  /* ---------- Ana panel ---------- */
+  .bizShowcasePanel {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 24px;
+    align-items: center;
+    background: linear-gradient(160deg, #fff 0%, #fff6f3 100%);
+    border: 1px solid #f4e3e0;
+    border-radius: 32px;
+    box-shadow: 0 18px 48px rgba(28, 31, 46, 0.08);
+    padding: 44px 44px 44px 48px;
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      pointer-events: none;
+
+      &.blobA {
+        width: 320px;
+        height: 320px;
+        background: #ffb59f;
+        top: -120px;
+        left: -80px;
+      }
+
+      &.blobB {
+        width: 360px;
+        height: 360px;
+        background: #ffd3c8;
+        bottom: -160px;
+        right: -60px;
+      }
+    }
+
+    > * {
+      position: relative;
+    }
+  }
+
+  .bizShowcaseIntro {
+    h2 {
+      margin: 16px 0 14px;
+      font-size: 2.3rem;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: $ink;
+
+      .grad {
+        background: linear-gradient(90deg, $brand, $brand2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+    }
+
+    > p {
+      margin: 0 0 22px;
+      color: $muted;
+      line-height: 1.7;
+      font-size: 1.02rem;
+      max-width: 520px;
+    }
+  }
+
+  .bizSteps {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid #f3e4e1;
+      border-radius: 18px;
+      padding: 14px;
+      backdrop-filter: blur(6px);
+    }
+
+    .stepNo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: grid;
+      place-items: center;
+    }
+
+    strong {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: $ink;
+      font-size: 0.98rem;
+
+      svg {
+        color: $brand;
+      }
+    }
+
+    small {
+      display: block;
+      margin-top: 4px;
+      color: $muted;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+  }
+
+  .bizQuickCats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+
+    a {
+      text-decoration: none;
+      background: #fff;
+      border: 1px solid #ffd9d2;
+      color: #c8352f;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: $brand;
+        border-color: $brand;
+        color: #fff;
+      }
+    }
+  }
+
+  .bizIntroActions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    .privateNote {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #4a8f5b;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+  }
+
+  /* ---------- Telefon sahnesi ---------- */
+  .bizStage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 470px;
+  }
+
+  .phone {
+    position: relative;
+    width: 272px;
+    height: 430px;
+    background: #fff;
+    border: 8px solid #1c1f2e;
+    border-radius: 38px;
+    box-shadow:
+      0 30px 60px rgba(28, 31, 46, 0.28),
+      0 0 0 2px rgba(255, 255, 255, 0.6) inset;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: phoneFloat 6s ease-in-out infinite;
+
+    .phoneNotch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90px;
+      height: 18px;
+      background: #1c1f2e;
+      border-radius: 0 0 14px 14px;
+      z-index: 2;
+    }
+
+    .phoneHead {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 30px 14px 12px;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+
+      .phoneAvatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        display: grid;
+        place-items: center;
+      }
+
+      .phoneTitle {
+        flex: 1;
+        line-height: 1.2;
+
+        strong {
+          display: block;
+          font-size: 0.88rem;
+        }
+
+        small {
+          font-size: 0.7rem;
+          opacity: 0.85;
+        }
+      }
+
+      .phoneLock {
+        opacity: 0.9;
+      }
+    }
+
+    .phoneBody {
+      flex: 1;
+      padding: 14px 12px;
+      background: #f6f7fb;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .phoneTag {
+      text-align: center;
+      font-size: 0.65rem;
+      color: #a0a5b4;
+      padding: 6px 0 8px;
+      background: #f6f7fb;
+    }
+  }
+
+  .bubble {
+    max-width: 84%;
+    padding: 0 12px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    border-radius: 16px;
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    overflow: hidden;
+    transform: translateY(8px) scale(0.96);
+    transition:
+      max-height 0.45s ease,
+      opacity 0.35s ease,
+      margin 0.35s ease,
+      padding 0.35s ease,
+      transform 0.35s ease;
+
+    &.in {
+      max-height: 120px;
+      opacity: 1;
+      padding: 9px 12px;
+      margin-bottom: 9px;
+      transform: none;
+    }
+
+    &.me {
+      align-self: flex-end;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      border-bottom-right-radius: 5px;
+    }
+
+    &.biz {
+      align-self: flex-start;
+      background: #fff;
+      color: $ink;
+      border-bottom-left-radius: 5px;
+      box-shadow: 0 2px 8px rgba(28, 31, 46, 0.08);
+    }
+
+    &.typing {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+
+      i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #b6bacb;
+        animation: typingDot 1s infinite ease-in-out;
+
+        &:nth-child(2) {
+          animation-delay: 0.15s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+      }
+    }
+  }
+
+  .floater {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 10px 14px 10px 10px;
+    box-shadow: 0 14px 32px rgba(28, 31, 46, 0.16);
+    text-decoration: none;
+    color: inherit;
+    max-width: 210px;
+
+    .fLogo {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #fff1ef;
+      color: $brand;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    strong {
+      display: block;
+      font-size: 0.82rem;
+      color: $ink;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 130px;
+    }
+
+    small {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.7rem;
+      color: $muted;
+    }
+
+    &.fa {
+      top: 118px;
+      left: -22px;
+      animation: floatA 5s ease-in-out infinite;
+    }
+
+    &.fb {
+      bottom: 54px;
+      right: -6px;
+      animation: floatB 5.5s ease-in-out infinite;
+    }
+  }
+
+  @keyframes phoneFloat {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-1.5deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(0.5deg);
+    }
+  }
+
+  @keyframes floatA {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-9px);
+    }
+  }
+
+  @keyframes floatB {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(9px);
+    }
+  }
+
+  @keyframes typingDot {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.5;
+    }
+    30% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phone,
+    .floater,
+    .bubble.typing i {
+      animation: none;
+    }
+
+    .bubble {
+      transition: none;
+    }
+  }
+
+  /* ---------- Yatay vitrin ---------- */
+  .bizRailWrap {
+    .bizRailHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: $ink;
+      }
+
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: $brand;
+        font-weight: 800;
+        font-size: 0.9rem;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .bizRail {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 15px 4px 18px;
+    margin: 0 -4px;
+    scrollbar-width: thin;
+
+    .railCard {
+      position: relative;
+      flex: 0 0 236px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #eef0f6;
+      border-radius: 22px;
+      padding: 18px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 6px 18px rgba(28, 31, 46, 0.05);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+
+      &:hover {
+        transform: translateY(-6px);
+        border-color: #ffd0c9;
+        box-shadow: 0 20px 38px rgba(255, 60, 56, 0.15);
+
+        .railGo {
+          color: $brand;
+          gap: 10px;
+        }
+      }
+    }
+
+    .railTop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .railLogo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: #fff1ef;
+      color: $brand;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .railScore {
+      background: $ink;
+      color: #ffd166;
+      border-radius: 999px;
+      padding: 4px 11px;
+      font-size: 0.78rem;
+      font-weight: 800;
+
+      &.new {
+        background: #e9f7ee;
+        color: #2f8a4d;
+      }
+    }
+
+    .railName {
+      color: $ink;
+      font-size: 1.02rem;
+      line-height: 1.3;
+      margin-top: 4px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      min-height: 2.6em;
+    }
+
+    .railCat {
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #5a5f70;
+      background: #f3f4f8;
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .railRating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: $muted;
+    }
+
+    .railPlace {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: $muted;
+
+      svg {
+        color: $brand;
+        flex-shrink: 0;
+      }
+    }
+
+    .railGo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: $ink;
+      transition: all 0.2s ease;
+    }
+
+    .railCrown {
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      background: linear-gradient(135deg, #f5a623, #ff6a3d);
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      box-shadow: 0 6px 14px rgba(245, 166, 35, 0.4);
+    }
+  }
+
+  /* ---------- İşletme çağrı bandı ---------- */
+  .bizCta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    background:
+      radial-gradient(circle at 90% 10%, rgba(255, 106, 61, 0.55), transparent 50%),
+      linear-gradient(135deg, #1c1f2e 0%, #2d2250 100%);
+    border-radius: 28px;
+    padding: 34px 40px;
+    color: #fff;
+
+    h3 {
+      margin: 12px 0 14px;
+      font-size: 1.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+
+      li {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 0.92rem;
+
+        svg {
+          color: #ffb59f;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1000px) {
+    .bizShowcasePanel {
+      grid-template-columns: 1fr;
+      padding: 32px 24px;
+    }
+
+    .bizShowcaseIntro h2 {
+      font-size: 1.9rem;
+    }
+
+    .bizStage {
+      min-height: 480px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    margin: 1.5rem auto;
+
+    .bizShowcasePanel {
+      border-radius: 24px;
+      padding: 24px 16px;
+      gap: 12px;
+    }
+
+    .bizShowcaseIntro h2 {
+      font-size: 1.55rem;
+    }
+
+    .bizSteps {
+      grid-template-columns: 1fr;
+
+      li {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    .bizIntroActions .bizBtn {
+      width: 100%;
+    }
+
+    .floater {
+      display: none;
+    }
+
+    .bizStage {
+      min-height: 450px;
+    }
+
+    .bizRail .railCard {
+      flex-basis: 78%;
+    }
+
+    .bizCta {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 26px 20px;
+      border-radius: 22px;
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      .bizBtn {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+}

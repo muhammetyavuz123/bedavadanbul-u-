@@ -6,6 +6,9 @@ import { useError } from "../../context/ErrorContext";
 import { useCategories } from "../../lib/useCategories";
 
 function SearchBar() {
+  // "campaign" → /list (kampanyalar), "business" → /isletmeler (işletme rehberi)
+  const [mode, setMode] = useState("campaign");
+  const [businessName, setBusinessName] = useState("");
   const [query, setQuery] = useState({
     type: "",
     city: "",
@@ -52,13 +55,64 @@ function SearchBar() {
   }, [query.city]);
 
   const handleClick = () => {
+    if (mode === "business") {
+      // İşletme rehberi filtreleri: city, district, category (id), search (ad)
+      const params = new URLSearchParams();
+      if (query.city) params.set("city", query.city);
+      if (query.district) params.set("district", query.district);
+      if (query.type) params.set("category", query.type);
+      if (businessName.trim()) params.set("search", businessName.trim());
+      const qs = params.toString();
+      navigate(qs ? `/isletmeler?${qs}` : "/isletmeler");
+      return;
+    }
     navigate(
       `/list?categoryId=${query.type}&city=${query.city}&district=${query.district}`,
     );
   };
 
   return (
-    <form className="form-wrapper">
+    <form
+      className="form-wrapper"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleClick();
+      }}
+    >
+      {/* Arama türü: Kampanya / İşletme */}
+      <div className="search-mode" role="tablist" aria-label="Arama türü">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "campaign"}
+          className={mode === "campaign" ? "active" : ""}
+          onClick={() => setMode("campaign")}
+        >
+          Kampanya
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={mode === "business"}
+          className={mode === "business" ? "active" : ""}
+          onClick={() => setMode("business")}
+        >
+          İşletme
+        </button>
+      </div>
+
+      {mode === "business" && (
+        <input
+          type="text"
+          className="business-name-input"
+          aria-label="İşletme adı"
+          placeholder="İşletme adı ara (örn. Akasya Diş)"
+          value={businessName}
+          maxLength={60}
+          onChange={(e) => setBusinessName(e.target.value)}
+        />
+      )}
+
       {/* İl ve İlçe */}
       <div className="city-district">
         <select
@@ -116,9 +170,9 @@ function SearchBar() {
           ))}
       </select>
       {/* Arama Butonu */}
-      <button type="button" className="form-button" onClick={handleClick}>
-        <img src="/search.png" alt="Ara" />
-        <span>Ara</span>
+      <button type="submit" className="form-button">
+        <img src="/search.png" alt="" />
+        <span>{mode === "business" ? "İşletme Ara" : "Ara"}</span>
       </button>
     </form>
   );

@@ -10,6 +10,7 @@ import apiRequest from "../../lib/apiRequest";
 import CommentForms from "../../components/Comment/CommentForms";
 import CommentLists from "../../components/Comment/CommentLists";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
+import BusinessLinkCard from "../../components/BusinessLinkCard/BusinessLinkCard";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 import {
   FiBookmark,
@@ -170,6 +171,8 @@ function SinglePage() {
                   <span className="sellerRole">İşletme</span>
                 </div>
               </div>
+
+              <BusinessLinkCard business={post.business} />
 
               <div className="factsList">
                 <div className="factItem">
