@@ -49,16 +49,17 @@ export default function Sidebar() {
   const [searchParams] = useSearchParams();
   const { updateUser, currentUser } = useContext(AuthContext);
   const isBusiness = currentUser?.role === "business";
+  const isAdmin = currentUser?.role === "admin";
   // /profile?tab=business gibi doğrudan bir sekmeye link verilebilir
   const [activeTab, setActiveTab] = useState(() => {
     const requested = searchParams.get("tab");
     const businessTabs = ["business", "businessStats", "businessShare"];
     if (isBusiness && businessTabs.includes(requested)) return requested;
+    if (isAdmin && requested === "adminBusinesses") return "adminBusinesses";
     return "home";
   });
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
-  const isAdmin = currentUser?.role === "admin";
 
   const handleLogout = async () => {
     try {

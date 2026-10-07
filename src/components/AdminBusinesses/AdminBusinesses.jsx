@@ -8,6 +8,8 @@ import apiRequest from "../../lib/apiRequest";
 import "./adminBusinesses.scss";
 
 const FILTERS = [
+  { key: "pending", label: "Onay bekleyen" },
+  { key: "rejected", label: "Reddedilen" },
   { key: "", label: "Tümü" },
   { key: "unverified", label: "Doğrulanmamış" },
   { key: "verified", label: "Doğrulanmış" },
@@ -22,7 +24,10 @@ function AdminBusinesses() {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("pending");
+  const [pendingCount, setPendingCount] = useState(0);
+  const [rejectFor, setRejectFor] = useState(null);
+  const [reason, setReason] = useState("");
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -40,6 +45,7 @@ function AdminBusinesses() {
       const res = await apiRequest.get(`/businesses/admin/all?${q.toString()}`);
       setItems(res.data.data);
       setTotal(res.data.total);
+      setPendingCount(res.data.pending || 0);
     } catch {
       setError("İşletmeler yüklenemedi.");
     } finally {
@@ -64,6 +70,28 @@ function AdminBusinesses() {
     }
   };
 
+  // Başvuruyu onayla / reddet
+  const decide = async (id, action, body) => {
+    setBusyId(id);
+    setError("");
+    try {
+      const res = await apiRequest.post(`/businesses/admin/${id}/${action}`, body);
+      if (filter === "pending") {
+        setItems((list) => list.filter((b) => b.id !== id));
+        setTotal((t) => Math.max(0, t - 1));
+      } else {
+        setItems((list) => list.map((b) => (b.id === id ? { ...b, ...res.data } : b)));
+      }
+      setPendingCount((c) => Math.max(0, c - 1));
+      setRejectFor(null);
+      setReason("");
+    } catch (err) {
+      setError(err.response?.data?.message || "İşlem başarısız.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
@@ -71,8 +99,9 @@ function AdminBusinesses() {
       <div className="adminBizHead">
         <h2>İşletmeler</h2>
         <p>
-          Doğrulanmış rozeti verin, işletmeyi belirli bir süre öne çıkarın veya yayından kaldırın.
-          Öne çıkan işletmeler listelerde ve anasayfa vitrininde en üstte görünür.
+          Yeni işletme başvurularını onaylayın ya da gerekçeyle reddedin. Onaylanan işletmelere
+          doğrulanmış rozeti verebilir, belirli bir süre öne çıkarabilir veya yayından
+          kaldırabilirsiniz. Rozet onaydan ayrıdır ve onaylı işletmelere verilir.
         </p>
       </div>
 
@@ -104,6 +133,9 @@ function AdminBusinesses() {
               }}
             >
               {f.label}
+              {f.key === "pending" && pendingCount > 0 && (
+                <span className="countDot">{pendingCount}</span>
+              )}
             </button>
           ))}
         </div>
@@ -112,103 +144,229 @@ function AdminBusinesses() {
       {error && <p className="adminBizError">{error}</p>}
       {loading && <Loader />}
 
-      {!loading && items.length === 0 && <p className="adminBizEmpty">İşletme bulunamadı.</p>}
+      {!loading && items.length === 0 && (
+        <p className="adminBizEmpty">
+          {filter === "pending" ? "Onay bekleyen başvuru yok." : "İşletme bulunamadı."}
+        </p>
+      )}
 
       <div className="adminBizList">
-        {items.map((b) => (
-          <article key={b.id} className={`adminBizRow ${b.isActive ? "" : "inactive"}`}>
-            <div className="rowMain">
-              <span className="rowLogo">
-                <BizAvatar name={b.name} logo={b.logo} />
-              </span>
-              <div className="rowInfo">
-                <strong>
-                  <Link to={`/isletme/${b.id}`} target="_blank">
-                    {b.name}
-                  </Link>{" "}
-                  {b.isVerified && <VerifiedBadge compact />}
-                </strong>
-                <small>
-                  {b.category?.name} · {b.district}, {b.city}
-                </small>
-                <small>
-                  {b.owner?.username} · {b.owner?.email}
-                </small>
-                <div className="rowBadges">
-                  {b.isFeatured && (
+        {items.map((b) => {
+          const awaiting = b.status === "pending" || b.status === "rejected";
+          return (
+            <article
+              key={b.id}
+              className={`adminBizRow ${b.isActive ? "" : "inactive"} ${awaiting ? "awaiting" : ""}`}
+            >
+              <div className="rowMain">
+                <span className="rowLogo">
+                  <BizAvatar name={b.name} logo={b.logo} />
+                </span>
+                <div className="rowInfo">
+                  <strong>
+                    {awaiting ? (
+                      b.name
+                    ) : (
+                      <Link to={`/isletme/${b.id}`} target="_blank">
+                        {b.name}
+                      </Link>
+                    )}{" "}
+                    {b.isVerified && <VerifiedBadge compact />}
+                  </strong>
+                  <small>
+                    {b.category?.name} · {b.district}, {b.city}
+                  </small>
+                  <small>
+                    {b.owner?.username} · {b.owner?.email}
+                  </small>
+                  <div className="rowBadges">
+                    {b.status === "pending" && <span className="stateTag pending">Onay bekliyor</span>}
+                    {b.status === "rejected" && <span className="stateTag rejected">Reddedildi</span>}
+                    {b.isFeatured && (
+                      <>
+                        <FeaturedBadge />
+                        {b.featuredUntil && (
+                          <small>
+                            {new Date(b.featuredUntil).toLocaleDateString("tr-TR")} tarihine kadar
+                          </small>
+                        )}
+                      </>
+                    )}
+                    {!b.isActive && !awaiting && <span className="offTag">Yayında değil</span>}
+                  </div>
+
+                  {awaiting && (
+                    <dl className="appDetails">
+                      <div>
+                        <dt>Adres</dt>
+                        <dd>{b.address}</dd>
+                      </div>
+                      <div>
+                        <dt>Telefon</dt>
+                        <dd>{b.phone}</dd>
+                      </div>
+                      {b.workingHours && (
+                        <div>
+                          <dt>Saatler</dt>
+                          <dd>{b.workingHours}</dd>
+                        </div>
+                      )}
+                      {b.website && (
+                        <div>
+                          <dt>Web</dt>
+                          <dd>{b.website}</dd>
+                        </div>
+                      )}
+                      {b.description && (
+                        <div>
+                          <dt>Açıklama</dt>
+                          <dd>{b.description}</dd>
+                        </div>
+                      )}
+                      {b.submittedAt && (
+                        <div>
+                          <dt>Başvuru</dt>
+                          <dd>{new Date(b.submittedAt).toLocaleString("tr-TR")}</dd>
+                        </div>
+                      )}
+                      {b.status === "rejected" && b.rejectReason && (
+                        <div>
+                          <dt>Gerekçe</dt>
+                          <dd>{b.rejectReason}</dd>
+                        </div>
+                      )}
+                      {b.photos?.length > 0 && (
+                        <div className="appPhotos">
+                          {b.photos.map((p, i) => (
+                            <img key={p + i} src={p} alt={`Fotoğraf ${i + 1}`} />
+                          ))}
+                        </div>
+                      )}
+                    </dl>
+                  )}
+                </div>
+              </div>
+
+              {awaiting ? (
+                <div className="rowActions decide">
+                  {rejectFor === b.id ? (
+                    <div className="rejectBox">
+                      <textarea
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                        rows={3}
+                        maxLength={300}
+                        placeholder="Red gerekçesi (işletme sahibine gösterilir)"
+                      />
+                      <div className="rejectBtns">
+                        <button
+                          type="button"
+                          className="danger solid"
+                          disabled={busyId === b.id || reason.trim().length < 3}
+                          onClick={() => decide(b.id, "reject", { reason: reason.trim() })}
+                        >
+                          Reddi gönder
+                        </button>
+                        <button
+                          type="button"
+                          disabled={busyId === b.id}
+                          onClick={() => {
+                            setRejectFor(null);
+                            setReason("");
+                          }}
+                        >
+                          Vazgeç
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
                     <>
-                      <FeaturedBadge />
-                      {b.featuredUntil && (
-                        <small>
-                          {new Date(b.featuredUntil).toLocaleDateString("tr-TR")} tarihine kadar
-                        </small>
+                      <button
+                        type="button"
+                        className="approve"
+                        disabled={busyId === b.id}
+                        onClick={() => decide(b.id, "approve")}
+                      >
+                        Onayla ve yayına al
+                      </button>
+                      {b.status === "pending" && (
+                        <button
+                          type="button"
+                          className="danger"
+                          disabled={busyId === b.id}
+                          onClick={() => {
+                            setRejectFor(b.id);
+                            setReason("");
+                          }}
+                        >
+                          Reddet
+                        </button>
                       )}
                     </>
                   )}
-                  {!b.isActive && <span className="offTag">Yayında değil</span>}
                 </div>
-              </div>
-            </div>
-
-            <div className="rowActions">
-              <button
-                type="button"
-                disabled={busyId === b.id}
-                className={b.isVerified ? "on" : ""}
-                onClick={() => update(b.id, { isVerified: !b.isVerified })}
-              >
-                {b.isVerified ? "Doğrulamayı kaldır" : "Doğrula"}
-              </button>
-
-              {b.isFeatured ? (
-                <button
-                  type="button"
-                  disabled={busyId === b.id}
-                  className="on"
-                  onClick={() => update(b.id, { isFeatured: false })}
-                >
-                  Öne çıkarmayı kaldır
-                </button>
               ) : (
-                <span className="featureSet">
-                  <select
-                    value={days[b.id] || 30}
-                    onChange={(e) => setDays((d) => ({ ...d, [b.id]: Number(e.target.value) }))}
-                    aria-label="Öne çıkarma süresi"
-                  >
-                    <option value={7}>7 gün</option>
-                    <option value={30}>30 gün</option>
-                    <option value={90}>90 gün</option>
-                    <option value={365}>1 yıl</option>
-                  </select>
+                <div className="rowActions">
                   <button
                     type="button"
                     disabled={busyId === b.id}
-                    onClick={() => update(b.id, { isFeatured: true, featuredDays: days[b.id] || 30 })}
+                    className={b.isVerified ? "on" : ""}
+                    onClick={() => update(b.id, { isVerified: !b.isVerified })}
                   >
-                    Öne çıkar
+                    {b.isVerified ? "Doğrulamayı kaldır" : "Doğrula"}
                   </button>
-                </span>
-              )}
 
-              <button
-                type="button"
-                disabled={busyId === b.id}
-                className={b.isActive ? "danger" : ""}
-                onClick={() => {
-                  if (
-                    b.isActive &&
-                    !window.confirm(`"${b.name}" yayından kaldırılsın mı? Profil herkese kapanır.`)
-                  )
-                    return;
-                  update(b.id, { isActive: !b.isActive });
-                }}
-              >
-                {b.isActive ? "Yayından kaldır" : "Yayına al"}
-              </button>
-            </div>
-          </article>
-        ))}
+                  {b.isFeatured ? (
+                    <button
+                      type="button"
+                      disabled={busyId === b.id}
+                      className="on"
+                      onClick={() => update(b.id, { isFeatured: false })}
+                    >
+                      Öne çıkarmayı kaldır
+                    </button>
+                  ) : (
+                    <span className="featureSet">
+                      <select
+                        value={days[b.id] || 30}
+                        onChange={(e) => setDays((d) => ({ ...d, [b.id]: Number(e.target.value) }))}
+                        aria-label="Öne çıkarma süresi"
+                      >
+                        <option value={7}>7 gün</option>
+                        <option value={30}>30 gün</option>
+                        <option value={90}>90 gün</option>
+                        <option value={365}>1 yıl</option>
+                      </select>
+                      <button
+                        type="button"
+                        disabled={busyId === b.id}
+                        onClick={() => update(b.id, { isFeatured: true, featuredDays: days[b.id] || 30 })}
+                      >
+                        Öne çıkar
+                      </button>
+                    </span>
+                  )}
+
+                  <button
+                    type="button"
+                    disabled={busyId === b.id}
+                    className={b.isActive ? "danger" : ""}
+                    onClick={() => {
+                      if (
+                        b.isActive &&
+                        !window.confirm(`"${b.name}" yayından kaldırılsın mı? Profil herkese kapanır.`)
+                      )
+                        return;
+                      update(b.id, { isActive: !b.isActive });
+                    }}
+                  >
+                    {b.isActive ? "Yayından kaldır" : "Yayına al"}
+                  </button>
+                </div>
+              )}
+            </article>
+          );
+        })}
       </div>
 
       {totalPages > 1 && (

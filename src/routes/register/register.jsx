@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import apiRequest from "../../lib/apiRequest";
 import AuthLayout from "../../components/AuthLayout/AuthLayout";
+import CategorySelect from "../../components/CategorySelect/CategorySelect";
 import InputMask from "react-input-mask";
 import { normalizePhone } from "../../lib/normalizePhone";
 import { useError } from "../../context/ErrorContext";
@@ -12,6 +13,7 @@ import {
   FiCheckCircle,
   FiXCircle,
   FiArrowLeft,
+  FiClock,
 } from "react-icons/fi";
 
 function Register() {
@@ -25,6 +27,9 @@ function Register() {
   );
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  // İşyeri başvurusu: kayıtta yalnızca temel bilgiler istenir, kalanı onaydan sonra panelden doldurulur
+  const [bizCategoryId, setBizCategoryId] = useState("");
+  const [applied, setApplied] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -89,6 +94,13 @@ function Register() {
       return;
     }
 
+    const address = String(formData.get("address") || "").trim();
+    if (role === "business" && (!bizCategoryId || address.length < 5)) {
+      setError("Lütfen kategori seçin ve açık adresinizi yazın.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       await apiRequest.post("/auth/register", {
         type: type || undefined,
@@ -100,9 +112,16 @@ function Register() {
         city: selectedCity,
         district: selectedDistrict,
         marketingConsent: formData.get("sms_email_consent") ? true : false,
+        ...(role === "business"
+          ? { business: { categoryId: bizCategoryId, address } }
+          : {}),
       });
 
-      navigate("/login");
+      if (role === "business") {
+        setApplied(true);
+      } else {
+        navigate("/login");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Kayıt başarısız");
     } finally {
@@ -250,9 +269,30 @@ function Register() {
   return (
     <AuthLayout>
       <div className="auth-container">
-        <h2>Kayıt Ol</h2>
+        {applied && (
+          <div className="apply-success">
+            <span className="apply-icon">
+              <FiClock />
+            </span>
+            <h2>Başvurunuz alındı</h2>
+            <p>
+              İşletme başvurunuz yönetici onayına gönderildi. Onaylandığında size
+              bildirim ve e-posta ile haber vereceğiz; profiliniz o zaman herkese
+              açık olur.
+            </p>
+            <p>
+              Hesabınıza şimdi giriş yapıp logo, fotoğraf, çalışma saatleri ve
+              açıklamanızı hazırlayabilirsiniz.
+            </p>
+            <button type="button" onClick={() => navigate("/login")}>
+              Giriş Yap
+            </button>
+          </div>
+        )}
 
-        {!userType && (
+        {!applied && <h2>Kayıt Ol</h2>}
+
+        {!applied && !userType && (
           <div className="select-type">
             <p>Devam etmek için bir tür seçin:</p>
             <button onClick={() => setUserType("user")}>
@@ -263,7 +303,7 @@ function Register() {
         )}
 
         {/* 🔹 Bireysel Kullanıcı */}
-        {userType === "user" && (
+        {!applied && userType === "user" && (
           <form className="auth-form" onSubmit={handleSubmit}>
             <h3>Bireysel Kullanıcı Kaydı</h3>
             <input
@@ -300,13 +340,19 @@ function Register() {
         )}
 
         {/* 🔹 İş Yeri Kaydı */}
-        {userType === "business" && (
+        {!applied && userType === "business" && (
           <form className="auth-form" onSubmit={handleSubmit}>
-            <h3>İşyeri Kaydı</h3>
+            <h3>İşyeri Başvurusu</h3>
+            <p className="biz-note">
+              Önce temel bilgilerle başvurun. Başvurunuz yönetici onayından sonra
+              yayına girer; logo, fotoğraf, çalışma saatleri ve açıklamayı onaydan
+              sonra panelinizden tamamlarsınız.
+            </p>
             <input
               name="username"
               type="text"
-              placeholder="Firma Adı"
+              placeholder="İşletme / Firma Adı"
+              maxLength={80}
               required
             />
             <input name="email" type="email" placeholder="E-Posta" required />
@@ -323,11 +369,30 @@ function Register() {
             </InputMask>
 
             {renderLocationFields()}
+
+            <div className="input-group">
+              <div className="input-with-icon">
+                <CategorySelect
+                  value={bizCategoryId}
+                  onChange={(e) => setBizCategoryId(e.target.value)}
+                  placeholder="İşletme kategorisi seçiniz"
+                  required
+                />
+              </div>
+            </div>
+            <input
+              name="address"
+              type="text"
+              placeholder="Açık adres (mahalle, cadde, no)"
+              maxLength={200}
+              required
+            />
+
             {renderPasswordFields()}
             {renderLegalCheckboxes()}
 
             <button type="submit" disabled={isLoading || password !== confirm}>
-              {isLoading ? "Gönderiliyor..." : "Kayıt Ol"}
+              {isLoading ? "Gönderiliyor..." : "Başvuruyu Gönder"}
             </button>
             <Link to="/login">
               <span className="accountLink">Zaten bir hesabım var</span>
@@ -335,7 +400,7 @@ function Register() {
           </form>
         )}
 
-        {userType && (
+        {!applied && userType && (
           <button className="back-btn" onClick={() => setUserType("")}>
             <FiArrowLeft /> Geri
           </button>

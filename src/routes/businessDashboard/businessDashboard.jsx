@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiInbox, FiBriefcase, FiExternalLink, FiX } from "react-icons/fi";
+import { FiInbox, FiBriefcase, FiExternalLink, FiX, FiClock, FiAlertCircle } from "react-icons/fi";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 import InquiryInbox from "../../components/InquiryInbox/InquiryInbox";
@@ -137,9 +137,17 @@ function BusinessDashboard({ embedded = false }) {
         logo: logoList[logoList.length - 1] || null,
         photos,
       });
+      const wasRejected = business?.status === "rejected";
+      const wasNew = !business;
       setBusiness(res.data);
       fillFromBusiness(res.data);
-      setMessage({ type: "success", text: "İşletme profiliniz kaydedildi." });
+      setMessage({
+        type: "success",
+        text:
+          wasRejected || (wasNew && res.data?.status === "pending")
+            ? "Başvurunuz yönetici onayına gönderildi."
+            : "İşletme profiliniz kaydedildi.",
+      });
     } catch (err) {
       setMessage({
         type: "error",
@@ -197,16 +205,55 @@ function BusinessDashboard({ embedded = false }) {
               >
                 <FiBriefcase /> İşletme Profili
               </button>
-              {business && (
+              {business && business.status === "approved" && business.isActive && (
                 <Link to={`/isletme/${business.id}`} className="viewPublic">
                   Herkese açık sayfa <FiExternalLink />
                 </Link>
               )}
             </div>
 
+            {business?.status === "pending" && (
+              <div className="statusBanner pending">
+                <FiClock />
+                <div>
+                  <strong>Başvurunuz inceleniyor</strong>
+                  <p>
+                    Yönetici onayından sonra profiliniz herkese açık olur ve size
+                    bildirim göndeririz. Bu sırada logo, fotoğraf, çalışma saatleri
+                    ve açıklamanızı hazırlayabilirsiniz.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {business?.status === "rejected" && (
+              <div className="statusBanner rejected">
+                <FiAlertCircle />
+                <div>
+                  <strong>Başvurunuz onaylanmadı</strong>
+                  {business.rejectReason && <p>Gerekçe: {business.rejectReason}</p>}
+                  <p>
+                    Bilgilerinizi düzeltip aşağıdan <b>Düzelt ve yeniden gönder</b> butonuna
+                    basarak başvurunuzu tekrar onaya gönderebilirsiniz.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {business && business.status === "approved" && !business.isActive && (
+              <div className="statusBanner rejected">
+                <FiAlertCircle />
+                <div>
+                  <strong>Profiliniz şu anda yayında değil</strong>
+                  <p>Yönetici tarafından yayından kaldırıldı. Ayrıntı için bizimle iletişime geçin.</p>
+                </div>
+              </div>
+            )}
+
             {!business && (
               <p className="dashHint">
                 Müşterilerin sizi bulabilmesi için önce işletme profilinizi oluşturun.
+                Kaydettiğinizde başvurunuz yönetici onayına gönderilir.
               </p>
             )}
 
@@ -373,7 +420,13 @@ function BusinessDashboard({ embedded = false }) {
                 {message.text && <p className={`formMessage ${message.type}`}>{message.text}</p>}
 
                 <button type="submit" className="saveBtn" disabled={saving}>
-                  {saving ? "Kaydediliyor..." : business ? "Değişiklikleri Kaydet" : "Profili Oluştur"}
+                  {saving
+                    ? "Kaydediliyor..."
+                    : !business
+                      ? "Başvuruyu Gönder"
+                      : business.status === "rejected"
+                        ? "Düzelt ve yeniden gönder"
+                        : "Değişiklikleri Kaydet"}
                 </button>
               </form>
             )}
