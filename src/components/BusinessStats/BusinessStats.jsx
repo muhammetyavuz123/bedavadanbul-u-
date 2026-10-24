@@ -7,6 +7,7 @@ import {
   FiMessageCircle,
   FiTag,
   FiStar,
+  FiCheckCircle,
 } from "react-icons/fi";
 import Loader from "../loader/Loader";
 import apiRequest from "../../lib/apiRequest";
@@ -117,6 +118,12 @@ function BusinessStats() {
       hint: `${data.openInquiries} yanıt bekliyor`,
     },
     { icon: FiTag, label: "Aktif kampanya", value: data.activePosts, hint: "yayında" },
+    {
+      icon: FiCheckCircle,
+      label: "Kampanya kullanımı",
+      value: data.redemptions ?? 0,
+      hint: `son 30 gün · toplam ${data.redemptionTotal ?? 0} (kullanıcı beyanı)`,
+    },
     {
       icon: FiStar,
       label: "Puan",

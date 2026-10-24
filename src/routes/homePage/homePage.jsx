@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SearchBar from "../../components/searchBar/SearchBar";
 import "./homePage.scss";
-import w from "../../assets/ee.png";
 import CategoryCard from "./categoryCard";
 import Carusel from "./carusel";
 import Banner from "../../components/Banner/banner";
@@ -14,7 +13,21 @@ import BusinessShowcase from "../../components/BusinessShowcase/BusinessShowcase
 import { Await, Link, useLoaderData } from "react-router-dom";
 import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
-import { FiInbox, FiMapPin } from "react-icons/fi";
+import {
+  FiBell,
+  FiCoffee,
+  FiHeart,
+  FiHome,
+  FiInbox,
+  FiMapPin,
+  FiPhoneCall,
+  FiScissors,
+  FiSearch,
+  FiShoppingBag,
+  FiStar,
+  FiTag,
+  FiUser,
+} from "react-icons/fi";
 import { useCategories } from "../../lib/useCategories";
 
 // ⚠️ GERÇEK NEDEN: react-slick'te `slidesToShow` prop'u gerçek slide
@@ -48,6 +61,194 @@ function FeaturedCarousel({ featured, slidesToShow }) {
         </div>
       ))}
     </Slider>
+  );
+}
+
+// Başlıktaki "Aradığın ___ Burada" kısmında dönen kelimeler.
+// Tüm kelimeler aynı grid hücresinde üst üste durur: genişlik en uzun
+// kelimeye göre sabitlenir, böylece değişirken satır kaymaz.
+const HERO_WORDS = [
+  "İşletme",
+  "Berber",
+  "Kafe",
+  "Restoran",
+  "Usta",
+  "Kuaför",
+  "Market",
+];
+
+function HeroHeadline() {
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    // Hareketi azaltmayı seçen kullanıcılarda kelime sabit kalır
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(() => setI((n) => (n + 1) % HERO_WORDS.length), 2200);
+    return () => clearInterval(t);
+  }, []);
+
+  const prev = (i - 1 + HERO_WORDS.length) % HERO_WORDS.length;
+
+  return (
+    <h1 className="heroTitle" aria-label="Beklediğin İndirim & Aradığın İşletme Burada">
+      <span className="heroLine" aria-hidden="true">
+        Beklediğin <span className="shine">İndirim</span> &amp;
+      </span>
+      <span className="heroLine" aria-hidden="true">
+        Aradığın{" "}
+        <span className="wordSwap">
+          {HERO_WORDS.map((w, n) => (
+            <span
+              key={w}
+              className={`word ${n === i ? "on" : n === prev ? "off" : ""}`}
+            >
+              {w}
+            </span>
+          ))}
+        </span>{" "}
+        Burada
+      </span>
+    </h1>
+  );
+}
+
+// Hero sağ alan: uygulamayı anlatan telefon çizimi. Görsel dosya yok, tamamı
+// kodla çizilir; etrafındaki rozetler uygulamanın ana özelliklerini sayar.
+function HeroPhone() {
+  return (
+    <div className="heroPhone" aria-hidden="true">
+      <span className="phoneRing r1" />
+      <span className="phoneRing r2" />
+
+      <div className="phoneChip c1">
+        <span className="chipIcon red">
+          <FiTag />
+        </span>
+        <span>
+          <b>Kampanyalar</b>
+          <small>Yakınındaki fırsatlar</small>
+        </span>
+      </div>
+      <div className="phoneChip c2">
+        <span className="chipIcon amber">
+          <FiStar />
+        </span>
+        <span>
+          <b>Puan ve yorum</b>
+          <small>Gerçek deneyimler</small>
+        </span>
+      </div>
+      <div className="phoneChip c3">
+        <span className="chipIcon green">
+          <FiPhoneCall />
+        </span>
+        <span>
+          <b>Tek dokunuşla ara</b>
+          <small>Direkt işletmeye ulaş</small>
+        </span>
+      </div>
+      <div className="phoneChip c4">
+        <span className="chipIcon blue">
+          <FiMapPin />
+        </span>
+        <span>
+          <b>Haritada keşfet</b>
+          <small>Sana en yakın olan</small>
+        </span>
+      </div>
+
+      <div className="phoneBody">
+        <div className="phoneNotch" />
+        <div className="phoneScreen">
+          <div className="appTop">
+            <div className="appBar">
+              <span className="appLogo">B</span>
+              <span className="appBrand">BedavadanBul</span>
+              <span className="appBell">
+                <FiBell />
+              </span>
+            </div>
+            <div className="appSearch">
+              <FiSearch /> Berber, kafe, usta ara
+            </div>
+            <div className="appChips">
+              <span className="on">Kampanyalar</span>
+              <span>İşletmeler</span>
+              <span>Harita</span>
+            </div>
+          </div>
+
+          <div className="appFeedClip">
+            <div className="appFeed">
+              <div className="appCard">
+                <div className="appImg g1">
+                  <i className="blob b1" />
+                  <i className="blob b2" />
+                  <FiScissors className="appGlyph" />
+                  <em>2 gün kaldı</em>
+                  <span className="appFav">
+                    <FiHeart />
+                  </span>
+                </div>
+                <div className="appInfo">
+                  <b>Saç kesimi + sakal</b>
+                  <small>Örnek Berber</small>
+                  <span className="appRate">
+                    <FiStar /> 4,8 <u>(32)</u>
+                  </span>
+                  <span className="appPrice">250₺</span>
+                </div>
+              </div>
+              <div className="appCard">
+                <div className="appImg g2">
+                  <i className="blob b1" />
+                  <i className="blob b2" />
+                  <FiCoffee className="appGlyph" />
+                  <em>Yeni</em>
+                  <span className="appFav on">
+                    <FiHeart />
+                  </span>
+                </div>
+                <div className="appInfo">
+                  <b>1 alana 1 bedava kahve</b>
+                  <small>Örnek Kafe</small>
+                  <span className="appRate">
+                    <FiStar /> 4,6 <u>(18)</u>
+                  </span>
+                  <span className="appPrice">90₺</span>
+                </div>
+              </div>
+              <div className="appCard">
+                <div className="appImg g3">
+                  <i className="blob b1" />
+                  <i className="blob b2" />
+                  <FiShoppingBag className="appGlyph" />
+                  <em>5 gün kaldı</em>
+                  <span className="appFav">
+                    <FiHeart />
+                  </span>
+                </div>
+                <div className="appInfo">
+                  <b>Alışverişte %15 indirim</b>
+                  <small>Örnek Market</small>
+                  <span className="appRate">
+                    <FiStar /> 4,9 <u>(51)</u>
+                  </span>
+                  <span className="appPrice">180₺</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="appNav">
+            <FiHome className="on" />
+            <FiMapPin />
+            <FiHeart />
+            <FiUser />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -89,10 +290,10 @@ function HomePage() {
 
       <section className="hero">
         <div className="hero-left">
-          <h1>Beklediğin Kampanya & Beklediğin İndirim Burada</h1>
-          <p>
-            Aradığın her şeyi indirimli bulma fırsatını kaçırma -
-            bedavadanBul.com
+          <HeroHeadline />
+          <p className="heroSub">
+            Yakınındaki işletmeleri ve kampanyaları keşfet; en uygun fiyatı, en
+            yakın ustayı saniyeler içinde bul.
           </p>
 
           <div className="filters">
@@ -133,14 +334,7 @@ function HomePage() {
 
         <div className="hero-right">
           <div className="hero-visual">
-            <img src={w} alt="Kadın" className="hero-woman" />
-
-            <div className="deal-card discount">%70</div>
-            <div className="deal-card price">%50</div>
-            <div className="deal-card badge">%100</div>
-            <div className="deal-card store">BedavadanBul</div>
-            <div className="deal-card category">Herşey İndirimden</div>
-            <div className="deal-card timer">⏳ Son 3 Saat</div>
+            <HeroPhone />
           </div>
         </div>
 

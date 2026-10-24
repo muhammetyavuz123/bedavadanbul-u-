@@ -2,7 +2,8 @@ import "./singlePage.scss";
 import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import DOMPurify from "dompurify";
 import { AuthContext } from "../../context/AuthContext";
@@ -21,6 +22,7 @@ import {
   FiPhone,
   FiTag,
   FiPercent,
+  FiCheckCircle,
 } from "react-icons/fi";
 
 function SinglePage() {
@@ -32,7 +34,41 @@ function SinglePage() {
 
   const [refresh, setRefresh] = useState(false);
 
+  // "Kampanyayı kullandım" (kullanıcı beyanı): sayaç + işaretleme
+  const [redeem, setRedeem] = useState({ count: 0, redeemed: false });
+  const [redeemBusy, setRedeemBusy] = useState(false);
+  const [redeemMsg, setRedeemMsg] = useState("");
+  const isLive =
+    post.approved !== false && !!post.expireDate && new Date(post.expireDate) > new Date();
+
+  useEffect(() => {
+    let cancelled = false;
+    apiRequest
+      .get(`/posts/${post.id}/redemption`)
+      .then((res) => !cancelled && setRedeem(res.data))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [post.id, currentUser?.id]);
+
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+  const toggleRedeem = async () => {
+    if (!currentUser) return navigate("/login");
+    setRedeemBusy(true);
+    setRedeemMsg("");
+    try {
+      const res = redeem.redeemed
+        ? await apiRequest.delete(`/posts/${post.id}/redeem`)
+        : await apiRequest.post(`/posts/${post.id}/redeem`);
+      setRedeem({ count: res.data.count, redeemed: res.data.redeemed });
+    } catch (err) {
+      setRedeemMsg(err.response?.data?.message || "İşlem yapılamadı.");
+    } finally {
+      setRedeemBusy(false);
+    }
+  };
 
   const handleSave = async () => {
     if (!currentUser) return navigate("/login");
@@ -210,6 +246,28 @@ function SinglePage() {
                   </div>
                 )}
               </div>
+
+              {isLive && (
+                <div className={`redeemBox ${redeem.redeemed ? "on" : ""}`}>
+                  <div className="redeemInfo">
+                    <FiCheckCircle />
+                    <span>
+                      {redeem.count > 0
+                        ? `${redeem.count} kişi bu kampanyayı kullandığını belirtti`
+                        : "Bu kampanyayı kullandıysanız belirtin"}
+                    </span>
+                  </div>
+                  <button type="button" onClick={toggleRedeem} disabled={redeemBusy}>
+                    {redeem.redeemed ? "Kullandım ✓ (geri al)" : "Kampanyayı kullandım"}
+                  </button>
+                  {redeemMsg && <p className="redeemErr">{redeemMsg}</p>}
+                  {redeem.redeemed && post.business?.id && post.business.isActive && (
+                    <Link className="redeemReview" to={`/isletme/${post.business.id}#reviews`}>
+                      Deneyiminizi yorumlayın →
+                    </Link>
+                  )}
+                </div>
+              )}
 
               <button onClick={handleWhatsapp} className="messageBtn">
                 <FiMessageCircle />

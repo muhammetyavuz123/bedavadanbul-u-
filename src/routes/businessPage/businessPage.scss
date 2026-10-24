@@ -1628,3 +1628,24 @@ $shadow: 0 10px 30px rgba(28, 31, 46, 0.07);
     }
   }
 }
+
+// "Kampanyayı kullandı" rozeti (kullanıcı beyanı)
+.usedChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #e8f7ee;
+  color: #12803b;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+// .reviewTop span kuralını rozet için ezer
+.reviewItem .reviewTop .usedChip {
+  color: #12803b;
+  font-size: 0.72rem;
+}

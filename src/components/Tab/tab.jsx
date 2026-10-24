@@ -17,6 +17,7 @@ import BusinessDashboard from "../../routes/businessDashboard/businessDashboard"
 import BusinessStats from "../BusinessStats/BusinessStats";
 import BusinessShare from "../BusinessShare/BusinessShare";
 import AdminBusinesses from "../AdminBusinesses/AdminBusinesses";
+import AdminReports from "../AdminReports/AdminReports";
 import {
   FiHome,
   FiList,
@@ -29,6 +30,7 @@ import {
   FiBriefcase,
   FiBarChart2,
   FiShare2,
+  FiFlag,
 } from "react-icons/fi";
 
 const MENU_ITEMS = [
@@ -43,6 +45,7 @@ const MENU_ITEMS = [
   { key: "contact", label: "İletişim", icon: FiMail, adminOnly: true },
   { key: "categories", label: "Kategoriler", icon: FiGrid, adminOnly: true },
   { key: "adminBusinesses", label: "İşletmeler", icon: FiBriefcase, adminOnly: true },
+  { key: "adminReports", label: "Şikâyetler", icon: FiFlag, adminOnly: true },
 ];
 
 export default function Sidebar() {
@@ -56,6 +59,7 @@ export default function Sidebar() {
     const businessTabs = ["business", "businessStats", "businessShare"];
     if (isBusiness && businessTabs.includes(requested)) return requested;
     if (isAdmin && requested === "adminBusinesses") return "adminBusinesses";
+    if (isAdmin && requested === "adminReports") return "adminReports";
     return "home";
   });
   const navigate = useNavigate();
@@ -86,6 +90,8 @@ export default function Sidebar() {
         return <BusinessShare />;
       case "adminBusinesses":
         return <AdminBusinesses />;
+      case "adminReports":
+        return <AdminReports />;
       case "profile":
         return <ProfileUpdatePage />;
       case "newCategories":

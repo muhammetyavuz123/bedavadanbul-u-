@@ -1,0 +1,209 @@
+$brand: #ff3c38;
+$ink: #1c1f2e;
+$muted: #7a7f8e;
+
+.adminRep {
+  width: 100%;
+  box-sizing: border-box;
+
+  .adminRepHead {
+    margin-bottom: 16px;
+
+    h2 {
+      margin: 0 0 4px;
+      color: $ink;
+    }
+
+    p {
+      margin: 0;
+      color: $muted;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
+
+  .repChips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+
+    button {
+      border: 1px solid #eceef5;
+      background: #fff;
+      color: $muted;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+
+      &.active {
+        background: $ink;
+        border-color: $ink;
+        color: #fff;
+      }
+
+      .countDot {
+        display: inline-block;
+        margin-left: 6px;
+        min-width: 18px;
+        padding: 0 5px;
+        border-radius: 999px;
+        background: $brand;
+        color: #fff;
+        font-size: 0.7rem;
+        line-height: 18px;
+        text-align: center;
+      }
+    }
+  }
+
+  .repError {
+    color: #c62828;
+  }
+
+  .repEmpty {
+    color: $muted;
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  .repList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .repRow {
+    background: #fff;
+    border: 1px solid #eceef5;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .repTop {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .reasonTag {
+        background: #ffe1de;
+        color: #9c1c17;
+        font-size: 0.72rem;
+        font-weight: 800;
+        border-radius: 999px;
+        padding: 3px 10px;
+      }
+
+      small {
+        color: $muted;
+        font-weight: 700;
+      }
+    }
+
+    .repPreview {
+      background: #fafafc;
+      border: 1px solid #f1f1f5;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      p {
+        margin: 0;
+        color: $ink;
+        line-height: 1.5;
+        word-break: break-word;
+
+        &.gone {
+          color: #9ca3af;
+          font-style: italic;
+        }
+      }
+
+      small {
+        color: #9ca3af;
+      }
+
+      a {
+        color: $brand;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+    }
+
+    .repMeta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      color: $muted;
+      font-size: 0.78rem;
+    }
+
+    .repActions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      button {
+        border: 1px solid #e3e6ef;
+        background: #fff;
+        color: $ink;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-weight: 700;
+        font-size: 0.82rem;
+        cursor: pointer;
+
+        &:disabled {
+          opacity: 0.55;
+          cursor: wait;
+        }
+
+        &.solid {
+          background: #c62828;
+          border-color: #c62828;
+          color: #fff;
+        }
+
+        &.approve {
+          background: #16a34a;
+          border-color: #16a34a;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .repPager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 18px;
+
+    button {
+      border: 1px solid #e3e6ef;
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      color: $muted;
+      font-weight: 600;
+    }
+  }
+}

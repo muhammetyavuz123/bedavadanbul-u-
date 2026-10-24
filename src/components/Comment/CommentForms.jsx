@@ -24,8 +24,10 @@ const CommentForms = ({ postId, userId, onCommentAdded }) => {
         if (onCommentAdded) onCommentAdded();
       }
     } catch (error) {
+      // Sunucu mesajı (ör. "Uygunsuz içerik tespit edildi.") varsa onu göster
       showError(
-        "Yorum eklenien bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+        error.response?.data?.message ||
+          "Yorum eklenien bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
       );
     }
   };

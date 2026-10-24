@@ -24,9 +24,11 @@ import {
   FiHeart,
   FiTag,
   FiCornerDownRight,
+  FiCheckCircle,
 } from "react-icons/fi";
 import Loader from "../../components/loader/Loader";
 import StarRating from "../../components/StarRating/StarRating";
+import ReportModal, { ReportLink } from "../../components/ReportModal/ReportModal";
 import BizAvatar from "../../components/BizAvatar/BizAvatar";
 import { VerifiedBadge, FeaturedBadge } from "../../components/BizBadges/BizBadges";
 import apiRequest from "../../lib/apiRequest";
@@ -80,6 +82,7 @@ function BusinessPage() {
   const [similar, setSimilar] = useState([]);
 
   const [reviews, setReviews] = useState([]);
+  const [reportReview, setReportReview] = useState(null);
   const [reviewTotal, setReviewTotal] = useState(0);
   const [reviewPage, setReviewPage] = useState(1);
   const [myReview, setMyReview] = useState(null);
@@ -849,10 +852,22 @@ function BusinessPage() {
                   <div className="reviewBody">
                     <div className="reviewTop">
                       <strong>{r.user?.username}</strong>
+                      {r.usedCampaign && (
+                        <span className="usedChip">
+                          <FiCheckCircle /> Kampanyayı kullandı
+                        </span>
+                      )}
                       <span>{formatDateTime(r.createdAt)}</span>
                     </div>
                     <StarRating value={r.rating} size={14} />
                     {r.comment && <p>{r.comment}</p>}
+                    {r.user?.id !== currentUser?.id && (
+                      <ReportLink
+                        onClick={() =>
+                          currentUser ? setReportReview(r.id) : navigate("/login")
+                        }
+                      />
+                    )}
 
                     {r.ownerReply && replyFor !== r.id && (
                       <div className="ownerReply">
@@ -918,6 +933,13 @@ function BusinessPage() {
                 Daha fazla yorum
               </button>
             )}
+
+            <ReportModal
+              open={!!reportReview}
+              onClose={() => setReportReview(null)}
+              targetType="review"
+              targetId={reportReview}
+            />
           </section>
         </div>
 

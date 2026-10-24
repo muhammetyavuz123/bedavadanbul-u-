@@ -4,11 +4,20 @@ import abouth from "../../assets/abouth.png";
 
 const AboutUs = ({
   title = "Hakkımızda",
-  subtitle = "Türkiyenin Reklamı",
-  content = `Bedavadanbul.com, büyükten küçüğe her türlü işletmenin ürün ve hizmetlerini il ve ilçe bazında duyurabildiği, kullanıcıların ise indirim ve kampanyaları kolayca keşfedebildiği yenilikçi bir platformdur.
-Amacımız, işletmeler ile müşteriler arasında doğrudan ve hızlı bir iletişim köprüsü kurarak, herkes için avantajlı fırsatları ulaşılabilir kılmaktır. Türkiye’nin dört bir yanındaki mağaza, kafe, restoran, market, hizmet sektörü ve daha birçok işletme; ürünlerini ve kampanyalarını Bedavadanbul.com’da paylaşarak, müşterilerine en iyi indirimleri sunar.
-Kullanıcılar ise yaşadıkları bölgedeki güncel kampanyaları takip ederek, bütçelerine dost fırsatları kaçırmadan değerlendirebilir. Böylece hem işletmelerin bilinirliği artar hem de tüketiciler alışverişlerinde ekonomik avantajlar elde eder.
-Bedavadanbul.com, yerel ekonomiyi güçlendirmek, alışverişi keyifli ve uygun fiyatlı hale getirmek için sürekli gelişen ve yenilenen bir platform olarak hizmetinizdedir.`,
+  subtitle = "Türkiye’nin Reklamı",
+  content = `BedavadanBul.com, yakınınızdaki işletmeleri, indirimleri ve kampanyaları tek yerden keşfedebileceğiniz yerel bir işletme rehberi ve kampanya platformudur. Büyükten küçüğe her türlü işletme, il ve ilçe bazında kendi profilini oluşturur ve kampanyalarını duyurur; kullanıcılar da bulundukları bölgedeki fırsatları kolayca bulur.
+
+Platformda neler var?
+• İşletme profilleri: adres, çalışma saatleri, telefon, fotoğraflar ve harita üzerinde konum.
+• Güncel kampanyalar: il ve ilçeye göre keşfedin, yakında sona erecek fırsatları kaçırmayın.
+• Puan ve yorumlar: Giriş yapan kullanıcıların deneyimleri; işletmeler yorumlara herkese açık yanıt verebilir.
+• Doğrudan iletişim: İşletmeye özel soru sorabilir, tek dokunuşla arayabilir ya da yol tarifi alabilirsiniz.
+• Favoriler ve bildirimler: Beğendiğiniz işletmeleri kaydedin, duyuruları bildirim kutunuzdan takip edin.
+• Web ve mobil: bedavadanbul.com ve iOS ile Android uygulamalarıyla her yerden ulaşın.
+
+İşletmeler için: Başvurunuzu oluşturun, ekibimizin onayından sonra profilinizi tamamlayıp kampanyalarınızı yayınlayın. Profilinizin kaç kez görüntülendiğini, kaç kişinin sizi aradığını ve yol tarifi aldığını işletme panelinizden izleyin.
+
+Amacımız, işletmeler ile müşteriler arasında doğrudan ve hızlı bir köprü kurarak yerel ekonomiyi güçlendirmek, alışverişi keyifli ve uygun fiyatlı hale getirmektir. BedavadanBul.com, sürekli gelişen ve yenilenen bir platform olarak hizmetinizdedir.`,
 }) => {
   return (
     <section className="about-us">

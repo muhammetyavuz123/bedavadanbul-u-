@@ -4,7 +4,9 @@ import { AuthContext } from "../../context/AuthContext";
 import "./commentList.scss";
 import Popup from "../Popup/Popup";
 import { useError } from "../../context/ErrorContext";
-import { FiTrash2, FiMessageSquare } from "react-icons/fi";
+import { FiTrash2, FiMessageSquare, FiCheckCircle } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import ReportModal, { ReportLink } from "../ReportModal/ReportModal";
 
 const CommentLists = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -13,6 +15,8 @@ const CommentLists = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState(false);
   const { showError } = useError();
+  const navigate = useNavigate();
+  const [reportFor, setReportFor] = useState(null);
 
   const loadComments = async () => {
     if (loading || !hasMore) return;
@@ -80,7 +84,19 @@ const CommentLists = ({ postId }) => {
                 className="avatar"
               />
               <span className="username">{comment.user?.username}</span>
+              {comment.usedCampaign && (
+                <span className="usedChip">
+                  <FiCheckCircle /> Kampanyayı kullandı
+                </span>
+              )}
             </div>
+
+            {currentUser && currentUser.id !== comment.userId && (
+              <ReportLink onClick={() => setReportFor(comment.id)} />
+            )}
+            {!currentUser && (
+              <ReportLink onClick={() => navigate("/login")} />
+            )}
 
             {currentUser?.id === comment.userId && (
               <>
@@ -107,6 +123,13 @@ const CommentLists = ({ postId }) => {
           <p className="comment-content">{comment.content}</p>
         </div>
       ))}
+
+      <ReportModal
+        open={!!reportFor}
+        onClose={() => setReportFor(null)}
+        targetType="comment"
+        targetId={reportFor}
+      />
     </div>
   );
 };

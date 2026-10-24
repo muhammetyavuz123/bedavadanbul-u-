@@ -307,3 +307,63 @@
     }
   }
 }
+
+// "Kampanyayı kullandım"
+.singlePage .redeemBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #e3e6ef;
+  border-radius: 14px;
+  background: #fafafc;
+
+  .redeemInfo {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #4b5563;
+    font-size: 0.85rem;
+    line-height: 1.4;
+
+    svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: #16a34a;
+    }
+  }
+
+  button {
+    border: 1px solid #16a34a;
+    background: #fff;
+    color: #12803b;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 800;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+  }
+
+  &.on button {
+    background: #16a34a;
+    color: #fff;
+  }
+
+  .redeemErr {
+    margin: 0;
+    color: #c62828;
+    font-size: 0.82rem;
+  }
+
+  .redeemReview {
+    color: #ff3c38;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+}
