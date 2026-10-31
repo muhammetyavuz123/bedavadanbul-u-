@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Footer from "../../components/Footer/Footer";
-import FloatingContact from "../../components/FloatingContact/FloatingContact";
+import FloatingAssistant from "../../components/FloatingAssistant/FloatingAssistant";
 import ScrollToTop from "../../components/ScrollToTop";
 
 // ⚠️ FIX: <ScrollToTop/> daha önce App.jsx'te <RouterProvider>'ın CHILD'ı
@@ -25,7 +25,7 @@ function Layout() {
         <Outlet />
         <Footer />
       </div>
-      <FloatingContact />
+      <FloatingAssistant />
     </div>
   );
 }

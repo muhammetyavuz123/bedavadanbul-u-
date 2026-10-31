@@ -31,6 +31,7 @@ import BusinessListPage from "./routes/businessListPage/businessListPage";
 import BusinessPage from "./routes/businessPage/businessPage";
 import MyInquiries from "./routes/myInquiries/myInquiries";
 import MyFavorites from "./routes/myFavorites/myFavorites";
+import AssistantPage from "./routes/assistantPage/assistantPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -75,6 +76,10 @@ function App() {
         {
           path: "/isletmeler/:citySlug/:districtSlug",
           element: <BusinessListPage />,
+        },
+        {
+          path: "/asistan",
+          element: <AssistantPage />,
         },
         {
           path: "/isletme/:id",

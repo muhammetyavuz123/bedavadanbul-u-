@@ -14,6 +14,7 @@ import { Await, Link, useLoaderData } from "react-router-dom";
 import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
 import {
+  FiArrowRight,
   FiBell,
   FiCoffee,
   FiHeart,
@@ -27,6 +28,7 @@ import {
   FiStar,
   FiTag,
   FiUser,
+  FiZap,
 } from "react-icons/fi";
 import { useCategories } from "../../lib/useCategories";
 
@@ -299,6 +301,17 @@ function HomePage() {
           <div className="filters">
             <SearchBar />
           </div>
+
+          <Link to="/asistan" className="heroAssist">
+            <span className="heroAssistIcon">
+              <FiZap />
+            </span>
+            <span className="heroAssistText">
+              <b>Asistana sor</b>
+              <small>"Bayrampaşa'dayım, bir kafe önerir misin?"</small>
+            </span>
+            <FiArrowRight className="heroAssistGo" />
+          </Link>
 
           {quickCategories.length > 0 && (
             <div className="quickCategories">
