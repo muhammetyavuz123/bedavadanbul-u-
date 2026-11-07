@@ -80,6 +80,9 @@ function Login() {
           <Link to="/register">
             <span className="link-danger">Kayıt Oluştur</span>
           </Link>
+          <Link to="/register?type=business">
+            <span className="link-danger">İşletme misiniz? İşletmenizi ekleyin</span>
+          </Link>
         </form>
       </div>
     </AuthLayout>

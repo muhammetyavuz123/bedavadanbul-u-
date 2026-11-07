@@ -84,6 +84,30 @@
       }
     }
 
+    .bizCta {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      color: #ff3c38;
+      border: 1.5px solid #ff3c38;
+      padding: 9.5px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: #fff1f0;
+      }
+
+      // Dar ekranda üst çubukta yer kaplamasın; menünün içinde gösteriliyor
+      @include md {
+        display: none;
+      }
+    }
+
     .userArea {
       display: flex;
       align-items: center;
@@ -329,6 +353,25 @@
           border-radius: 50%;
           object-fit: cover;
         }
+      }
+
+      .mobileAuth {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .bizCta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        color: #ff3c38;
+        border: 1.5px solid #ff3c38;
+        padding: 10.5px;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
       }
 
       .loginCta {

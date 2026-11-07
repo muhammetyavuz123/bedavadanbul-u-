@@ -92,9 +92,15 @@ function Navbar() {
             )}
           </div>
         ) : (
-          <Link to="/login" className="loginCta">
-            Giriş Yap
-          </Link>
+          <>
+            {/* İşletmeler kayıt sayfasına kolay ulaşsın */}
+            <Link to="/register?type=business" className="bizCta">
+              İşletmeni Ekle
+            </Link>
+            <Link to="/login" className="loginCta">
+              Giriş Yap
+            </Link>
+          </>
         )}
 
         <div className="menuIcon">
@@ -166,13 +172,22 @@ function Navbar() {
               </button>
             )
           ) : (
-            <Link
-              to="/login"
-              className="loginCta"
-              onClick={() => setOpen(false)}
-            >
-              Giriş Yap
-            </Link>
+            <div className="mobileAuth">
+              <Link
+                to="/register?type=business"
+                className="bizCta"
+                onClick={() => setOpen(false)}
+              >
+                İşletmeni Ekle
+              </Link>
+              <Link
+                to="/login"
+                className="loginCta"
+                onClick={() => setOpen(false)}
+              >
+                Giriş Yap
+              </Link>
+            </div>
           )}
         </div>
       </div>
