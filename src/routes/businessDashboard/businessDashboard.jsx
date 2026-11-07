@@ -373,10 +373,13 @@ function BusinessDashboard({ embedded = false }) {
                     <textarea
                       value={form.description}
                       onChange={update("description")}
-                      rows={5}
-                      maxLength={1000}
+                      rows={8}
+                      maxLength={3000}
                       placeholder="İşletmenizi, sunduğunuz hizmetleri ve avantajlarınızı anlatın."
                     />
+                    <small style={{ color: "#8a8fa0", fontWeight: 500, textAlign: "right" }}>
+                      {form.description.length}/3000
+                    </small>
                   </label>
                 </div>
 
