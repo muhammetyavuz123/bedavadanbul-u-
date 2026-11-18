@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiInbox, FiBriefcase, FiExternalLink, FiX, FiClock, FiAlertCircle } from "react-icons/fi";
+import { FiInbox, FiBriefcase, FiExternalLink, FiX, FiClock, FiAlertCircle, FiGift } from "react-icons/fi";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 import InquiryInbox from "../../components/InquiryInbox/InquiryInbox";
+import LoyaltyPanel from "../../components/LoyaltyPanel/LoyaltyPanel";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
 import Loader from "../../components/loader/Loader";
 import CategorySelect from "../../components/CategorySelect/CategorySelect";
@@ -205,6 +206,14 @@ function BusinessDashboard({ embedded = false }) {
               >
                 <FiBriefcase /> İşletme Profili
               </button>
+              <button
+                type="button"
+                className={tab === "loyalty" ? "active" : ""}
+                onClick={() => setTab("loyalty")}
+                disabled={!business}
+              >
+                <FiGift /> Sadakat
+              </button>
               {business && business.status === "approved" && business.isActive && (
                 <Link to={`/isletme/${business.id}`} className="viewPublic">
                   Herkese açık sayfa <FiExternalLink />
@@ -258,6 +267,8 @@ function BusinessDashboard({ embedded = false }) {
             )}
 
             {tab === "inbox" && business && <InquiryInbox mode="owner" />}
+
+            {tab === "loyalty" && business && <LoyaltyPanel />}
 
             {tab === "profile" && (
               <form className="profileForm" onSubmit={save}>
