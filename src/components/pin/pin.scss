@@ -2,9 +2,11 @@
   display: flex;
   gap: 20px;
 
-  img{
+  img,
+  .brandPh{
     width: 64px;
     height: 48px;
+    flex-shrink: 0;
     object-fit: cover;
     border-radius: 5px;
   }

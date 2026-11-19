@@ -1,0 +1,287 @@
+// Kampanyalar sayfası filtresi (premium görünüm). Sınıflar "cf-" ile başlar;
+// eski filter.scss'e dokunulmadı, başka sayfalarla çakışma olmaz.
+$brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #0b1a2b;
+$muted: #8a8f98;
+$line: #e8eaee;
+$field: #f7f8fa;
+
+.cf {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: $ink;
+
+  .cf-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cf-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-right: auto;
+
+    svg {
+      color: $brand;
+    }
+  }
+
+  .cf-badge {
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, $brand, $brand2);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cf-reset {
+    background: none;
+    border: none;
+    color: $brand;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 8px;
+
+    &:hover {
+      background: #fff1f0;
+    }
+  }
+
+  // Yalnızca küçük ekranda görünür
+  .cf-toggle {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    background: #fff1f0;
+    border: none;
+    color: $brand;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 7px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+
+    &.open svg {
+      transform: rotate(180deg);
+    }
+  }
+
+  .cf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .cf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff1f0;
+    border: 1px solid #ffd2cf;
+    color: #c62f2b;
+    border-radius: 20px;
+    padding: 5px 6px 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    max-width: 100%;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(198, 47, 43, 0.12);
+      color: #c62f2b;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        background: rgba(198, 47, 43, 0.22);
+      }
+    }
+  }
+
+  .cf-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cf-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: $muted;
+    }
+  }
+
+  .cf-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .cf-ico {
+      position: absolute;
+      left: 13px;
+      width: 18px;
+      height: 18px;
+      color: $muted;
+      pointer-events: none;
+      transition: color 0.2s ease;
+    }
+
+    .cf-chev {
+      position: absolute;
+      right: 12px;
+      width: 16px;
+      height: 16px;
+      color: $muted;
+      pointer-events: none;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 46px;
+      box-sizing: border-box;
+      border: 1px solid $line;
+      border-radius: 12px;
+      background: $field;
+      color: $ink;
+      font: inherit;
+      font-size: 0.95rem;
+      padding: 0 38px 0 40px;
+      appearance: none;
+      -webkit-appearance: none;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+      min-width: 0;
+    }
+
+    select {
+      cursor: pointer;
+      text-overflow: ellipsis;
+    }
+
+    input::placeholder {
+      color: #a3a8b1;
+    }
+
+    &:hover input,
+    &:hover select {
+      border-color: #d5d8de;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: $brand;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
+    }
+
+    &:focus-within .cf-ico {
+      color: $brand;
+    }
+
+    &.disabled {
+      opacity: 0.55;
+
+      select {
+        cursor: not-allowed;
+      }
+    }
+
+    .cf-clear {
+      position: absolute;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #666;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.07);
+      }
+    }
+  }
+
+  .cf-submit {
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, $brand, $brand2);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.98rem;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(255, 60, 56, 0.28);
+    transition:
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(255, 60, 56, 0.34);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // Küçük ekran: alanlar varsayılan kapalı, "Düzenle" ile açılır
+  @media (max-width: 768px) {
+    .cf-toggle {
+      display: inline-flex;
+    }
+
+    .cf-form {
+      display: none;
+
+      &.open {
+        display: flex;
+      }
+    }
+  }
+}

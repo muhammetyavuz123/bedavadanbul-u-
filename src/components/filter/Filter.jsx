@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react";
 import "./filter.scss";
+import "./campaignFilter.scss";
 import { useSearchParams } from "react-router-dom";
+import {
+  FiSearch,
+  FiMapPin,
+  FiNavigation,
+  FiGrid,
+  FiChevronDown,
+  FiSliders,
+  FiX,
+} from "react-icons/fi";
 import apiRequest from "../../lib/apiRequest";
 import { useError } from "../../context/ErrorContext";
+
+const FIELDS = ["categoryId", "city", "district", "search"];
 
 function Filter() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,64 +26,72 @@ function Filter() {
     search: searchParams.get("search") || "",
   });
 
+  // Küçük ekranlarda filtre alanları açılır/kapanır (masaüstünde hep açık)
+  const [open, setOpen] = useState(false);
+
   const { showError } = useError();
 
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
-
-  // ✅ KATEGORİLER
   const [categories, setCategories] = useState([]);
 
-  // 🔥 SADECE ANA KATEGORİLER
   const mainCategories = categories.filter((c) => !c.parentId);
+  const getSubCategories = (parentId) => categories.filter((c) => c.parentId === parentId);
 
-  // 🔥 ALT KATEGORİ GETİR
-  const getSubCategories = (parentId) => {
-    return categories.filter((c) => c.parentId === parentId);
+  // Uygulanmış (adres çubuğundaki) filtreler: üstteki çipler bunlardan çizilir
+  const applied = {
+    categoryId: searchParams.get("categoryId") || "",
+    city: searchParams.get("city") || "",
+    district: searchParams.get("district") || "",
+    search: searchParams.get("search") || "",
   };
+  const categoryName = (id) => categories.find((c) => c.id === id)?.name || "Kategori";
+  const activeCount = FIELDS.filter((f) => applied[f]).length;
+
+  // Adres çubuğu dışarıdan değişirse (geri tuşu, "Tümünü gör" vb.) form da güncellensin
+  useEffect(() => {
+    setQuery({
+      categoryId: searchParams.get("categoryId") || "",
+      city: searchParams.get("city") || "",
+      district: searchParams.get("district") || "",
+      search: searchParams.get("search") || "",
+    });
+  }, [searchParams]);
+
+  const apply = (next) => {
+    const clean = Object.fromEntries(Object.entries(next).filter(([_, v]) => v !== ""));
+    setSearchParams(clean);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "city") {
-      setQuery((prev) => ({
-        ...prev,
-        city: value,
-        district: "",
-      }));
+      setQuery((prev) => ({ ...prev, city: value, district: "" }));
     } else {
-      setQuery((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setQuery((prev) => ({ ...prev, [name]: value }));
     }
   };
 
   const handleFilter = (e) => {
     e.preventDefault();
-
-    const cleanQuery = Object.fromEntries(
-      Object.entries(query).filter(([_, v]) => v !== ""),
-    );
-
-    setSearchParams(cleanQuery);
+    apply(query);
+    setOpen(false);
   };
 
-  const clearField = (field) => {
-    if (field === "city") {
-      setQuery((prev) => ({
-        ...prev,
-        city: "",
-        district: "",
-      }));
-    } else {
-      setQuery((prev) => ({
-        ...prev,
-        [field]: "",
-      }));
-    }
+  // Çipteki ✕: o filtreyi kaldırıp hemen uygular
+  const removeApplied = (field) => {
+    const next = { ...applied, [field]: "" };
+    if (field === "city") next.district = "";
+    setQuery(next);
+    apply(next);
   };
 
-  // ✅ ŞEHİRLER
+  const resetAll = () => {
+    const empty = { categoryId: "", city: "", district: "", search: "" };
+    setQuery(empty);
+    apply(empty);
+  };
+
   useEffect(() => {
     async function fetchCities() {
       try {
@@ -81,16 +101,14 @@ function Filter() {
         showError("Şehir verisi alınırken bir hata oluştu.");
       }
     }
-
     fetchCities();
   }, []);
 
-  // ✅ İLÇELER
   useEffect(() => {
     async function fetchDistricts() {
       if (query.city) {
         try {
-          const res = await apiRequest.get(`/locations/${query.city}`);
+          const res = await apiRequest.get(`/locations/${encodeURIComponent(query.city)}`);
           setDistricts(res.data);
         } catch (error) {
           showError("İlçe verisi alınırken bir hata oluştu.");
@@ -99,7 +117,6 @@ function Filter() {
         setDistricts([]);
       }
     }
-
     fetchDistricts();
   }, [query.city]);
 
@@ -112,85 +129,105 @@ function Filter() {
         showError("Kategori verisi alınırken hata oluştu.");
       }
     }
-
     fetchCategories();
   }, []);
+
+  const chips = [
+    applied.search && { field: "search", label: `“${applied.search}”` },
+    applied.city && { field: "city", label: applied.city },
+    applied.district && { field: "district", label: applied.district },
+    applied.categoryId && { field: "categoryId", label: categoryName(applied.categoryId) },
+  ].filter(Boolean);
+
   return (
-    <div className="filter-container">
-      <form className="filter-form" onSubmit={handleFilter}>
-        {/* 🔎 ARAMA */}
-        <div className="search-input">
-          <svg
-            className="icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M21 21l-4.35-4.35m2.1-5.4a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
-
-          <input
-            type="text"
-            placeholder="Anahtar kelime ara..."
-            value={query.search}
-            name="search"
-            onChange={handleChange}
-          />
-
-          {query.search && (
-            <button
-              type="button"
-              className="clear-btn"
-              onClick={() => clearField("search")}
-            >
-              ✕
-            </button>
-          )}
+    <div className="cf">
+      <div className="cf-head">
+        <div className="cf-title">
+          <FiSliders />
+          <span>Filtreler</span>
+          {activeCount > 0 && <span className="cf-badge">{activeCount}</span>}
         </div>
 
-        {/* 🏙️ ŞEHİR */}
-        <div className="filter-group">
-          <label htmlFor="city">Şehir</label>
+        {activeCount > 0 && (
+          <button type="button" className="cf-reset" onClick={resetAll}>
+            Temizle
+          </button>
+        )}
 
-          <div className="select-wrapper">
-            <select
-              id="city"
-              name="city"
+        <button
+          type="button"
+          className={open ? "cf-toggle open" : "cf-toggle"}
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+        >
+          {open ? "Gizle" : "Düzenle"} <FiChevronDown />
+        </button>
+      </div>
+
+      {chips.length > 0 && (
+        <div className="cf-chips">
+          {chips.map((c) => (
+            <span className="cf-chip" key={c.field}>
+              {c.label}
+              <button
+                type="button"
+                aria-label={`${c.label} filtresini kaldır`}
+                onClick={() => removeApplied(c.field)}
+              >
+                <FiX />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+
+      <form className={open ? "cf-form open" : "cf-form"} onSubmit={handleFilter}>
+        <div className="cf-field">
+          <label htmlFor="cf-search">Arama</label>
+          <div className="cf-control">
+            <FiSearch className="cf-ico" />
+            <input
+              id="cf-search"
+              type="text"
+              placeholder="Kampanya ya da işletme ara"
+              value={query.search}
+              name="search"
               onChange={handleChange}
-              value={query.city}
-            >
-              <option value="">Tümü</option>
+              autoComplete="off"
+            />
+            {query.search && (
+              <button
+                type="button"
+                className="cf-clear"
+                aria-label="Aramayı temizle"
+                onClick={() => setQuery((p) => ({ ...p, search: "" }))}
+              >
+                <FiX />
+              </button>
+            )}
+          </div>
+        </div>
 
+        <div className="cf-field">
+          <label htmlFor="city">Şehir</label>
+          <div className="cf-control">
+            <FiMapPin className="cf-ico" />
+            <select id="city" name="city" onChange={handleChange} value={query.city}>
+              <option value="">Tüm şehirler</option>
               {cities.map((city, i) => (
                 <option key={i} value={city?.il_adi}>
                   {city?.il_adi}
                 </option>
               ))}
             </select>
-
-            {query.city && (
-              <button
-                type="button"
-                className="clear-btn"
-                onClick={() => clearField("city")}
-              >
-                ✕
-              </button>
-            )}
+            <FiChevronDown className="cf-chev" />
           </div>
         </div>
 
-        {/* 🏘️ İLÇE */}
-        <div className="filter-group">
+        <div className="cf-field">
           <label htmlFor="district">İlçe</label>
-
-          <div className="select-wrapper">
+          <div className={query.city ? "cf-control" : "cf-control disabled"}>
+            <FiNavigation className="cf-ico" />
             <select
               id="district"
               name="district"
@@ -198,49 +235,33 @@ function Filter() {
               value={query.district}
               disabled={!query.city}
             >
-              <option value="">Tümü</option>
-
+              <option value="">{query.city ? "Tüm ilçeler" : "Önce şehir seçin"}</option>
               {districts.map((d, i) => (
                 <option key={i} value={d?.ilce_adi}>
                   {d?.ilce_adi}
                 </option>
               ))}
             </select>
-
-            {query.district && (
-              <button
-                type="button"
-                className="clear-btn"
-                onClick={() => clearField("district")}
-              >
-                ✕
-              </button>
-            )}
+            <FiChevronDown className="cf-chev" />
           </div>
         </div>
 
-        {/* ✅ KATEGORİ */}
-        <div className="filter-group">
+        <div className="cf-field">
           <label htmlFor="categoryId">Kategori</label>
-
-          <div className="select-wrapper">
+          <div className="cf-control">
+            <FiGrid className="cf-ico" />
             <select
               id="categoryId"
               name="categoryId"
               onChange={handleChange}
               value={query.categoryId}
             >
-              <option value="">Kategori Seçin</option>
-
+              <option value="">Tüm kategoriler</option>
               {mainCategories.map((main) => {
                 const subCategories = getSubCategories(main.id);
-
                 return (
                   <optgroup key={main.id} label={main.name}>
-                    {/* TÜMÜ */}
                     <option value={main.id}>Tümü ({main.name})</option>
-
-                    {/* ALT KATEGORİLER */}
                     {subCategories.map((sub) => (
                       <option key={sub.id} value={sub.id}>
                         {sub.name}
@@ -250,23 +271,12 @@ function Filter() {
                 );
               })}
             </select>
-
-            {query.categoryId && (
-              <button
-                type="button"
-                className="clear-btn"
-                onClick={() => clearField("categoryId")}
-              >
-                ✕
-              </button>
-            )}
+            <FiChevronDown className="cf-chev" />
           </div>
         </div>
 
-        {/* 🔘 BUTTON */}
-        <button type="submit" className="search-btn">
-          <img src="/search.png" alt="Ara" />
-          Filtrele
+        <button type="submit" className="cf-submit">
+          <FiSearch /> Sonuçları Göster
         </button>
       </form>
     </div>

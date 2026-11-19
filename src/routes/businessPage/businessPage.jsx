@@ -22,7 +22,6 @@ import {
   FiStar,
   FiArrowRight,
   FiHeart,
-  FiTag,
   FiCornerDownRight,
   FiCheckCircle,
 } from "react-icons/fi";
@@ -30,6 +29,7 @@ import Loader from "../../components/loader/Loader";
 import StarRating from "../../components/StarRating/StarRating";
 import ReportModal, { ReportLink } from "../../components/ReportModal/ReportModal";
 import BizAvatar from "../../components/BizAvatar/BizAvatar";
+import SafeImage from "../../components/SafeImage/SafeImage";
 import { VerifiedBadge, FeaturedBadge } from "../../components/BizBadges/BizBadges";
 import apiRequest from "../../lib/apiRequest";
 import { bizTheme } from "../../lib/bizTheme";
@@ -721,11 +721,7 @@ function BusinessPage() {
                 {campaigns.map((c) => (
                   <Link key={c.id} to={`/${c.id}`} className="campaignCard">
                     <span className="campaignImg">
-                      {c.images?.[0] ? (
-                        <img src={c.images[0]} alt={c.title} loading="lazy" />
-                      ) : (
-                        <FiTag />
-                      )}
+                      <SafeImage src={c.images?.[0]} alt={c.title} />
                       {c.postDetail?.discountAmount && (
                         <span className="campaignDiscount">{c.postDetail.discountAmount}</span>
                       )}

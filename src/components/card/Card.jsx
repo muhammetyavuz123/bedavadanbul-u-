@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import "./card.scss";
-import defaulImage from "../../assets/r.png";
+import SafeImage from "../SafeImage/SafeImage";
 
 function Card({ item }) {
   return (
     <div className="shop-card">
       <Link to={`/${item.id}`} className="imageContainer">
-        {item?.images?.[0] ? (
-          <img src={item.images[0]} alt={item?.title || ""} loading="lazy" />
-        ) : (
-          <img src={defaulImage} alt="" loading="lazy" />
-        )}
+        <SafeImage src={item?.images?.[0]} alt={item?.title || ""} />
 
         {item?.listingType && item.listingType !== "standard" && (
           <span className={`typeBadge ${item.listingType}`}>

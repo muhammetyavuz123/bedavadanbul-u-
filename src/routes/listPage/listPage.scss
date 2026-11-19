@@ -11,11 +11,12 @@
 .sidebarContent {
   width: 270px;
   flex-shrink: 0;
-  min-height: 300px;
+  box-sizing: border-box;
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  padding: 22px;
+  border: 1px solid #f0f1f4;
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(11, 26, 43, 0.06);
+  padding: 20px;
   margin-top: 25px;
   position: sticky;
   top: 20px;
@@ -119,5 +120,70 @@
     box-shadow: none;
     cursor: not-allowed;
     transform: none;
+  }
+}
+
+.content-list {
+  .viewTabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 30px;
+      padding: 9px 18px;
+      font-weight: 700;
+      color: #555;
+      cursor: pointer;
+
+      &.active {
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+        border-color: transparent;
+        color: #fff;
+      }
+    }
+  }
+
+  .loyaltyStrip {
+    margin-bottom: 22px;
+
+    .stripHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      h3 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.05rem;
+
+        svg {
+          color: #ff3c38;
+        }
+      }
+
+      button {
+        background: none;
+        border: none;
+        color: #ff3c38;
+        font-weight: 700;
+        cursor: pointer;
+      }
+    }
+
+    .stripRow {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
   }
 }

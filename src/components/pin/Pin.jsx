@@ -1,7 +1,7 @@
 import { Marker, Popup } from "react-leaflet";
 import "./pin.scss";
 import { Link } from "react-router-dom";
-import defaultImage from "../../assets/r.png";
+import SafeImage from "../SafeImage/SafeImage";
 
 function Pin({ item }) {
   return (
@@ -13,7 +13,7 @@ function Pin({ item }) {
               eski kod `item.images[0]` -> undefined src ile kırık bir
               görsel ikonu gösteriyordu. Card.jsx'teki ile aynı desende bir
               varsayılan görsele düşüyoruz. */}
-          <img src={item.images?.[0] || defaultImage} alt="" />
+          <SafeImage src={item.images?.[0]} alt="" />
           <div className="textContainer">
             <Link to={`/${item.id}`}>{item.title}</Link>
             <span>{item.type} </span>

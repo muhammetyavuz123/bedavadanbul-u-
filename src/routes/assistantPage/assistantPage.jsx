@@ -15,7 +15,7 @@ import {
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import BizAvatar from "../../components/BizAvatar/BizAvatar";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
-import defaultImage from "../../assets/r.png";
+import SafeImage from "../../components/SafeImage/SafeImage";
 import apiRequest from "../../lib/apiRequest";
 import { cityPath, districtPath } from "../../lib/slug";
 import { parseQuery } from "../../lib/assistant/nlu";
@@ -215,7 +215,7 @@ function CampaignResult({ item }) {
   const urgent = item.daysLeft !== null && item.daysLeft <= 3;
   return (
     <Link to={`/${item.id}`} className="asCamp">
-      <img src={item.images?.[0] || defaultImage} alt="" loading="lazy" />
+      <SafeImage src={item.images?.[0]} alt="" />
       <span className="asCampBody">
         <span className="asTag">
           <FiTag /> Kampanya

@@ -163,7 +163,7 @@ export default function LoyaltyPanel() {
         <div className="loyaltyStats">
           <div>
             <b>{stats.cards}</b>
-            <span>Kart sahibi müşteri</span>
+            <span>Katılan müşteri</span>
           </div>
           <div>
             <b>{stats.scansToday}</b>
