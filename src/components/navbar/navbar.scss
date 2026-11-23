@@ -225,7 +225,7 @@
   .mobileOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(20, 22, 34, 0.5);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
@@ -241,47 +241,194 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: min(320px, 85%);
+    width: min(340px, 88%);
+    /* 100vh mobil tarayıcıda adres çubuğunun arkasında kalır; dvh görünen alanı verir */
     height: 100vh;
+    height: 100dvh;
     background: #fff;
     z-index: 999;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
-    gap: 1.5rem;
+    gap: 18px;
+    padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    box-sizing: border-box;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
-    transition: right 0.3s ease;
+    /* Kapalıyken klavyeyle/ekran okuyucuyla erişilmesin */
+    visibility: hidden;
+    transition:
+      right 0.3s ease,
+      visibility 0s linear 0.3s;
 
     &.open {
       right: 0;
+      visibility: visible;
+      transition:
+        right 0.3s ease,
+        visibility 0s;
     }
 
-    .closeBtn {
-      align-self: flex-end;
-      background: #f4f5f7;
-      border: none;
-      border-radius: 10px;
-      width: 40px;
-      height: 40px;
-      font-size: 1.2rem;
-      color: #333;
-      cursor: pointer;
+    .drawerHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .drawerTitle {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #1c1f2e;
+      }
+
+      .closeBtn {
+        background: #f4f5f7;
+        border: none;
+        border-radius: 12px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.15rem;
+        color: #333;
+        cursor: pointer;
+      }
+    }
+
+    /* Üst blok: kullanıcı kartı + Yönetim Paneli / giriş düğmeleri.
+       Önceden en altta duruyordu ve mobil tarayıcıda tıklaması zordu. */
+    .mobileTop {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .drawerUser {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #fff5f4, #fff);
+        border: 1px solid #ffe3e1;
+
+        img {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid #ff3c38;
+          flex-shrink: 0;
+        }
+
+        .who {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+
+          strong {
+            font-size: 0.98rem;
+            color: #1c1f2e;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          span {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #ff3c38;
+          }
+        }
+      }
+
+      .panelCta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-height: 54px;
+        padding: 0 16px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+        color: #fff;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(255, 60, 56, 0.3);
+
+        .ctaLeft {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .notifBadge {
+          background: #fff;
+          color: #ff3c38;
+          font-size: 0.72rem;
+          font-weight: 800;
+          border-radius: 999px;
+          min-width: 22px;
+          height: 22px;
+          padding: 0 6px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+        }
+      }
+
+      .mobileAuth {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .loginCta,
+      .bizCta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 52px;
+        border-radius: 14px;
+        font-weight: 800;
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+
+      .loginCta {
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(255, 60, 56, 0.3);
+      }
+
+      .bizCta {
+        background: #fff;
+        color: #ff3c38;
+        border: 1.5px solid #ff3c38;
+      }
     }
 
     .mobileLinks {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
 
       .navLink {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 14px;
-        border-radius: 10px;
+        min-height: 48px;
+        padding: 0 14px;
+        border-radius: 12px;
         color: #333;
         font-weight: 600;
         text-decoration: none;
+        box-sizing: border-box;
+
+        &:active {
+          background: #fff1f0;
+        }
 
         &.active {
           background: linear-gradient(135deg, #ff3c38, #ff6a3d);
@@ -293,97 +440,23 @@
     .mobileUser {
       margin-top: auto;
       border-top: 1px solid #eee;
-      padding-top: 1.25rem;
-
-      .userChip,
-      .logoutBtnNav,
-      .loginCta {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .userChip {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
-        border-radius: 10px;
-        background: #f4f5f7;
-        text-decoration: none;
-        color: #222;
-        font-weight: 600;
-
-        img {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 2px solid #ff3c38;
-        }
-
-        .notifBadge {
-          background: #dc2626;
-          color: #fff;
-          font-size: 0.7rem;
-          font-weight: 700;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
+      padding-top: 14px;
 
       .logoutBtnNav {
+        width: 100%;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
+        min-height: 48px;
         border: none;
         background: #f4f5f7;
         color: #444;
-        padding: 10px;
-        border-radius: 10px;
-        font-weight: 600;
+        padding: 0 16px;
+        border-radius: 12px;
+        font: inherit;
+        font-weight: 700;
         cursor: pointer;
-
-        img {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-      }
-
-      .mobileAuth {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .bizCta {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-        color: #ff3c38;
-        border: 1.5px solid #ff3c38;
-        padding: 10.5px;
-        border-radius: 10px;
-        font-weight: 700;
-        text-decoration: none;
-      }
-
-      .loginCta {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
-        color: #fff;
-        padding: 12px;
-        border-radius: 10px;
-        font-weight: 700;
-        text-decoration: none;
       }
     }
   }

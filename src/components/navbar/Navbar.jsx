@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FiArrowRight, FiGrid, FiLogOut } from "react-icons/fi";
 import "./navbar.scss";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
@@ -31,6 +32,19 @@ function Navbar() {
       setOpen(false);
     }
   };
+
+  // Menü açıkken arkadaki sayfa kaymasın; Esc ile kapansın
+  useEffect(() => {
+    if (!open) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
   const isShopOrAdmin = currentUser && currentUser.role !== "user";
@@ -124,14 +138,78 @@ function Navbar() {
         className={open ? "mobileOverlay show" : "mobileOverlay"}
         onClick={() => setOpen(false)}
       />
-      <div className={open ? "mobileMenu open" : "mobileMenu"}>
-        <button
-          className="closeBtn"
-          aria-label="Menüyü kapat"
-          onClick={() => setOpen(false)}
-        >
-          ✕
-        </button>
+      <div
+        className={open ? "mobileMenu open" : "mobileMenu"}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menü"
+      >
+        <div className="drawerHead">
+          <span className="drawerTitle">Menü</span>
+          <button
+            type="button"
+            className="closeBtn"
+            aria-label="Menüyü kapat"
+            onClick={() => setOpen(false)}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* En üstte: kullanıcı + Yönetim Paneli (ya da giriş düğmeleri) */}
+        <div className="mobileTop">
+          {currentUser ? (
+            <>
+              <div className="drawerUser">
+                <img src={currentUser?.avatar || defaultAvatar} alt="" />
+                <div className="who">
+                  <strong>{currentUser?.username}</strong>
+                  <span>
+                    {currentUser.role === "admin"
+                      ? "Yönetici"
+                      : currentUser.role === "business"
+                        ? "Esnaf"
+                        : "Üye"}
+                  </span>
+                </div>
+              </div>
+              {isShopOrAdmin && (
+                <Link
+                  to="/profile"
+                  className="panelCta"
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="ctaLeft">
+                    <FiGrid /> Yönetim Paneli
+                    {number > 0 && (
+                      <span className="notifBadge">
+                        {number > 9 ? "9+" : number}
+                      </span>
+                    )}
+                  </span>
+                  <FiArrowRight />
+                </Link>
+              )}
+            </>
+          ) : (
+            <div className="mobileAuth">
+              <Link
+                to="/login"
+                className="loginCta"
+                onClick={() => setOpen(false)}
+              >
+                Giriş Yap
+              </Link>
+              <Link
+                to="/register?type=business"
+                className="bizCta"
+                onClick={() => setOpen(false)}
+              >
+                İşletmeni Ekle
+              </Link>
+            </div>
+          )}
+        </div>
 
         <div className="mobileLinks">
           {navLinks.map(({ to, label, end }) => (
@@ -149,47 +227,13 @@ function Navbar() {
           ))}
         </div>
 
-        <div className="mobileUser">
-          {currentUser ? (
-            isShopOrAdmin ? (
-              <Link
-                to="/profile"
-                className="userChip"
-                onClick={() => setOpen(false)}
-              >
-                <img src={currentUser?.avatar || defaultAvatar} alt="" />
-                <span className="userName">{currentUser?.username}</span>
-                {number > 0 && (
-                  <span className="notifBadge">
-                    {number > 9 ? "9+" : number}
-                  </span>
-                )}
-              </Link>
-            ) : (
-              <button className="logoutBtnNav" onClick={handleLogout}>
-                <img src={currentUser?.avatar || defaultAvatar} alt="" />
-                <span>Çıkış Yap</span>
-              </button>
-            )
-          ) : (
-            <div className="mobileAuth">
-              <Link
-                to="/register?type=business"
-                className="bizCta"
-                onClick={() => setOpen(false)}
-              >
-                İşletmeni Ekle
-              </Link>
-              <Link
-                to="/login"
-                className="loginCta"
-                onClick={() => setOpen(false)}
-              >
-                Giriş Yap
-              </Link>
-            </div>
-          )}
-        </div>
+        {currentUser && (
+          <div className="mobileUser">
+            <button type="button" className="logoutBtnNav" onClick={handleLogout}>
+              <FiLogOut /> Çıkış Yap
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );
