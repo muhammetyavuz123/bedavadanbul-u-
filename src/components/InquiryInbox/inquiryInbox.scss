@@ -336,6 +336,25 @@ $brand: #ff3c38;
       display: none;
     }
 
+    /* Mobilde iç içe kaydırma olmasın: sayfa kendi kaydırmasını kullansın */
+    .inboxList {
+      max-height: none;
+      overflow: visible;
+    }
+
+    .inboxThread {
+      max-height: none;
+      min-height: 0;
+    }
+
+    .messages {
+      max-height: 58vh;
+    }
+
+    .inboxItem {
+      padding: 14px;
+    }
+
     .threadHead .backBtn {
       display: grid;
     }

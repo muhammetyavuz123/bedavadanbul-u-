@@ -85,6 +85,11 @@ $brand: #ff3c38;
     flex-direction: column;
     gap: 18px;
 
+    @media (max-width: 560px) {
+      padding: 16px;
+      border-radius: 18px;
+    }
+
     .typePick {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -154,15 +159,17 @@ $brand: #ff3c38;
       input {
         width: 100%;
         box-sizing: border-box;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 11px 12px;
+        min-height: 46px;
+        border: 1.5px solid #e1e4ee;
+        border-radius: 12px;
+        padding: 11px 14px;
         font: inherit;
-        font-weight: 400;
+        font-weight: 500;
 
         &:focus {
           outline: none;
           border-color: $brand;
+          box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
         }
       }
     }
@@ -179,8 +186,9 @@ $brand: #ff3c38;
         margin-bottom: 8px;
 
         input {
-          border: 1px solid #ddd;
-          border-radius: 10px;
+          min-height: 46px;
+          border: 1.5px solid #e1e4ee;
+          border-radius: 12px;
           padding: 10px 12px;
           font: inherit;
           min-width: 0;
@@ -188,6 +196,7 @@ $brand: #ff3c38;
           &:focus {
             outline: none;
             border-color: $brand;
+            box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
           }
         }
 
@@ -250,17 +259,24 @@ $brand: #ff3c38;
 
     .saveBtn {
       align-self: flex-start;
+      min-height: 52px;
       background: linear-gradient(135deg, #ff3c38, #ff6a3d);
       color: #fff;
       border: none;
-      border-radius: 12px;
-      padding: 13px 28px;
+      border-radius: 14px;
+      padding: 13px 32px;
       font-weight: 800;
       font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 10px 24px rgba(255, 60, 56, 0.28);
+
+      @media (max-width: 560px) {
+        align-self: stretch;
+      }
 
       &:disabled {
         background: #ccc;
+        box-shadow: none;
         cursor: not-allowed;
       }
     }

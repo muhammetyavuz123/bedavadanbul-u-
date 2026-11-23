@@ -10,6 +10,7 @@ import Carusel from "./carusel";
 import Banner from "../../components/Banner/banner";
 import AppBanner from "../../components/AppBanner/AppBanner";
 import BusinessShowcase from "../../components/BusinessShowcase/BusinessShowcase";
+import LoyaltyStrip from "../../components/LoyaltyStrip/LoyaltyStrip";
 import { Await, Link, useLoaderData } from "react-router-dom";
 import Card from "../../components/card/Card";
 import Loader from "../../components/loader/Loader";
@@ -362,6 +363,7 @@ function HomePage() {
       </div>
 
       <BusinessShowcase />
+      <LoyaltyStrip />
       {/* <div style={{ padding: 20 }}>
         <CategoryCard />
       </div> */}

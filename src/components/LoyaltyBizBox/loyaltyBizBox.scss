@@ -1,0 +1,120 @@
+$brand: #ff3c38;
+
+.loyaltyBox {
+  background: linear-gradient(135deg, #fff6f4, #fff) !important;
+  border: 1px solid #ffd2cf;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .lbTop {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lbIcon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    color: #fff;
+    background: linear-gradient(135deg, $brand, #ff6a3d);
+  }
+
+  .lbText {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    small {
+      color: $brand;
+      font-weight: 800;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    strong {
+      font-size: 1.1rem;
+      color: #1c1f2e;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .lbRewards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    li {
+      background: #fff;
+      border: 1px solid #ffe0dd;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      color: #444;
+
+      b {
+        color: $brand;
+      }
+    }
+  }
+
+  .lbJoin {
+    align-self: flex-start;
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.98rem;
+    padding: 11px 26px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, $brand, #ff6a3d);
+    box-shadow: 0 6px 16px rgba(255, 60, 56, 0.25);
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+  }
+
+  .lbJoined {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #1a9d5c;
+      font-weight: 800;
+    }
+
+    small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #6f7486;
+    }
+  }
+
+  .lbNote {
+    margin: 0;
+    color: #6f7486;
+    font-size: 0.88rem;
+  }
+
+  .lbErr {
+    margin: 0;
+    color: #c0392b;
+    font-size: 0.88rem;
+  }
+}

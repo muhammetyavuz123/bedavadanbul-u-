@@ -1,83 +1,63 @@
-import Chat from "../../components/chat/Chat";
-import List from "../../components/list/List";
 import { useContext, useEffect, useState } from "react";
-
-import { Await, Link, useLoaderData } from "react-router-dom";
-import { Suspense } from "react";
+import { FiPlusCircle } from "react-icons/fi";
+import List from "../../components/list/List";
 import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 
-function ProfilList() {
-  const data = useLoaderData();
+// onAdd: panelde "Kampanya Ekle" sekmesine geçmek için (Tab bileşeni verir)
+function ProfilList({ onAdd }) {
   const { currentUser } = useContext(AuthContext);
-  const [confirmData, setConfirmData] = useState([]);
+  const isAdmin = currentUser?.role === "admin";
+  const [confirmData, setConfirmData] = useState(null); // null: yükleniyor
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
     const confirmPostGet = async () => {
       try {
         const res = await apiRequest.get(
-          currentUser?.role === "admin"
+          isAdmin
             ? `/posts?page=1&limit=100`
             : `/posts?userId=${currentUser?.id}`,
         );
 
-        setConfirmData(res.data);
+        if (!cancelled) setConfirmData(res.data);
       } catch (err) {
         console.log(err);
+        if (!cancelled) {
+          setError("Kampanyalar yüklenemedi. Lütfen sayfayı yenileyin.");
+          setConfirmData({ data: [] });
+        }
       }
     };
 
     confirmPostGet();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  return (
-    <>
-      <div className="profilePage">
-        <div className="details">
-          <div className="wrapper">
-            <div className="title">
-              <h1>Kampanyalarım</h1>
-            </div>
-            {currentUser?.role === "admin" ? (
-              <>
-                {" "}
-                <Suspense fallback={<p>Yükleniyor...</p>}>
-                  <Await
-                    resolve={confirmData}
-                    errorElement={<p>Error loading posts!</p>}
-                  >
-                    {(confirmData) => <List posts={confirmData} />}
-                  </Await>
-                </Suspense>
-              </>
-            ) : (
-              <Suspense fallback={<p>Yükleniyor...</p>}>
-                <Await
-                  resolve={confirmData}
-                  errorElement={<p>Error loading posts!</p>}
-                >
-                  {(confirmData) => <List posts={confirmData} />}
-                </Await>
-              </Suspense>
-            )}
+  const count = confirmData?.data?.length;
 
-            {/* <div className="title">
-              <h1>Saved List</h1>
-            </div> */}
-            {/* <Suspense fallback={<p>Loading...</p>}>
-              <Await
-                resolve={data.postResponse}
-                errorElement={<p>Error loading posts!</p>}
-              >
-                {(postResponse) => (
-                  <List posts={postResponse.data.savedPosts} />
-                )}
-              </Await>
-            </Suspense> */}
-          </div>
-        </div>
+  return (
+    <div className="myCampaigns">
+      <div className="mcHead">
+        <p>
+          {confirmData === null
+            ? "Yükleniyor..."
+            : `${count || 0} kampanya`}
+        </p>
+        {!isAdmin && onAdd && (
+          <button type="button" className="mcAdd" onClick={onAdd}>
+            <FiPlusCircle /> Kampanya ekle
+          </button>
+        )}
       </div>
-    </>
+
+      {error && <p className="mcError">{error}</p>}
+
+      {confirmData !== null && <List posts={confirmData} />}
+    </div>
   );
 }
 

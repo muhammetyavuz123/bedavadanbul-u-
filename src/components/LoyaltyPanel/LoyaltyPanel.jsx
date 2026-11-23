@@ -207,9 +207,10 @@ export default function LoyaltyPanel() {
               <input type="number" min="2" max="50" value={form.goal} onChange={set("goal")} required />
             </label>
             <label>
-              Hediye
+              Hediye nedir? (yazıyla yazın)
               <input
                 type="text"
+                minLength={2}
                 maxLength={80}
                 placeholder="Örn. 1 kahve hediye"
                 value={form.rewardText}

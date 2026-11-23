@@ -30,6 +30,7 @@ import StarRating from "../../components/StarRating/StarRating";
 import ReportModal, { ReportLink } from "../../components/ReportModal/ReportModal";
 import BizAvatar from "../../components/BizAvatar/BizAvatar";
 import SafeImage from "../../components/SafeImage/SafeImage";
+import LoyaltyBizBox from "../../components/LoyaltyBizBox/LoyaltyBizBox";
 import { VerifiedBadge, FeaturedBadge } from "../../components/BizBadges/BizBadges";
 import apiRequest from "../../lib/apiRequest";
 import { bizTheme } from "../../lib/bizTheme";
@@ -713,6 +714,8 @@ function BusinessPage() {
               </p>
             )}
           </section>
+
+          <LoyaltyBizBox businessId={business.id} isOwner={isOwner} />
 
           {campaigns.length > 0 && (
             <section className="bizCard" id="campaigns">

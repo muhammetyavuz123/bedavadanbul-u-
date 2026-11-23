@@ -1,19 +1,19 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .adminTabs {
   display: flex;
   gap: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   flex-wrap: wrap;
 
   .tabBtn {
     padding: 10px 18px;
     border: none;
-    border-radius: 10px;
+    border-radius: 999px;
     cursor: pointer;
     background: #eee;
     color: #333;
@@ -50,12 +50,15 @@
 }
 
 .listItem {
-  margin-bottom: 25px;
-  border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 25px;
+  background: #fff;
+  border: 1px solid #eceef5;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(28, 31, 46, 0.04), 0 8px 24px rgba(28, 31, 46, 0.05);
 
-  &:last-child {
-    border-bottom: none;
+  @media (max-width: 560px) {
+    padding: 12px;
+    border-radius: 18px;
   }
 }
 
@@ -101,7 +104,17 @@
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f2f7;
+
+  @media (max-width: 560px) {
+    .actionBtn {
+      flex: 1;
+      justify-content: center;
+      min-height: 44px;
+    }
+  }
 
   .actionBtn {
     display: inline-flex;
@@ -109,7 +122,7 @@
     gap: 6px;
     border: none;
     padding: 9px 16px;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: 700;
     font-size: 0.86rem;
@@ -163,5 +176,56 @@
 
   &:hover {
     background-color: #ff3c38;
+  }
+}
+
+/* Panel: Kampanyalarım üst çubuğu */
+.myCampaigns {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .mcHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    p {
+      margin: 0;
+      font-weight: 700;
+      color: #5d6272;
+    }
+
+    .mcAdd {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff3c38, #ff6a3d);
+      box-shadow: 0 8px 20px rgba(255, 60, 56, 0.28);
+      cursor: pointer;
+    }
+  }
+
+  .mcError {
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #fde4e4;
+    color: #c62828;
+    font-weight: 600;
+  }
+
+  .emptyState {
+    background: #fff;
+    border: 1px dashed #d9dce8;
+    border-radius: 20px;
+    padding: 48px 16px;
   }
 }

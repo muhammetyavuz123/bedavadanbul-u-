@@ -333,335 +333,404 @@ function NewPostPage() {
     }
   }, [latitude, longitude]);
 
+  const mapHeight = "min(320px, 55vh)";
+
   return (
     <div className="newPostPage">
       <div className="formContainer">
-        <h1 className="mainTitle">Yeni Kampanya Ekle</h1>
         <div className="wrapper">
-          <form onSubmit={handleSubmit}>
-            <div className="item">
-              <label htmlFor="businessName">İşletme Adı</label>
-              <input
-                id="businessName"
-                name="businessName"
-                type="text"
-                value={businessName}
-                onChange={(e) => setBusinessName(e.target.value)}
-              />
-              {error.businessName && (
-                <span className="error">{error.businessName}</span>
-              )}
-            </div>
-            <div className="item">
-              <label htmlFor="title">Kampanya Başlığı</label>
-              <input id="title" name="title" type="text" />
-              {error.title && <span className="error">{error.title}</span>}
-            </div>
-            <div className="item">
-              <label htmlFor="city">İl</label>
-              <select
-                id="city"
-                name="city"
-                value={citie}
-                onChange={(e) => {
-                  setCitie(e.target.value);
-                  setDistrict("");
-                }}
-              >
-                <option value="">İl Seçiniz</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city.il_adi}>
-                    {city.il_adi}
-                  </option>
-                ))}
-              </select>
-              {error.city && <span className="error">{error.city}</span>}
-            </div>
-            <div className="item">
-              <label htmlFor="district">İlçe</label>
-              <select
-                id="district"
-                name="district"
-                value={district}
-                onChange={(e) => setDistrict(e.target.value)}
-              >
-                <option value="">İlçe Seçiniz</option>
-                {districhs.map((districh, index) => (
-                  <option key={index} value={districh.ilce_adi}>
-                    {districh.ilce_adi}
-                  </option>
-                ))}
-              </select>
-              {error.district && (
-                <span className="error">{error.district}</span>
-              )}
-            </div>
-            <div className="item">
-              <label htmlFor="address">Adres</label>
-              <input id="address" name="address" type="text" />
-              {error.address && <span className="error">{error.address}</span>}
-            </div>
-            {/* 🔹 Latitude & Longitude */}
-            <div className="item locationFields">
-              {error.longitude && (
-                <span className="error">
-                  {error.longitude}
-                  {error.latitude}
-                </span>
-              )}
+          <form onSubmit={handleSubmit} noValidate>
+            {/* 1 — Kampanya bilgileri */}
+            <section className="formSection">
+              <header className="sectionHead">
+                <span className="num">1</span>
+                <div>
+                  <h3>Kampanya bilgileri</h3>
+                  <p>Müşterinin ilk gördüğü bilgiler: kısa ve net yazın</p>
+                </div>
+              </header>
 
-              <div className="item mapItem">
-                <label>Konum Seçimi</label>
+              <div className="item">
+                <label htmlFor="title">Kampanya başlığı</label>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Örn: Kol saatlerinde %30 indirim"
+                />
+                {error.title && <span className="error">{error.title}</span>}
+              </div>
 
-                {/* TOGGLE */}
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+              <div className="grid2">
+                <div className="item">
+                  <label htmlFor="price">Fiyat (₺)</label>
+                  <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    inputMode="numeric"
+                    min="0"
+                    placeholder="Örn: 1000"
+                  />
+                  {error.price && <span className="error">{error.price}</span>}
+                </div>
+                <div className="item">
+                  <label htmlFor="discountAmount">İndirim miktarı</label>
+                  <input
+                    id="discountAmount"
+                    name="discountAmount"
+                    type="text"
+                    placeholder="Örn: %30 veya 2 al 1 öde"
+                  />
+                  {error.discountAmount && (
+                    <span className="error">{error.discountAmount}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="item">
+                <label htmlFor="type">Kampanya türü</label>
+                <select
+                  id="type"
+                  name="categoryId"
+                  value={categoryId}
+                  onChange={(e) => setCategoryId(e.target.value)}
+                >
+                  <option value="">Kategori seç</option>
+
+                  {categories
+                    .filter((c) => !c.parentId)
+                    .map((parent) => (
+                      <optgroup key={parent.id} label={parent.name}>
+                        <option value={parent.id}>Tümü ({parent.name})</option>
+
+                        {categories
+                          .filter((c) => c.parentId === parent.id)
+                          .map((child) => (
+                            <option key={child.id} value={child.id}>
+                              {child.name}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
+                </select>
+                {error.categoryId && (
+                  <span className="error">{error.categoryId}</span>
+                )}
+              </div>
+
+              <div className="item description">
+                <label htmlFor="desc">Açıklama</label>
+                <ReactQuill
+                  theme="snow"
+                  onChange={setValue}
+                  value={value}
+                  placeholder="Kampanyanızı, geçerlilik koşullarını ve avantajlarınızı anlatın"
+                />
+                {error.desc && <span className="error">{error.desc}</span>}
+              </div>
+            </section>
+
+            {/* 2 — İlan tipi ve süre */}
+            <section className="formSection">
+              <header className="sectionHead">
+                <span className="num">2</span>
+                <div>
+                  <h3>İlan tipi ve yayın süresi</h3>
+                  <p>Standart ilan her zaman ücretsiz yayınlanır</p>
+                </div>
+              </header>
+
+              <div className="item listingTypePicker">
+                <label>İlan tipi</label>
+
+                <div className="typeCards">
                   <button
                     type="button"
-                    onClick={() => setLocationMode("map")}
-                    style={{
-                      marginRight: "10px",
-                      padding: "6px 12px",
-                      background: locationMode === "map" ? "#007bff" : "#ddd",
-                      color: locationMode === "map" ? "#fff" : "#000",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
+                    className={`typeCard${listingType === "standard" ? " selected" : ""}`}
+                    onClick={() => setListingType("standard")}
                   >
-                    Haritadan Seç
+                    <span className="badge free">Ücretsiz</span>
+                    <h4>Standart İlan</h4>
+                    <p>Kategori listesinde normal sırada yayınlanır.</p>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => setLocationMode("manual")}
-                    style={{
-                      padding: "6px 12px",
-                      background:
-                        locationMode === "manual" ? "#007bff" : "#ddd",
-                      color: locationMode === "manual" ? "#fff" : "#000",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
+                    className={`typeCard${listingType === "featured" ? " selected" : ""}`}
+                    onClick={() => setListingType("featured")}
                   >
-                    Manuel Gir
+                    <span className="badge paid">Vitrin</span>
+                    <h4>Vitrin İlan</h4>
+                    <p>Kategori sayfasında öne çıkarılır, daha çok görüntülenir.</p>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`typeCard${listingType === "doping" ? " selected" : ""}`}
+                    onClick={() => setListingType("doping")}
+                  >
+                    <span className="badge paid">Doping</span>
+                    <h4>Doping İlan</h4>
+                    <p>En üstte, en yüksek görünürlükle yayınlanır.</p>
                   </button>
                 </div>
 
-                {/* MAP MODE */}
-                {locationMode === "map" && (
-                  <div
-                    style={{
-                      height: "320px",
-                      width: "100%",
-                      marginTop: "10px",
+                {error.listingType && (
+                  <span className="error">{error.listingType}</span>
+                )}
+              </div>
+
+              <div className="item durationPicker">
+                <label>Reklam yayın süresi</label>
+                <input type="hidden" name="adDuration" value={adDuration} />
+
+                <div className="durationChips">
+                  {[1, 3, 6, 12].map((months) => {
+                    const price = getListingPrice(listingType, months);
+                    return (
+                      <button
+                        type="button"
+                        key={months}
+                        className={`durationChip${adDuration === String(months) ? " selected" : ""}`}
+                        onClick={() => setAdDuration(String(months))}
+                      >
+                        <span className="months">
+                          {months === 12 ? "1 Yıl" : `${months} Ay`}
+                        </span>
+                        <span className="price">
+                          {price > 0
+                            ? `${price.toLocaleString("tr-TR")} ₺`
+                            : "Ücretsiz"}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {error.adDuration && (
+                  <span className="error">{error.adDuration}</span>
+                )}
+
+                {adDuration && (
+                  <div className="priceSummary">
+                    <span>Toplam Tutar</span>
+                    <strong>
+                      {currentPrice > 0
+                        ? `${currentPrice.toLocaleString("tr-TR")} ₺`
+                        : "Ücretsiz"}
+                    </strong>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {/* 3 — Konum */}
+            <section className="formSection">
+              <header className="sectionHead">
+                <span className="num">3</span>
+                <div>
+                  <h3>Konum</h3>
+                  <p>Müşteriler sizi haritada bulabilsin</p>
+                </div>
+              </header>
+
+              <div className="grid2">
+                <div className="item">
+                  <label htmlFor="city">İl</label>
+                  <select
+                    id="city"
+                    name="city"
+                    value={citie}
+                    onChange={(e) => {
+                      setCitie(e.target.value);
+                      setDistrict("");
                     }}
                   >
-                    <MapContainer
-                      center={mapCenter}
-                      zoom={15}
-                      style={{ height: "100%", width: "100%" }}
-                      whenCreated={(mapInstance) => {
-                        mapRef.current = mapInstance;
-                      }}
-                    >
-                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-                      <LocationPicker
-                        setLatitude={setLatitude}
-                        setLongitude={setLongitude}
-                        setMapPosition={setMapPosition}
-                      />
-
-                      {mapPosition && <Marker position={mapPosition} />}
-                    </MapContainer>
-                  </div>
-                )}
-
-                {/* MANUAL MODE */}
-                {locationMode === "manual" && (
-                  <div
-                    style={{ marginTop: "10px", display: "flex", gap: "10px" }}
+                    <option value="">İl Seçiniz</option>
+                    {cities.map((city, index) => (
+                      <option key={index} value={city.il_adi}>
+                        {city.il_adi}
+                      </option>
+                    ))}
+                  </select>
+                  {error.city && <span className="error">{error.city}</span>}
+                </div>
+                <div className="item">
+                  <label htmlFor="district">İlçe</label>
+                  <select
+                    id="district"
+                    name="district"
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)}
                   >
-                    <input
-                      type="number"
-                      placeholder="Latitude"
-                      value={latitude || ""}
-                      onChange={(e) => {
-                        const lat = String(e.target.value);
-                        setLatitude(lat);
-                        if (longitude) setMapPosition([lat, longitude]);
-                      }}
-                      style={{ flex: 1, padding: "8px" }}
-                    />
+                    <option value="">İlçe Seçiniz</option>
+                    {districhs.map((districh, index) => (
+                      <option key={index} value={districh.ilce_adi}>
+                        {districh.ilce_adi}
+                      </option>
+                    ))}
+                  </select>
+                  {error.district && (
+                    <span className="error">{error.district}</span>
+                  )}
+                </div>
+              </div>
 
-                    <input
-                      type="number"
-                      placeholder="Longitude"
-                      value={longitude || ""}
-                      onChange={(e) => {
-                        const lng = String(e.target.value);
-                        setLongitude(lng);
-                        if (latitude) setMapPosition([latitude, lng]);
-                      }}
-                      style={{ flex: 1, padding: "8px" }}
-                    />
-                  </div>
-                )}
+              <div className="item">
+                <label htmlFor="address">Adres</label>
+                <input
+                  id="address"
+                  name="address"
+                  type="text"
+                  placeholder="Mahalle, cadde, no"
+                />
+                {error.address && <span className="error">{error.address}</span>}
+              </div>
 
-                {/* STATUS */}
-                {latitude && longitude ? (
-                  <span style={{ color: "green", fontSize: "13px" }}>
-                    📍 Konum seçildi
+              {/* 🔹 Latitude & Longitude */}
+              <div className="item locationFields">
+                {error.longitude && (
+                  <span className="error">
+                    {error.longitude}
+                    {error.latitude}
                   </span>
-                ) : (
-                  <span className="error">Konum seçiniz</span>
                 )}
-              </div>
-            </div>
-            <div className="item">
-              <label htmlFor="price">Fiyat</label>
-              <input id="price" name="price" type="number" />
-              {error.price && <span className="error">{error.price}</span>}
-            </div>
-            <div className="item listingTypePicker">
-              <label>İlan Tipi</label>
 
-              <div className="typeCards">
-                <button
-                  type="button"
-                  className={`typeCard${listingType === "standard" ? " selected" : ""}`}
-                  onClick={() => setListingType("standard")}
-                >
-                  <span className="badge free">Ücretsiz</span>
-                  <h4>Standart İlan</h4>
-                  <p>Kategori listesinde normal sırada yayınlanır.</p>
-                </button>
+                <div className="item mapItem">
+                  <label>Konum seçimi</label>
 
-                <button
-                  type="button"
-                  className={`typeCard${listingType === "featured" ? " selected" : ""}`}
-                  onClick={() => setListingType("featured")}
-                >
-                  <span className="badge paid">Vitrin</span>
-                  <h4>Vitrin İlan</h4>
-                  <p>Kategori sayfasında öne çıkarılır, daha çok görüntülenir.</p>
-                </button>
-
-                <button
-                  type="button"
-                  className={`typeCard${listingType === "doping" ? " selected" : ""}`}
-                  onClick={() => setListingType("doping")}
-                >
-                  <span className="badge paid">Doping</span>
-                  <h4>Doping İlan</h4>
-                  <p>En üstte, en yüksek görünürlükle yayınlanır.</p>
-                </button>
-              </div>
-
-              {error.listingType && (
-                <span className="error">{error.listingType}</span>
-              )}
-            </div>
-            <div className="item">
-              <label htmlFor="type">Kampanya Türü</label>
-              <select
-                id="type"
-                name="categoryId"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                <option value="">Kategori seç</option>
-
-                {categories
-                  .filter((c) => !c.parentId)
-                  .map((parent) => (
-                    <optgroup key={parent.id} label={parent.name}>
-                      <option value={parent.id}>Tümü ({parent.name})</option>
-
-                      {categories
-                        .filter((c) => c.parentId === parent.id)
-                        .map((child) => (
-                          <option key={child.id} value={child.id}>
-                            {child.name}
-                          </option>
-                        ))}
-                    </optgroup>
-                  ))}
-              </select>
-              {error.categoryId && (
-                <span className="error">{error.categoryId}</span>
-              )}{" "}
-            </div>
-            <div className="item durationPicker">
-              <label>Reklam Yayın Süresi</label>
-              <input type="hidden" name="adDuration" value={adDuration} />
-
-              <div className="durationChips">
-                {[1, 3, 6, 12].map((months) => {
-                  const price = getListingPrice(listingType, months);
-                  return (
+                  <div className="segMini" role="tablist">
                     <button
                       type="button"
-                      key={months}
-                      className={`durationChip${adDuration === String(months) ? " selected" : ""}`}
-                      onClick={() => setAdDuration(String(months))}
+                      className={locationMode === "map" ? "active" : ""}
+                      onClick={() => setLocationMode("map")}
                     >
-                      <span className="months">
-                        {months === 12 ? "1 Yıl" : `${months} Ay`}
-                      </span>
-                      <span className="price">
-                        {price > 0
-                          ? `${price.toLocaleString("tr-TR")} ₺`
-                          : "Ücretsiz"}
-                      </span>
+                      Haritadan seç
                     </button>
-                  );
-                })}
-              </div>
+                    <button
+                      type="button"
+                      className={locationMode === "manual" ? "active" : ""}
+                      onClick={() => setLocationMode("manual")}
+                    >
+                      Manuel gir
+                    </button>
+                  </div>
 
-              {error.adDuration && (
-                <span className="error">{error.adDuration}</span>
-              )}
+                  {/* MAP MODE */}
+                  {locationMode === "map" && (
+                    <div className="mapBox" style={{ height: mapHeight }}>
+                      <MapContainer
+                        center={mapCenter}
+                        zoom={15}
+                        style={{ height: "100%", width: "100%" }}
+                        whenCreated={(mapInstance) => {
+                          mapRef.current = mapInstance;
+                        }}
+                      >
+                        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-              {adDuration && (
-                <div className="priceSummary">
-                  <span>Toplam Tutar</span>
-                  <strong>
-                    {currentPrice > 0
-                      ? `${currentPrice.toLocaleString("tr-TR")} ₺`
-                      : "Ücretsiz"}
-                  </strong>
+                        <LocationPicker
+                          setLatitude={setLatitude}
+                          setLongitude={setLongitude}
+                          setMapPosition={setMapPosition}
+                        />
+
+                        {mapPosition && <Marker position={mapPosition} />}
+                      </MapContainer>
+                    </div>
+                  )}
+
+                  {/* MANUAL MODE */}
+                  {locationMode === "manual" && (
+                    <div className="grid2 manualCoords">
+                      <input
+                        type="number"
+                        placeholder="Enlem (latitude)"
+                        value={latitude || ""}
+                        onChange={(e) => {
+                          const lat = String(e.target.value);
+                          setLatitude(lat);
+                          if (longitude) setMapPosition([lat, longitude]);
+                        }}
+                      />
+
+                      <input
+                        type="number"
+                        placeholder="Boylam (longitude)"
+                        value={longitude || ""}
+                        onChange={(e) => {
+                          const lng = String(e.target.value);
+                          setLongitude(lng);
+                          if (latitude) setMapPosition([latitude, lng]);
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* STATUS */}
+                  {latitude && longitude ? (
+                    <span className="locOk">Konum seçildi</span>
+                  ) : (
+                    <span className="error">Konum seçiniz</span>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className="item">
-              <label htmlFor="discountAmount">İndirim Miktarı</label>
-              <input id="discountAmount" name="discountAmount" type="text" />
-              {error.discountAmount && (
-                <span className="error">{error.discountAmount}</span>
-              )}
-            </div>
-            {/* 🔹 currentUser.phone otomatik dolu */}
-            <div className="item">
-              <label htmlFor="phoneNumber">Telefon Numarası</label>
-              <input
-                id="phoneNumber"
-                name="phoneNumber"
-                type="text"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-              {error.phoneNumber && (
-                <span className="error">{error.phoneNumber}</span>
-              )}
-            </div>
-            <div className="item description">
-              <label htmlFor="desc">Açıklama</label>
-              <ReactQuill theme="snow" onChange={setValue} value={value} />
-              {error.desc && <span className="error">{error.desc}</span>}
-            </div>
-            <div className="uploadMobileWrapper">
+              </div>
+            </section>
+
+            {/* 4 — İletişim */}
+            <section className="formSection">
+              <header className="sectionHead">
+                <span className="num">4</span>
+                <div>
+                  <h3>İşletme ve iletişim</h3>
+                  <p>Müşteriler sizi bu numaradan arayacak</p>
+                </div>
+              </header>
+
+              <div className="grid2">
+                <div className="item">
+                  <label htmlFor="businessName">İşletme adı</label>
+                  <input
+                    id="businessName"
+                    name="businessName"
+                    type="text"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                  />
+                  {error.businessName && (
+                    <span className="error">{error.businessName}</span>
+                  )}
+                </div>
+                {/* 🔹 currentUser.phone otomatik dolu */}
+                <div className="item">
+                  <label htmlFor="phoneNumber">Telefon numarası</label>
+                  <input
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    type="text"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                  {error.phoneNumber && (
+                    <span className="error">{error.phoneNumber}</span>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            {/* 5 — Fotoğraflar */}
+            <section className="formSection photoSection">
+              <header className="sectionHead">
+                <span className="num">5</span>
+                <div>
+                  <h3>Fotoğraflar</h3>
+                  <p>Fotoğraflı kampanyalar çok daha fazla ilgi görür</p>
+                </div>
+              </header>
+
               <UploadWidget
                 uwConfig={{
                   multiple: true,
@@ -671,43 +740,29 @@ function NewPostPage() {
                 }}
                 setState={setImages}
               />
-              <div className="imageGrid">
-                {images.map((image, index) => (
-                  <div className="imageItem" key={index}>
-                    <img src={image.url || image} alt={`upload-${index}`} />
-                  </div>
-                ))}
-              </div>
+              {images.length > 0 && (
+                <div className="imageGrid">
+                  {images.map((image, index) => (
+                    <div className="imageItem" key={index}>
+                      <img src={image.url || image} alt={`upload-${index}`} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {/* Gönder çubuğu: mobilde ekranın altında yapışık kalır */}
+            <div className="submitBar">
+              {error.submit && <span className="error">{error.submit}</span>}
+              <button className="sendButton" disabled={pending}>
+                {pending
+                  ? "Yükleniyor..."
+                  : currentPrice > 0
+                    ? `Ödemeye Geç · ${currentPrice.toLocaleString("tr-TR")} ₺`
+                    : "İlanı Ücretsiz Yayınla"}
+              </button>
             </div>
-            <button className="sendButton" disabled={pending}>
-              {pending
-                ? "Yükleniyor..."
-                : currentPrice > 0
-                  ? `Ödemeye Geç · ${currentPrice.toLocaleString("tr-TR")} ₺`
-                  : "İlanı Ücretsiz Yayınla"}
-            </button>{" "}
-            {error.submit && <span className="error">{error.submit}</span>}
           </form>
-        </div>
-      </div>
-
-      <div className="sideContainer">
-        <UploadWidget
-          uwConfig={{
-            multiple: true,
-            cloudName: "difmqapnr",
-            uploadPreset: "bedavadanbul",
-            folder: "posts",
-          }}
-          setState={setImages}
-        />
-
-        <div className="imageGrid">
-          {images.map((image, index) => (
-            <div className="imageItem" key={index}>
-              <img src={image.url || image} alt={`upload-${index}`} />
-            </div>
-          ))}
         </div>
       </div>
 

@@ -1,137 +1,468 @@
-.page-container-panel {
-  display: flex;
-  min-height: 100vh;
-  background: #f4f5f7;
-  margin-top: 25px;
-  @media (max-width: 992px) {
-    flex-direction: column;
-  }
+/* ==========================================================================
+   Esnaf / yönetici paneli kabuğu
+   - Masaüstü: solda yapışkan, gruplu menü + sağda içerik
+   - Mobil:    üstte yapışkan, yatay kaydırılan "hap" menü; sekme değişince
+               içerik otomatik görünür alana kaydırılır
+   ========================================================================== */
 
-  /* === SIDEBAR === */
-  .sidebarContent-panel {
-    flex: 0 0 270px;
-    background: #fff;
-    border-right: 1px solid #eee;
-    padding: 1.75rem 1.25rem;
+.page-container-panel {
+  --pk-brand: #ff3c38;
+  --pk-brand2: #ff6a3d;
+  --pk-grad: linear-gradient(135deg, #ff3c38, #ff6a3d);
+  --pk-ink: #1c1f2e;
+  --pk-text: #3a3e4e;
+  --pk-muted: #7a7f8e;
+  --pk-faint: #a0a5b4;
+  --pk-line: #eceef5;
+  --pk-bg: #f5f6fa;
+  --pk-card: #fff;
+  --pk-radius: 18px;
+  --pk-shadow: 0 1px 2px rgba(28, 31, 46, 0.04), 0 8px 24px rgba(28, 31, 46, 0.06);
+  --pk-ring: 0 0 0 4px rgba(255, 60, 56, 0.12);
+
+  display: grid;
+  grid-template-columns: 276px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: var(--pk-bg);
+  border-radius: 28px;
+  box-sizing: border-box;
+  color: var(--pk-ink);
+
+  /* ---------- Yan menü (masaüstü) ---------- */
+  .panelSide {
+    position: sticky;
+    top: 16px;
+    z-index: 30;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 1.75rem;
+    gap: 14px;
+    background: var(--pk-card);
+    border-radius: 22px;
+    padding: 16px;
+    box-shadow: var(--pk-shadow);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
 
-    @media (max-width: 992px) {
-      flex: 0 0 auto;
-      width: 100%;
-      border-right: none;
-      border-bottom: 1px solid #eee;
-      padding: 1.25rem;
-    }
+  .panelUser {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #fff5f4, #fff);
+    border: 1px solid #ffe3e1;
 
-    .miniProfile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: linear-gradient(135deg, #fff5f4, #fff);
-      border: 1px solid #ffe3e1;
-      border-radius: 14px;
-      padding: 14px;
+    .panelAvatar {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      padding: 2px;
+      background: var(--pk-grad);
 
       img {
-        width: 48px;
-        height: 48px;
+        display: block;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #ff3c38;
-      }
-
-      .miniProfileInfo {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-
-        .miniProfileName {
-          font-weight: 700;
-          font-size: 0.95rem;
-          color: #222;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .miniProfileRole {
-          font-size: 0.78rem;
-          color: #ff3c38;
-          font-weight: 600;
-        }
+        border: 2px solid #fff;
+        box-sizing: border-box;
+        background: #fff;
       }
     }
 
-    .sidebar {
+    .panelUserInfo {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 3px;
+      min-width: 0;
+    }
 
-      button {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        background: transparent;
-        border: none;
-        border-radius: 10px;
-        padding: 0.75rem 0.9rem;
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: #444;
-        text-align: left;
-        cursor: pointer;
-        transition: all 0.15s ease;
+    .panelUserName {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--pk-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-        .menuIcon {
-          font-size: 1.05rem;
-          flex-shrink: 0;
-        }
+    .panelUserRole {
+      align-self: flex-start;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--pk-brand);
+      background: #fff;
+      border: 1px solid #ffd2cf;
+      border-radius: 999px;
+      padding: 2px 9px;
+    }
+  }
 
-        &:hover {
-          background: #fff1f0;
-          color: #ff3c38;
-        }
+  .panelNavWrap {
+    position: relative;
+  }
 
-        &.active {
-          background: linear-gradient(135deg, #ff3c38, #ff6a3d);
-          color: #fff;
-          box-shadow: 0 4px 14px rgba(255, 60, 56, 0.25);
-        }
+  .panelNav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .navGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .navGroupLabel {
+    padding: 10px 12px 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--pk-faint);
+  }
+
+  .navItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.93rem;
+    font-weight: 600;
+    color: var(--pk-text);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+
+    .navIco {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: #f3f4f9;
+      color: #6b7080;
+      font-size: 1.05rem;
+      transition:
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+    &:hover {
+      background: #fff1f0;
+      color: var(--pk-brand);
+
+      .navIco {
+        background: #ffe3e1;
+        color: var(--pk-brand);
       }
+    }
 
-      .logoutBtn {
-        margin-top: 10px;
-        border-top: 1px solid #f0f0f0;
-        padding-top: 1rem;
-        color: #999;
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--pk-ring);
+    }
 
-        &:hover {
-          background: #fdeceb;
+    &.active {
+      background: var(--pk-grad);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(255, 60, 56, 0.28);
+
+      .navIco {
+        background: rgba(255, 255, 255, 0.22);
+        color: #fff;
+      }
+    }
+  }
+
+  .navGroupLogout {
+    margin-top: 6px;
+    padding-top: 10px;
+    border-top: 1px solid var(--pk-line);
+
+    .logoutBtn {
+      color: #8d92a3;
+
+      &:hover {
+        background: #fdeceb;
+        color: #d9362d;
+
+        .navIco {
+          background: #fbd5d2;
           color: #d9362d;
         }
       }
     }
   }
 
-  /* === MAIN CONTENT === */
-  .content-panel {
-    flex: 1;
-    background: #f4f5f7;
-    padding: 2rem 3rem;
-    overflow-y: auto;
+  /* ---------- İçerik ---------- */
+  .panelMain {
+    min-width: 0;
+    scroll-margin-top: 84px;
+  }
 
-    @media (max-width: 992px) {
-      padding: 1rem;
+  .panelHead {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 4px 2px 18px;
+
+    .headIcon {
+      flex-shrink: 0;
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: var(--pk-grad);
+      color: #fff;
+      font-size: 1.3rem;
+      box-shadow: 0 8px 20px rgba(255, 60, 56, 0.28);
     }
 
-    .content {
-      max-width: 1200px;
-      margin: 0 auto;
+    h1 {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.2;
+      color: var(--pk-ink);
     }
+
+    p {
+      margin: 3px 0 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: var(--pk-muted);
+    }
+  }
+
+  .panelBody {
+    min-width: 0;
+    max-width: 1100px;
+    animation: panelFade 0.22s ease both;
+
+    /* Alt bileşenlerin kendi sayfa başlıkları üstteki başlıkla çakışmasın */
+    .bizStats .statsHead h2,
+    .bizShare .shareHead h2,
+    .profileUpdatePage .formContainer > h1 {
+      display: none;
+    }
+  }
+
+  /* ---------- Tablet / mobil ---------- */
+  @media (max-width: 992px) {
+    display: block;
+    /* .layout'un 20px kenar boşluğunu aşıp ekranı tam kaplasın */
+    margin: 12px -20px 0;
+    padding: 0 0 32px;
+    border-radius: 0;
+
+    .panelSide {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: block;
+      max-height: none;
+      overflow: visible;
+      padding: 0;
+      border-radius: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: saturate(180%) blur(10px);
+      -webkit-backdrop-filter: saturate(180%) blur(10px);
+      box-shadow: 0 1px 0 var(--pk-line), 0 6px 18px rgba(28, 31, 46, 0.06);
+    }
+
+    .panelUser {
+      display: none;
+    }
+
+    .panelNavWrap {
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 28px;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+
+      &::before {
+        left: 0;
+        background: linear-gradient(to right, #fff 25%, rgba(255, 255, 255, 0));
+      }
+
+      &::after {
+        right: 0;
+        background: linear-gradient(to left, #fff 25%, rgba(255, 255, 255, 0));
+      }
+
+      &.fadeLeft::before,
+      &.fadeRight::after {
+        opacity: 1;
+      }
+    }
+
+    .panelNav {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-snap-type: x proximity;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .navGroup {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+
+      /* Gruplar arasında ince ayraç */
+      & + .navGroup::before {
+        content: "";
+        width: 1px;
+        height: 22px;
+        margin: 0 2px 0 -2px;
+        background: var(--pk-line);
+        flex-shrink: 0;
+      }
+    }
+
+    .navGroupLabel {
+      display: none;
+    }
+
+    .navItem {
+      flex: 0 0 auto;
+      width: auto;
+      gap: 8px;
+      padding: 9px 15px 9px 12px;
+      border-radius: 999px;
+      background: #f3f4f9;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      scroll-snap-align: center;
+
+      .navIco {
+        width: auto;
+        height: auto;
+        background: transparent;
+        border-radius: 0;
+        font-size: 1.05rem;
+      }
+
+      &:hover {
+        background: #ffe9e7;
+
+        .navIco {
+          background: transparent;
+        }
+      }
+
+      &.active {
+        box-shadow: 0 6px 16px rgba(255, 60, 56, 0.3);
+
+        .navIco {
+          background: transparent;
+        }
+      }
+    }
+
+    .navGroupLogout {
+      margin: 0;
+      padding: 0;
+      border-top: none;
+
+      .logoutBtn:hover .navIco {
+        background: transparent;
+      }
+    }
+
+    .panelMain {
+      padding: 16px 14px 0;
+      scroll-margin-top: 64px;
+    }
+
+    .panelHead {
+      margin: 0 2px 14px;
+      gap: 12px;
+
+      .headIcon {
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+        font-size: 1.15rem;
+      }
+
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      p {
+        font-size: 0.84rem;
+      }
+    }
+
+    /* iOS'ta 16px altı yazı tipli alanlara odaklanınca sayfa kendiliğinden
+       yakınlaşır; formlar bozuk görünmesin diye 16px'e sabitle. */
+    .panelBody
+      input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="file"]),
+    .panelBody select,
+    .panelBody textarea {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .panelMain {
+      padding: 14px 12px 0;
+    }
+  }
+}
+
+@keyframes panelFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-container-panel .panelBody {
+    animation: none;
   }
 }

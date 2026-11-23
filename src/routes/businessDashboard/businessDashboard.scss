@@ -1,9 +1,16 @@
 $brand: #ff3c38;
+$brand2: #ff6a3d;
+$ink: #1c1f2e;
+$muted: #7a7f8e;
+$line: #eceef5;
 
 .bizDash {
   width: 100%;
   box-sizing: border-box;
   padding: 24px 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 
   &.embedded {
     padding: 0 0 24px;
@@ -31,65 +38,234 @@ $brand: #ff3c38;
   }
 
   .dashHint {
-    background: #fff4d6;
-    color: #8a6100;
-    border-radius: 12px;
+    background: #fff8e6;
+    border: 1px solid #ffe2a3;
+    color: #7a5200;
+    border-radius: 14px;
     padding: 12px 16px;
-    margin: 0 0 16px;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
-  .dashTabs {
+  /* ---------- Kimlik kartı ---------- */
+  .bizHero {
     display: flex;
     align-items: center;
+    gap: 14px;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 18px;
+    background: #fff;
+    border: 1px solid $line;
+    border-radius: 20px;
+    padding: 16px 18px;
+    box-shadow: 0 1px 2px rgba(28, 31, 46, 0.04), 0 8px 24px rgba(28, 31, 46, 0.05);
 
-    button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #fff;
-      border: 1px solid #e5e5e5;
-      border-radius: 30px;
-      padding: 10px 18px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #555;
+    .heroLogo {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 17px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, $brand, $brand2);
+      color: #fff;
+      font-size: 1.15rem;
 
-      &.active {
-        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
-        border-color: transparent;
-        color: #fff;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #fff;
+      }
+    }
+
+    .heroInfo {
+      flex: 1;
+      min-width: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      strong {
+        font-size: 1.08rem;
+        color: $ink;
+        overflow-wrap: anywhere;
       }
 
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
+      .heroSub {
+        font-size: 0.84rem;
+        color: $muted;
+      }
+    }
+
+    .statusPill {
+      flex-shrink: 0;
+      font-size: 0.76rem;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 999px;
+
+      &.live {
+        background: #e7f8ee;
+        color: #1a8a50;
+      }
+
+      &.pending {
+        background: #fff4d4;
+        color: #a36c00;
+      }
+
+      &.rejected {
+        background: #fdeceb;
+        color: #b3261e;
+      }
+
+      &.draft {
+        background: #f1f2f6;
+        color: #6b7080;
       }
     }
 
     .viewPublic {
-      margin-left: auto;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       color: $brand;
       font-weight: 700;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: #fff3f2;
+    }
+
+    @media (max-width: 560px) {
+      padding: 14px;
+
+      .viewPublic {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
     }
   }
 
+  /* ---------- Sekmeler (segment kontrol) ---------- */
+  .segTabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    padding: 5px;
+    background: #e9ebf3;
+    border-radius: 16px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      background: transparent;
+      border-radius: 12px;
+      padding: 11px 10px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #5d6272;
+      cursor: pointer;
+      transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+
+      svg {
+        flex-shrink: 0;
+        font-size: 1.05rem;
+      }
+
+      &.active {
+        background: #fff;
+        color: $brand;
+        box-shadow: 0 2px 8px rgba(28, 31, 46, 0.1);
+      }
+
+      &:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+    }
+
+    @media (max-width: 560px) {
+      button {
+        flex-direction: column;
+        gap: 3px;
+        padding: 9px 4px;
+        font-size: 0.74rem;
+        text-align: center;
+        line-height: 1.2;
+
+        svg {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+
+  /* ---------- Form ---------- */
   .profileForm {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-    padding: 24px;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
+
+    .fSection {
+      background: #fff;
+      border: 1px solid $line;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(28, 31, 46, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      @media (max-width: 560px) {
+        padding: 16px;
+        border-radius: 18px;
+      }
+    }
+
+    .fHead {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .num {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, $brand, $brand2);
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.9rem;
+        box-shadow: 0 6px 14px rgba(255, 60, 56, 0.28);
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 1.02rem;
+        color: $ink;
+      }
+
+      p {
+        margin: 2px 0 0;
+        font-size: 0.82rem;
+        color: $muted;
+        line-height: 1.35;
+      }
+    }
 
     .formGrid {
       display: grid;
@@ -103,13 +279,20 @@ $brand: #ff3c38;
       label {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 7px;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.84rem;
+        color: #3a3e4e;
 
         &.full {
           grid-column: 1 / -1;
         }
+      }
+
+      .counter {
+        color: #8a8fa0;
+        font-weight: 500;
+        text-align: right;
       }
 
       input,
@@ -117,203 +300,345 @@ $brand: #ff3c38;
       textarea {
         width: 100%;
         box-sizing: border-box;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 11px 12px;
+        min-height: 46px;
+        border: 1.5px solid #e1e4ee;
+        border-radius: 12px;
+        padding: 11px 14px;
         font: inherit;
-        font-weight: 400;
+        font-weight: 500;
+        color: $ink;
         background: #fff;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+
+        &::placeholder {
+          color: #aab0bf;
+          font-weight: 400;
+        }
+
+        &:hover:not(:disabled) {
+          border-color: #cfd3e0;
+        }
 
         &:focus {
           outline: none;
           border-color: $brand;
+          box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
         }
 
         &:disabled {
-          background: #f5f5f5;
+          background: #f5f6fa;
+          color: #9aa0b0;
         }
+      }
+
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        padding-right: 40px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a7f8e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
       }
 
       textarea {
         resize: vertical;
+        line-height: 1.5;
       }
     }
 
+    /* ---------- Görseller ---------- */
     .uploadBlock {
       h4 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin: 0 0 8px;
+        font-size: 0.92rem;
+        color: $ink;
+
+        svg {
+          color: $brand;
+        }
+      }
+
+      & + .uploadBlock {
+        padding-top: 16px;
+        border-top: 1px dashed $line;
       }
 
       .uploadHint {
-        margin: 0 0 10px;
-        color: #888;
-        font-size: 0.85rem;
+        margin: 0 0 12px;
+        color: $muted;
+        font-size: 0.84rem;
         line-height: 1.5;
       }
 
+      .uploadRow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
       .cloudinary-button {
-        background: #fff3f2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 10px 18px;
+        border: 1.5px dashed #ffb3ae;
+        border-radius: 12px;
+        background: #fff7f6;
         color: $brand;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 16px;
+        font: inherit;
         font-weight: 700;
         cursor: pointer;
+        transition: background 0.15s ease;
+
+        &:hover:not(:disabled) {
+          background: #ffeceb;
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: wait;
+        }
+
+        @media (max-width: 560px) {
+          width: 100%;
+        }
       }
 
       .thumbRow {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
         gap: 10px;
-        margin-top: 12px;
+        margin-top: 14px;
       }
 
       .thumb {
         position: relative;
-        width: 96px;
-        height: 80px;
-        border-radius: 10px;
+        aspect-ratio: 5 / 4;
+        border-radius: 12px;
         overflow: hidden;
-        background: #f3f3f3;
+        background: #f3f4f9;
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          display: block;
         }
 
         button {
           position: absolute;
-          top: 4px;
-          right: 4px;
-          width: 22px;
-          height: 22px;
+          top: 5px;
+          right: 5px;
+          width: 26px;
+          height: 26px;
           border: none;
           border-radius: 50%;
-          background: rgba(0, 0, 0, 0.65);
+          background: rgba(28, 31, 46, 0.7);
           color: #fff;
           display: grid;
           place-items: center;
           cursor: pointer;
         }
-      }
-    }
 
-    .formMessage {
-      margin: 0;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-
-      &.success {
-        background: #dff6e3;
-        color: #1b6b32;
-      }
-
-      &.error {
-        background: #fde4e4;
-        color: #c62828;
-      }
-    }
-
-    .saveBtn {
-      align-self: flex-start;
-      background: linear-gradient(135deg, #ff3c38, #ff6a3d);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 13px 28px;
-      font-weight: 800;
-      font-size: 1rem;
-      cursor: pointer;
-
-      &:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-      }
-    }
-  }
-
-  .strengthBox {
-    background: linear-gradient(135deg, #fff7f5, #fff);
-    border: 1px solid #ffe0db;
-    border-radius: 16px;
-    padding: 16px 18px;
-    margin-bottom: 18px;
-
-    .strengthHead {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
-
-      strong {
-        color: #1c1f2e;
-      }
-
-      span {
-        font-weight: 800;
-        color: $brand;
-        font-size: 1.1rem;
-      }
-    }
-
-    .strengthBar {
-      height: 10px;
-      border-radius: 999px;
-      background: #f1e3e0;
-      overflow: hidden;
-
-      i {
-        display: block;
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #ff3c38, #ff6a3d);
-        transition: width 0.4s ease;
-      }
-    }
-
-    ul {
-      list-style: none;
-      margin: 12px 0 0;
-      padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-
-      li {
-        background: #fff;
-        border: 1px solid #ffd9d2;
-        border-radius: 999px;
-        padding: 4px 12px;
-        font-size: 0.8rem;
-        color: #6a4a46;
-
-        b {
-          color: $brand;
-          margin-right: 4px;
+        &.logoThumb {
+          width: 72px;
+          aspect-ratio: 1;
+          border: 1px solid $line;
         }
       }
     }
 
-    p {
-      margin: 10px 0 0;
-      color: #2f8a4d;
-      font-size: 0.88rem;
-      font-weight: 600;
+    /* ---------- Kaydet çubuğu (ekranın altında yapışık) ---------- */
+    .saveBar {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0 -2px;
+      padding: 12px 2px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(to top, rgba(245, 246, 250, 1) 70%, rgba(245, 246, 250, 0));
+
+      .formMessage {
+        margin: 0;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+
+        &.success {
+          background: #dff6e3;
+          color: #1b6b32;
+        }
+
+        &.error {
+          background: #fde4e4;
+          color: #c62828;
+        }
+      }
+
+      .saveBtn {
+        width: 100%;
+        min-height: 52px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, $brand, $brand2);
+        color: #fff;
+        font: inherit;
+        font-weight: 800;
+        font-size: 1.02rem;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(255, 60, 56, 0.32);
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease;
+
+        &:hover:not(:disabled) {
+          transform: translateY(-1px);
+        }
+
+        &:disabled {
+          background: #c9ccd6;
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+
+        @media (min-width: 701px) {
+          width: auto;
+          min-width: 260px;
+          align-self: flex-end;
+          padding: 0 32px;
+        }
+      }
+    }
+  }
+
+  /* ---------- Profil gücü ---------- */
+  .strengthBox {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: linear-gradient(135deg, #fff7f5, #fff);
+    border: 1px solid #ffe0db;
+    border-radius: 20px;
+    padding: 18px 20px;
+
+    .strengthRing {
+      flex-shrink: 0;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      transition: background 0.4s ease;
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 9px;
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      span {
+        position: relative;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: $brand;
+      }
+    }
+
+    .strengthBody {
+      min-width: 0;
+
+      strong {
+        color: $ink;
+        font-size: 1.02rem;
+      }
+
+      .strengthLead {
+        margin: 3px 0 0;
+        font-size: 0.82rem;
+        color: $muted;
+      }
+
+      ul {
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+
+        li {
+          background: #fff;
+          border: 1px solid #ffd9d2;
+          border-radius: 999px;
+          padding: 4px 11px;
+          font-size: 0.78rem;
+          color: #6a4a46;
+
+          b {
+            color: $brand;
+            margin-right: 3px;
+          }
+        }
+      }
+
+      .strengthOk {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        margin: 4px 0 0;
+        color: #2f8a4d;
+        font-size: 0.88rem;
+        font-weight: 600;
+        line-height: 1.4;
+
+        svg {
+          flex-shrink: 0;
+          margin-top: 2px;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      padding: 14px;
+      gap: 14px;
+
+      .strengthRing {
+        width: 68px;
+        height: 68px;
+
+        &::before {
+          inset: 8px;
+        }
+
+        span {
+          font-size: 0.95rem;
+        }
+      }
     }
   }
 }
 
-
-// Başvuru durumu bandı
+/* Başvuru durumu bandı */
 .bizDash .statusBanner {
   display: flex;
   gap: 12px;
   align-items: flex-start;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 14px 16px;
-  margin-bottom: 16px;
   border: 1px solid;
 
   > svg {

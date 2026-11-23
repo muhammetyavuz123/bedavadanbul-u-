@@ -1,6 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiInbox, FiBriefcase, FiExternalLink, FiX, FiClock, FiAlertCircle, FiGift } from "react-icons/fi";
+import {
+  FiInbox,
+  FiBriefcase,
+  FiExternalLink,
+  FiX,
+  FiClock,
+  FiAlertCircle,
+  FiGift,
+  FiCheck,
+  FiImage,
+} from "react-icons/fi";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import BreadcrumbImage from "../../assets/breadcrumb.png";
 import InquiryInbox from "../../components/InquiryInbox/InquiryInbox";
@@ -37,6 +47,23 @@ function profileStrength(form, logoList, photos) {
   ];
   const score = items.reduce((t, i) => t + (i.ok ? i.points : 0), 0);
   return { score, missing: items.filter((i) => !i.ok) };
+}
+
+const initialsOf = (name) =>
+  (name || "")
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toLocaleUpperCase("tr") || "")
+    .join("") || "İ";
+
+function statusInfo(business) {
+  if (!business) return { key: "draft", label: "Taslak" };
+  if (business.status === "pending") return { key: "pending", label: "İnceleniyor" };
+  if (business.status === "rejected") return { key: "rejected", label: "Onaylanmadı" };
+  if (business.status === "approved" && !business.isActive)
+    return { key: "rejected", label: "Yayında değil" };
+  return { key: "live", label: "Yayında" };
 }
 
 function BusinessDashboard({ embedded = false }) {
@@ -166,6 +193,10 @@ function BusinessDashboard({ embedded = false }) {
     folder,
   });
 
+  const st = statusInfo(business);
+  const logo = logoList[logoList.length - 1];
+  const canView = business && business.status === "approved" && business.isActive;
+
   return (
     <>
       {!embedded && (
@@ -190,35 +221,60 @@ function BusinessDashboard({ embedded = false }) {
 
         {!loading && canManage && (
           <>
-            <div className="dashTabs">
-              <button
-                type="button"
-                className={tab === "inbox" ? "active" : ""}
-                onClick={() => setTab("inbox")}
-                disabled={!business}
-              >
-                <FiInbox /> Gelen Sorular
-              </button>
-              <button
-                type="button"
-                className={tab === "profile" ? "active" : ""}
-                onClick={() => setTab("profile")}
-              >
-                <FiBriefcase /> İşletme Profili
-              </button>
-              <button
-                type="button"
-                className={tab === "loyalty" ? "active" : ""}
-                onClick={() => setTab("loyalty")}
-                disabled={!business}
-              >
-                <FiGift /> Sadakat
-              </button>
-              {business && business.status === "approved" && business.isActive && (
+            {/* Kimlik kartı */}
+            <section className="bizHero">
+              <span className="heroLogo">
+                {logo ? <img src={logo} alt="" /> : <b>{initialsOf(form.name)}</b>}
+              </span>
+              <div className="heroInfo">
+                <strong>{business?.name || form.name || "Yeni işletme"}</strong>
+                <span className="heroSub">
+                  {business
+                    ? [business.category?.name, business.district && `${business.district}, ${business.city}`]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : "Profilinizi oluşturup yayına alın"}
+                </span>
+              </div>
+              <span className={`statusPill ${st.key}`}>{st.label}</span>
+              {canView && (
                 <Link to={`/isletme/${business.id}`} className="viewPublic">
                   Herkese açık sayfa <FiExternalLink />
                 </Link>
               )}
+            </section>
+
+            {/* Sekmeler */}
+            <div className="segTabs" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === "inbox"}
+                className={tab === "inbox" ? "active" : ""}
+                onClick={() => setTab("inbox")}
+                disabled={!business}
+              >
+                <FiInbox /> <span>Gelen Sorular</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === "profile"}
+                className={tab === "profile" ? "active" : ""}
+                onClick={() => setTab("profile")}
+              >
+                <FiBriefcase /> <span>İşletme Profili</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={tab === "loyalty"}
+                className={tab === "loyalty" ? "active" : ""}
+                onClick={() => setTab("loyalty")}
+                disabled={!business}
+              >
+                <FiGift /> <span>Sadakat</span>
+              </button>
             </div>
 
             {business?.status === "pending" && (
@@ -262,7 +318,8 @@ function BusinessDashboard({ embedded = false }) {
             {!business && (
               <p className="dashHint">
                 Müşterilerin sizi bulabilmesi için önce işletme profilinizi oluşturun.
-                Kaydettiğinizde başvurunuz yönetici onayına gönderilir.
+                Kaydettiğinizde başvurunuz yönetici onayına gönderilir. Gelen sorular ve
+                sadakat kartı, profil oluşturulduktan sonra açılır.
               </p>
             )}
 
@@ -276,172 +333,238 @@ function BusinessDashboard({ embedded = false }) {
                   const { score, missing } = profileStrength(form, logoList, photos);
                   return (
                     <div className="strengthBox">
-                      <div className="strengthHead">
-                        <strong>Profil gücü</strong>
+                      <div
+                        className="strengthRing"
+                        style={{
+                          background: `conic-gradient(#ff3c38 ${score * 3.6}deg, #f1e3e0 0deg)`,
+                        }}
+                        aria-label={`Profil gücü yüzde ${score}`}
+                      >
                         <span>%{score}</span>
                       </div>
-                      <div className="strengthBar">
-                        <i style={{ width: `${score}%` }} />
+                      <div className="strengthBody">
+                        <strong>Profil gücü</strong>
+                        {missing.length > 0 ? (
+                          <>
+                            <p className="strengthLead">
+                              Tamamladıkça müşterilere daha güvenilir görünürsünüz:
+                            </p>
+                            <ul>
+                              {missing.map((m) => (
+                                <li key={m.label}>
+                                  <b>+%{m.points}</b> {m.label}
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <p className="strengthOk">
+                            <FiCheck /> Harika! Profiliniz tamamen dolu; müşterilere en iyi şekilde
+                            görünüyorsunuz.
+                          </p>
+                        )}
                       </div>
-                      {missing.length > 0 ? (
-                        <ul>
-                          {missing.map((m) => (
-                            <li key={m.label}>
-                              <b>+%{m.points}</b> {m.label}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p>Harika! Profiliniz tamamen dolu; müşterilere en iyi şekilde görünüyorsunuz.</p>
-                      )}
                     </div>
                   );
                 })()}
 
-                <div className="formGrid">
-                  <label className="full">
-                    İşletme adı *
-                    <input value={form.name} onChange={update("name")} maxLength={80} required />
-                  </label>
-
-                  <label>
-                    Kategori *
-                    <CategorySelect
-                      value={form.categoryId}
-                      onChange={update("categoryId")}
-                      placeholder="Seçiniz"
-                      required
-                    />
-                  </label>
-
-                  <label>
-                    Telefon *
-                    <input
-                      value={form.phone}
-                      onChange={update("phone")}
-                      placeholder="05xx xxx xx xx"
-                      inputMode="tel"
-                      required
-                    />
-                  </label>
-
-                  <label>
-                    İl *
-                    <select value={form.city} onChange={update("city")} required>
-                      <option value="">Seçiniz</option>
-                      {cities.map((c) => (
-                        <option key={c.il_adi} value={c.il_adi}>
-                          {c.il_adi}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label>
-                    İlçe *
-                    <select
-                      value={form.district}
-                      onChange={update("district")}
-                      disabled={!form.city}
-                      required
-                    >
-                      <option value="">Seçiniz</option>
-                      {districts.map((d) => (
-                        <option key={d.ilce_adi} value={d.ilce_adi}>
-                          {d.ilce_adi}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="full">
-                    Açık adres *
-                    <input value={form.address} onChange={update("address")} maxLength={200} required />
-                  </label>
-
-                  <label className="full">
-                    Çalışma saatleri
-                    <textarea
-                      value={form.workingHours}
-                      onChange={update("workingHours")}
-                      rows={3}
-                      maxLength={400}
-                      placeholder={"Her satıra bir gün veya aralık yazın:\nPazartesi - Cuma: 09:00 - 19:00\nCumartesi: 10:00 - 16:00\nPazar: Kapalı"}
-                    />
-                  </label>
-
-                  <label>
-                    Web sitesi
-                    <input
-                      value={form.website}
-                      onChange={update("website")}
-                      placeholder="www.ornek.com"
-                    />
-                  </label>
-
-                  <label className="full">
-                    Açıklama
-                    <textarea
-                      value={form.description}
-                      onChange={update("description")}
-                      rows={8}
-                      maxLength={3000}
-                      placeholder="İşletmenizi, sunduğunuz hizmetleri ve avantajlarınızı anlatın."
-                    />
-                    <small style={{ color: "#8a8fa0", fontWeight: 500, textAlign: "right" }}>
-                      {form.description.length}/3000
-                    </small>
-                  </label>
-                </div>
-
-                <div className="uploadBlock">
-                  <h4>Logo</h4>
-                  <UploadWidget uwConfig={uploadConfig("business-logos", false)} setState={setLogoList} />
-                  {logoList.length > 0 && (
-                    <div className="thumbRow">
-                      <div className="thumb">
-                        <img src={logoList[logoList.length - 1]} alt="Logo" />
-                      </div>
+                <section className="fSection">
+                  <header className="fHead">
+                    <span className="num">1</span>
+                    <div>
+                      <h3>Temel bilgiler</h3>
+                      <p>Müşterilerin sizi tanıyacağı ve arayacağı bilgiler</p>
                     </div>
-                  )}
-                </div>
+                  </header>
+                  <div className="formGrid">
+                    <label className="full">
+                      İşletme adı *
+                      <input value={form.name} onChange={update("name")} maxLength={80} required />
+                    </label>
 
-                <div className="uploadBlock">
-                  <h4>Fotoğraflar</h4>
-                  <p className="uploadHint">
-                    İstediğiniz kadar fotoğraf ekleyebilirsiniz. Tek bir fotoğraf bile yeterli; ne
-                    kadar çok olursa işletmeniz o kadar güvenilir görünür.
-                  </p>
-                  <UploadWidget uwConfig={uploadConfig("business-photos", true)} setState={setPhotos} />
-                  {photos.length > 0 && (
-                    <div className="thumbRow">
-                      {photos.map((p, i) => (
-                        <div className="thumb" key={p + i}>
-                          <img src={p} alt={`Fotoğraf ${i + 1}`} />
-                          <button
-                            type="button"
-                            aria-label="Fotoğrafı kaldır"
-                            onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
-                          >
-                            <FiX />
-                          </button>
+                    <label>
+                      Kategori *
+                      <CategorySelect
+                        value={form.categoryId}
+                        onChange={update("categoryId")}
+                        placeholder="Seçiniz"
+                        required
+                      />
+                    </label>
+
+                    <label>
+                      Telefon *
+                      <input
+                        value={form.phone}
+                        onChange={update("phone")}
+                        placeholder="05xx xxx xx xx"
+                        inputMode="tel"
+                        autoComplete="tel"
+                        required
+                      />
+                    </label>
+                  </div>
+                </section>
+
+                <section className="fSection">
+                  <header className="fHead">
+                    <span className="num">2</span>
+                    <div>
+                      <h3>Konum</h3>
+                      <p>Listede ve haritada doğru yerde görünmeniz için</p>
+                    </div>
+                  </header>
+                  <div className="formGrid">
+                    <label>
+                      İl *
+                      <select value={form.city} onChange={update("city")} required>
+                        <option value="">Seçiniz</option>
+                        {cities.map((c) => (
+                          <option key={c.il_adi} value={c.il_adi}>
+                            {c.il_adi}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <label>
+                      İlçe *
+                      <select
+                        value={form.district}
+                        onChange={update("district")}
+                        disabled={!form.city}
+                        required
+                      >
+                        <option value="">{form.city ? "Seçiniz" : "Önce il seçin"}</option>
+                        {districts.map((d) => (
+                          <option key={d.ilce_adi} value={d.ilce_adi}>
+                            {d.ilce_adi}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+
+                    <label className="full">
+                      Açık adres *
+                      <input
+                        value={form.address}
+                        onChange={update("address")}
+                        maxLength={200}
+                        placeholder="Mahalle, cadde, no"
+                        required
+                      />
+                    </label>
+                  </div>
+                </section>
+
+                <section className="fSection">
+                  <header className="fHead">
+                    <span className="num">3</span>
+                    <div>
+                      <h3>Detaylar</h3>
+                      <p>Çalışma saatleri, web siteniz ve işletmenizin tanıtımı</p>
+                    </div>
+                  </header>
+                  <div className="formGrid">
+                    <label className="full">
+                      Çalışma saatleri
+                      <textarea
+                        value={form.workingHours}
+                        onChange={update("workingHours")}
+                        rows={4}
+                        maxLength={400}
+                        placeholder={"Her satıra bir gün veya aralık yazın:\nPazartesi - Cuma: 09:00 - 19:00\nCumartesi: 10:00 - 16:00\nPazar: Kapalı"}
+                      />
+                    </label>
+
+                    <label className="full">
+                      Web sitesi
+                      <input
+                        value={form.website}
+                        onChange={update("website")}
+                        placeholder="www.ornek.com"
+                        inputMode="url"
+                      />
+                    </label>
+
+                    <label className="full">
+                      Açıklama
+                      <textarea
+                        value={form.description}
+                        onChange={update("description")}
+                        rows={7}
+                        maxLength={3000}
+                        placeholder="İşletmenizi, sunduğunuz hizmetleri ve avantajlarınızı anlatın."
+                      />
+                      <small className="counter">{form.description.length}/3000</small>
+                    </label>
+                  </div>
+                </section>
+
+                <section className="fSection">
+                  <header className="fHead">
+                    <span className="num">4</span>
+                    <div>
+                      <h3>Logo ve fotoğraflar</h3>
+                      <p>Fotoğraflı profiller çok daha fazla ilgi görür</p>
+                    </div>
+                  </header>
+
+                  <div className="uploadBlock">
+                    <h4>
+                      <FiImage /> Logo
+                    </h4>
+                    <div className="uploadRow">
+                      <UploadWidget uwConfig={uploadConfig("business-logos", false)} setState={setLogoList} />
+                      {logo && (
+                        <div className="thumb logoThumb">
+                          <img src={logo} alt="Logo" />
                         </div>
-                      ))}
+                      )}
                     </div>
-                  )}
+                  </div>
+
+                  <div className="uploadBlock">
+                    <h4>
+                      <FiImage /> Fotoğraflar
+                    </h4>
+                    <p className="uploadHint">
+                      İstediğiniz kadar fotoğraf ekleyebilirsiniz. Tek bir fotoğraf bile yeterli; ne
+                      kadar çok olursa işletmeniz o kadar güvenilir görünür.
+                    </p>
+                    <UploadWidget uwConfig={uploadConfig("business-photos", true)} setState={setPhotos} />
+                    {photos.length > 0 && (
+                      <div className="thumbRow">
+                        {photos.map((p, i) => (
+                          <div className="thumb" key={p + i}>
+                            <img src={p} alt={`Fotoğraf ${i + 1}`} />
+                            <button
+                              type="button"
+                              aria-label="Fotoğrafı kaldır"
+                              onClick={() => setPhotos((prev) => prev.filter((_, idx) => idx !== i))}
+                            >
+                              <FiX />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+
+                {/* Mobilde ekranın altında yapışık kalır: kaydet düğmesi hep erişilebilir */}
+                <div className="saveBar">
+                  {message.text && <p className={`formMessage ${message.type}`}>{message.text}</p>}
+                  <button type="submit" className="saveBtn" disabled={saving}>
+                    {saving
+                      ? "Kaydediliyor..."
+                      : !business
+                        ? "Başvuruyu Gönder"
+                        : business.status === "rejected"
+                          ? "Düzelt ve yeniden gönder"
+                          : "Değişiklikleri Kaydet"}
+                  </button>
                 </div>
-
-                {message.text && <p className={`formMessage ${message.type}`}>{message.text}</p>}
-
-                <button type="submit" className="saveBtn" disabled={saving}>
-                  {saving
-                    ? "Kaydediliyor..."
-                    : !business
-                      ? "Başvuruyu Gönder"
-                      : business.status === "rejected"
-                        ? "Düzelt ve yeniden gönder"
-                        : "Değişiklikleri Kaydet"}
-                </button>
               </form>
             )}
           </>

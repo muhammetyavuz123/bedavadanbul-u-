@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./card.scss";
+import { FiGift } from "react-icons/fi";
 import SafeImage from "../SafeImage/SafeImage";
 
 function Card({ item }) {
@@ -7,6 +8,12 @@ function Card({ item }) {
     <div className="shop-card">
       <Link to={`/${item.id}`} className="imageContainer">
         <SafeImage src={item?.images?.[0]} alt={item?.title || ""} />
+
+        {item?.loyalty && (
+          <span className="loyaltyBadge" title={item.loyalty.label}>
+            <FiGift /> Sadakat kartı var
+          </span>
+        )}
 
         {item?.listingType && item.listingType !== "standard" && (
           <span className={`typeBadge ${item.listingType}`}>

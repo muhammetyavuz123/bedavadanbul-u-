@@ -3,16 +3,18 @@
 .profileUpdatePage {
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
-  min-height: 100%;
+  padding: 0;
+  min-height: 0;
   box-sizing: border-box;
 
   .updateCard {
     width: 100%;
     max-width: 880px;
     background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    max-width: none;
+    border-radius: 22px;
+    border: 1px solid #eceef5;
+    box-shadow: 0 1px 2px rgba(28, 31, 46, 0.04), 0 8px 24px rgba(28, 31, 46, 0.05);
     display: flex;
     overflow: hidden;
 
@@ -30,6 +32,10 @@
       gap: 14px;
       padding: 40px 24px;
       text-align: center;
+
+      @include md {
+        padding: 24px 16px;
+      }
 
       .sideLabel {
         font-size: 0.85rem;
@@ -55,11 +61,11 @@
       }
 
       .cloudinary-button {
-        background: #ff3c38;
+        background: linear-gradient(135deg, #ff3c38, #ff6a3d);
         color: #fff;
         border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
+        padding: 11px 22px;
+        border-radius: 12px;
         font-weight: 600;
         cursor: pointer;
         transition: background 0.15s ease;
@@ -119,15 +125,20 @@
           }
 
           input {
+            min-height: 46px;
             padding: 12px 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            border-radius: 12px;
+            border: 1.5px solid #e1e4ee;
+            font: inherit;
             font-size: 0.95rem;
-            transition: border-color 0.15s ease;
+            transition:
+              border-color 0.15s ease,
+              box-shadow 0.15s ease;
 
             &:focus {
               outline: none;
               border-color: #ff3c38;
+              box-shadow: 0 0 0 4px rgba(255, 60, 56, 0.12);
             }
           }
         }
@@ -150,8 +161,9 @@
 
         button {
           margin-top: 4px;
+          min-height: 50px;
           padding: 14px;
-          border-radius: 8px;
+          border-radius: 14px;
           border: none;
           background: linear-gradient(135deg, #ff3c38, #ff6a3d);
           color: white;
